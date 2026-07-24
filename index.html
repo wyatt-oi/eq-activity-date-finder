@@ -1,0 +1,827 @@
+<title>EQ Activity Date Finder — Elk Ridge 7th Ward</title>
+<style>
+  :root {
+    --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
+    --byu: #0A2A4F;  --byu-bg: #E3EAF3;
+    --utah: #A6121F; --utah-bg: #F6E3E4;
+    --jazz: #6D28D9; --jazz-bg: #EBE0FA;
+    --nfl: #54554F;  --nfl-bg: #E8E7E1;
+    --hol: #8A5A0B;  --hol-bg: #F5E9CF;
+    --church: #5B4A7A; --church-bg: #EAE4F2;
+    --school: #8F7500; --school-bg: #F8F0BD;
+    --fh: #2C6E3F;   --fh-bg: #CFE8D4;
+    --ai: #0E7490;   --ai-bg: #D2E9F0;
+    --fel: #C2410C;  --fel-bg: #FAE3D3;
+    --temple: #0369A1; --temple-bg: #D9EBF7;
+    --warn: #A6121F;
+    --shadow: 0 6px 24px rgba(35,32,27,0.18);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
+      --byu: #9DB8D8;  --byu-bg: #1B2A3D;
+      --utah: #E58A92; --utah-bg: #3A1A1E;
+      --jazz: #C7ABF2; --jazz-bg: #2A1C44;
+      --nfl: #B9BAB2;  --nfl-bg: #2C2D28;
+      --hol: #D9B96A;  --hol-bg: #3A2F17;
+      --church: #BCA9DE; --church-bg: #2A2338;
+      --school: #DFCB6B; --school-bg: #39320F;
+      --fh: #8FCB9E;   --fh-bg: #27492F;
+      --ai: #74C4DB;   --ai-bg: #10333D;
+      --fel: #F0A374;  --fel-bg: #3D2113;
+      --temple: #82C0E5; --temple-bg: #122A3B;
+      --warn: #E58A92;
+      --shadow: 0 6px 24px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
+    --byu: #0A2A4F;  --byu-bg: #E3EAF3;
+    --utah: #A6121F; --utah-bg: #F6E3E4;
+    --jazz: #6D28D9; --jazz-bg: #EBE0FA;
+    --nfl: #54554F;  --nfl-bg: #E8E7E1;
+    --hol: #8A5A0B;  --hol-bg: #F5E9CF;
+    --church: #5B4A7A; --church-bg: #EAE4F2;
+    --school: #8F7500; --school-bg: #F8F0BD;
+    --fh: #2C6E3F;   --fh-bg: #CFE8D4;
+    --ai: #0E7490;   --ai-bg: #D2E9F0;
+    --fel: #C2410C;  --fel-bg: #FAE3D3;
+    --temple: #0369A1; --temple-bg: #D9EBF7;
+    --warn: #A6121F;
+    --shadow: 0 6px 24px rgba(35,32,27,0.18);
+  }
+  :root[data-theme="dark"] {
+    --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
+    --byu: #9DB8D8;  --byu-bg: #1B2A3D;
+    --utah: #E58A92; --utah-bg: #3A1A1E;
+    --jazz: #C7ABF2; --jazz-bg: #2A1C44;
+    --nfl: #B9BAB2;  --nfl-bg: #2C2D28;
+    --hol: #D9B96A;  --hol-bg: #3A2F17;
+    --church: #BCA9DE; --church-bg: #2A2338;
+    --school: #DFCB6B; --school-bg: #39320F;
+    --fh: #8FCB9E;   --fh-bg: #27492F;
+    --ai: #74C4DB;   --ai-bg: #10333D;
+    --fel: #F0A374;  --fel-bg: #3D2113;
+    --temple: #82C0E5; --temple-bg: #122A3B;
+    --warn: #E58A92;
+    --shadow: 0 6px 24px rgba(0,0,0,0.5);
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5; margin: 0; padding: 2rem 1.25rem 4rem;
+  }
+  .wrap { max-width: 82rem; margin: 0 auto; }
+  header.masthead { margin-bottom: 1.4rem; }
+  .mast-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem;
+    font-weight: 600; color: var(--muted); margin: 0 0 0.4rem;
+  }
+  h1 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem); line-height: 1.15; margin: 0 0 0.5rem;
+    text-wrap: balance;
+  }
+  .lede { color: var(--muted); max-width: 46rem; margin: 0; font-size: 0.92rem; }
+  #theme-btn {
+    flex: none; background: var(--cell); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; cursor: pointer;
+  }
+  #theme-btn:hover { border-color: var(--muted); }
+  #theme-btn:focus-visible, .chip:focus-visible, .mnav button:focus-visible {
+    outline: 2px solid var(--ai); outline-offset: 2px;
+  }
+  .cal td[tabindex]:focus-visible { outline: 2px solid var(--ai); outline-offset: -2px; }
+
+  .filters {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 0.45rem; align-items: center;
+    margin: 1.2rem 0 0; padding: 0.8rem 0.9rem;
+    border: 1px solid var(--line); border-radius: 6px; background: var(--cell);
+    font-size: 0.78rem;
+  }
+  .filters .grp {
+    text-transform: uppercase; letter-spacing: 0.09em; font-size: 0.62rem;
+    font-weight: 700; color: var(--muted); margin: 0 0.15rem 0 0.5rem;
+  }
+  .filters .grp:first-child { margin-left: 0; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 0.22rem 0.65rem 0.22rem 0.45rem; font: inherit; font-size: 0.76rem;
+    cursor: pointer; white-space: nowrap; min-height: 2rem;
+  }
+  .chip .swatch { width: 0.8rem; height: 0.8rem; border-radius: 3px; flex: none; }
+  .chip[aria-pressed="false"] { opacity: 0.38; }
+  .chip[aria-pressed="false"] .swatch { background: var(--line) !important; outline-color: var(--muted) !important; }
+  .chip:hover { border-color: var(--muted); }
+
+  .layout { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: 2rem; align-items: start; margin-top: 1.6rem; }
+  aside.agenda {
+    position: sticky; top: 1rem;
+    background: var(--cell); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1rem 1.1rem; font-size: 0.85rem;
+    max-height: calc(100vh - 2rem); overflow-y: auto;
+  }
+  aside.agenda h2 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.05rem; margin: 0 0 0.6rem;
+  }
+  aside.agenda h3 {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); margin: 0.9rem 0 0.35rem;
+    border-bottom: 1px solid var(--line); padding-bottom: 0.2rem;
+  }
+  aside.agenda ul { list-style: none; margin: 0; padding: 0; }
+  aside.agenda li {
+    display: grid; grid-template-columns: 4.6rem 1fr; gap: 0.5rem;
+    padding: 0.28rem 0; line-height: 1.35;
+  }
+  aside.agenda li .when { font-variant-numeric: tabular-nums; font-weight: 650; white-space: nowrap; }
+  aside.agenda li.t-fh .when { color: var(--fh); }
+  aside.agenda li.t-ai .when { color: var(--ai); }
+  aside.agenda li.t-fel .when { color: var(--fel); }
+  aside.agenda li.t-temple .when { color: var(--temple); }
+  aside.agenda li.open .when, aside.agenda li.open .what { color: var(--muted); font-weight: 500; }
+  aside.agenda li .what strong { font-weight: 650; }
+  aside.agenda .rhythm { margin-top: 0.9rem; padding-top: 0.6rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.76rem; }
+
+  h2.year {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.5rem; margin: 1rem 0 0;
+    padding-bottom: 0.3rem; border-bottom: 2px solid var(--ink);
+  }
+  h2.year:first-child { margin-top: 0; }
+  .months {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.5rem; margin-top: 1.2rem; margin-bottom: 1.4rem;
+  }
+  .month { min-width: 0; }
+  .month h3 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.15rem; margin: 0 0 0.15rem;
+  }
+  .month .pick-note { font-size: 0.78rem; color: var(--fh); font-weight: 600; margin: 0 0 0.55rem; min-height: 2.1em; }
+  .month .pick-note.quiet { color: var(--muted); font-weight: 500; }
+  table.cal {
+    width: 100%; table-layout: fixed;
+    border-collapse: collapse; background: var(--cell);
+    border: 1px solid var(--line); font-variant-numeric: tabular-nums;
+  }
+  .cal th {
+    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--muted); font-weight: 600; padding: 0.35rem 0.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .cal td {
+    border: 1px solid var(--line); vertical-align: top;
+    width: 14.28%; height: 2.7rem; padding: 0.2rem 0.25rem; font-size: 0.72rem;
+  }
+  .cal td .d { font-weight: 600; font-size: 0.76rem; display: block; line-height: 1.2; }
+  .cal td.blank { background: transparent; }
+  .cal td[data-day] { cursor: pointer; }
+  .cal td[data-day]:hover { filter: brightness(1.06); }
+  .dots { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 3px; }
+  .dt { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+  .cal .lab {
+    display: block; margin-top: 2px; font-size: 0.6rem; line-height: 1.3;
+    font-weight: 600; overflow-wrap: break-word;
+  }
+  .cal .lab.star { font-weight: 700; }
+  td.bg-byu { background: var(--byu-bg); }   td.bg-utah { background: var(--utah-bg); }
+  td.bg-jazz { background: var(--jazz-bg); } td.bg-nfl { background: var(--nfl-bg); }
+  td.bg-hol { background: var(--hol-bg); }   td.bg-church { background: var(--church-bg); }
+  td.both { background: linear-gradient(135deg, var(--byu-bg) 50%, var(--utah-bg) 50%); }
+  td.pick { outline-offset: -2px; }
+  td.pick .d::after { content: " ★"; font-size: 0.7em; }
+  td.pick-fh { background: var(--fh-bg); outline: 2px solid var(--fh); }
+  td.pick-fh .d::after { color: var(--fh); }
+  td.pick-ai { background: var(--ai-bg); outline: 2px solid var(--ai); }
+  td.pick-ai .d::after { color: var(--ai); }
+  td.pick-fel { background: var(--fel-bg); outline: 2px solid var(--fel); }
+  td.pick-fel .d::after { color: var(--fel); }
+  td.pick-temple { background: var(--temple-bg); outline: 2px solid var(--temple); }
+  td.pick-temple .d::after { color: var(--temple); }
+
+  #tooltip {
+    position: fixed; z-index: 50; display: none;
+    background: var(--cell); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 0.6rem 0.75rem; font-size: 0.78rem; line-height: 1.45;
+    max-width: 17rem; pointer-events: none;
+  }
+  #tooltip .tt-date { font-weight: 700; margin-bottom: 0.25rem; }
+  #tooltip .tt-row { display: flex; align-items: baseline; gap: 0.45rem; }
+  #tooltip .tt-row .dt { position: relative; top: -1px; }
+  #tooltip .tt-star { font-weight: 700; }
+
+  .mnav { display: none; }
+  #daycard { display: none; }
+
+  section.notes { margin-top: 2.2rem; max-width: 46rem; }
+  section.notes h2 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.15rem; margin: 0 0 0.6rem;
+  }
+  section.notes ul { padding-left: 1.2rem; margin: 0; }
+  section.notes li { margin-bottom: 0.5rem; font-size: 0.9rem; }
+  section.notes .src { font-size: 0.78rem; color: var(--muted); margin-top: 1.2rem; }
+
+  @media (max-width: 900px) {
+    body { padding: 1.2rem 0.8rem 3rem; }
+    .layout { display: flex; flex-direction: column; gap: 1.4rem; }
+    .layout .main { order: 1; }
+    .layout aside.agenda { order: 2; position: static; max-height: none; }
+    h2.year { display: none; }
+    .months { display: block; margin: 0; }
+    .month { display: none; }
+    .month.active { display: block; }
+    .month h3 { display: none; }
+    .mnav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.5rem; margin: 0.8rem 0 0.5rem;
+    }
+    .mnav h3 {
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      font-size: 1.25rem; margin: 0; text-align: center; flex: 1;
+    }
+    .mnav button {
+      background: var(--cell); color: var(--ink); border: 1px solid var(--line);
+      border-radius: 8px; font-size: 1.3rem; line-height: 1;
+      width: 2.9rem; height: 2.9rem; cursor: pointer; flex: none;
+    }
+    .mnav button:disabled { opacity: 0.3; }
+    .cal td { height: 3.1rem; }
+    .cal td .d { font-size: 0.82rem; }
+    .dt { width: 8px; height: 8px; }
+    #daycard {
+      display: block; margin-top: 0.8rem;
+      background: var(--cell); border: 1px solid var(--line); border-radius: 8px;
+      padding: 0.8rem 0.9rem; font-size: 0.85rem; min-height: 3.4rem;
+    }
+    #daycard .tt-date { font-weight: 700; margin-bottom: 0.3rem; }
+    #daycard .tt-row { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.12rem 0; }
+    #daycard .tt-row .dt { position: relative; top: -1px; flex: none; }
+    #daycard .hint { color: var(--muted); }
+    #tooltip { display: none !important; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">Elk Ridge 7th Ward · Family History Plan · Aug 2026 – Dec 2027</p>
+        <h1>EQ Activity Date Finder</h1>
+      </div>
+      <button id="theme-btn" type="button">Theme: Auto</button>
+    </div>
+    <p class="lede">Ward activities color-coded by type over every BYU / Utah / Jazz / NFL date, General Conference,
+    school break, and holiday. Starred ★ days are the planned activities; an unmarked Friday or Saturday is clear.
+    Hover any dotted day for details (tap on a phone). Click a chip to see only that kind of event —
+    click more chips to add them, or click the last one again to bring everything back.</p>
+    <div class="filters" id="filters"></div>
+  </header>
+
+  <div class="layout">
+    <aside class="agenda">
+      <h2>The Activities</h2>
+      <h3>2026</h3>
+      <ul>
+        <li class="t-fel"><span class="when">Aug 11</span><span class="what"><strong>Pickleball Night</strong> (Tue — night before school starts)</span></li>
+        <li class="t-fh"><span class="when">Aug 22</span><span class="what"><strong>Family History Kickoff</strong> — root beer floats + pie, stories about your relatives (Sat)</span></li>
+        <li class="t-ai"><span class="when">Aug 27</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
+        <li class="t-fel"><span class="when">Sept 25</span><span class="what"><strong>Car Show</strong> — BYU bye week (Fri)</span></li>
+        <li class="t-fh"><span class="when">Nov 11</span><span class="what"><strong>Family History Gratitude Night</strong> (Wed) — Veterans Day: invite veteran &amp; family stories</span></li>
+        <li class="t-ai"><span class="when">Nov 19</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
+        <li class="open"><span class="when">Dec 11–12</span><span class="what">Open window — ward Christmas party month</span></li>
+      </ul>
+      <h3>2027</h3>
+      <ul>
+        <li class="t-fh"><span class="when">Jan 9</span><span class="what"><strong>Winter Dutch Oven Family History Night</strong> (Sat)</span></li>
+        <li class="t-ai"><span class="when">Feb 18</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
+        <li class="t-fh"><span class="when">May 15</span><span class="what"><strong>Spring Temple Celebration</strong> — the year's names go to the temple (Sat)</span></li>
+        <li class="t-ai"><span class="when">May 19</span><span class="what"><strong>AI Night</strong> (Wed — day before school lets out)</span></li>
+        <li class="t-fh"><span class="when">Aug 21</span><span class="what"><strong>Year-2 Kickoff</strong> (Sat)</span></li>
+        <li class="t-ai"><span class="when">Aug 26</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
+        <li class="open t-fel"><span class="when">Sept TBD</span><span class="what">Car Show #2 — pick the bye week when the schedule drops</span></li>
+        <li class="t-ai"><span class="when">Nov 18</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
+      </ul>
+      <p class="rhythm">Every month: RS temple night · fast-Sunday flyer delivery (deacons) · quarterly member story in quorum/class.</p>
+    </aside>
+
+    <div class="main">
+      <div class="mnav" id="mnav">
+        <button type="button" id="mprev" aria-label="Previous month">‹</button>
+        <h3 id="mtitle"></h3>
+        <button type="button" id="mnext" aria-label="Next month">›</button>
+      </div>
+      <div id="calendar-root"></div>
+      <div id="daycard"></div>
+
+      <section class="notes">
+        <h2>Fine print before you ink these in</h2>
+        <ul>
+          <li><strong>Nov 11, 2026 is Veterans Day</strong> — the Gratitude Night sits on it deliberately (veteran stories fit the theme). It's a Wednesday, so confirm it doesn't collide with the youth's midweek activity night.</li>
+          <li><strong>Nebo District 2026–27 (official, tentative board approval):</strong> school begins Wed Aug 12 — the same day as Pickleball Night; fall break Oct 15–19; Thanksgiving Nov 25–27; Christmas break Dec 21–Jan 1; spring break Apr 5–9; last day Thu May 20, 2027 (half day) — the same day as AI Night. The 2027–28 calendar isn't published yet; fall 2027 school dates get added when it is.</li>
+          <li><strong>Jazz schedule drops mid-August 2026</strong> (season starts Tue Oct 20). Games will be added when the NBA releases the slate — mostly weeknights, so expect Thursday checks on AI Nights.</li>
+          <li><strong>Basketball is partially mapped.</strong> BYU's non-conference is official (incl. Ohio State Nov 2, Maui over Thanksgiving, Northwestern Dec 5). Utah's is reported but unofficial until mid-August (Towson Nov 5, Weber St Nov 10, E. Washington Nov 17, Charleston Classic Thanksgiving week). Big 12 conference slates (Jan–Mar) release in the fall — January and March picks get re-checked then.</li>
+          <li><strong>2026 football kickoff times aren't announced yet.</strong> College Saturdays are blocked whole-day to be safe.</li>
+          <li><strong>Fall 2027 college dates are TBD.</strong> Opponents are set (BYU hosts Utah in Provo) but dates release late fall 2026 — Sept–Nov 2027 Saturdays are blocked generically until then.</li>
+          <li><strong>Check the stake calendar</strong> for stake conference, youth conference, girls camp, FSY, and temple closures — not public data. Summer months especially.</li>
+          <li><strong>March Madness dates are approximate</strong> until the NCAA publishes the 2027 bracket calendar.</li>
+        </ul>
+        <p class="src">Sources: BYU Athletics &amp; Big 12 (2026 football; 2026–27 MBB non-conference) · Utah Athletics (2026 &amp; 2027 football) · Deseret News (reported Utah MBB 2026–27 dates) · NFL 2026 key dates (kickoff Sept 9, Wild Card Jan 16–18, Super Bowl LXI Feb 14, 2027) · College Football Playoff (Jan 1 / Jan 14–15 / Jan 25, 2027) · NBA (2026–27 season opens ~Oct 20; schedule mid-Aug) · Nebo School District 2026–27 official calendar.</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div id="tooltip" role="tooltip"></div>
+
+<script>
+  const TYPES = {
+    fh:     { label: "Family history", group: "Activities" },
+    ai:     { label: "AI Night",       group: "Activities" },
+    fel:    { label: "Fellowship",     group: "Activities" },
+    temple: { label: "Temple",         group: "Activities" },
+    byu:    { label: "BYU",            group: "Sports" },
+    utah:   { label: "Utah",           group: "Sports" },
+    jazz:   { label: "Jazz",           group: "Sports" },
+    nfl:    { label: "NFL / other",    group: "Sports" },
+    hol:    { label: "Holidays",       group: "Calendar" },
+    school: { label: "School (kids off)", group: "Calendar" },
+    church: { label: "Church",         group: "Calendar" }
+  };
+
+  /* cells: day -> { star: [type,label], ev: [[type,label],...] } */
+  const MONTHS = [
+    { name: "August 2026", y: 2026, mo: 7, days: 31, startDow: 6,
+      pickNote: "★ Tue Aug 11 — Pickleball · ★ Sat Aug 22 — FH Kickoff · ★ Thu Aug 27 — AI Night",
+      cells: {
+        2:  { ev: [["church","Fast Sunday flyers"]] },
+        11: { star: ["fel","Pickleball Night"] },
+        12: { ev: [["school","1st day of school"]] },
+        22: { star: ["fh","Family History Kickoff — root beer floats + pie","FH Kickoff"] },
+        27: { star: ["ai","AI Night"] }
+      } },
+    { name: "September 2026", y: 2026, mo: 8, days: 30, startDow: 2,
+      pickNote: "★ Fri Sept 25 — Car Show (BYU bye week; Utah away Saturday)",
+      cells: {
+        3:  { ev: [["utah","Utah v Idaho (Thu)"]] },
+        5:  { ev: [["byu","BYU v Utah Tech"]] },
+        6:  { ev: [["church","Fast Sunday flyers"]] },
+        7:  { ev: [["hol","Labor Day"],["school","No school"]] },
+        9:  { ev: [["nfl","NFL kickoff"]] },
+        21: { ev: [["school","No school — district day"]] },
+        12: { ev: [["byu","BYU v Arizona"],["utah","Utah v Arkansas"]] },
+        13: { ev: [["nfl","NFL"]] },
+        19: { ev: [["byu","BYU @ CSU"],["utah","Utah v USU"]] },
+        20: { ev: [["nfl","NFL"]] },
+        25: { star: ["fel","Car Show — every car has a story","Car Show"] },
+        26: { ev: [["utah","Utah @ Iowa St"],["byu","BYU bye"]] },
+        27: { ev: [["nfl","NFL"]] }
+      } },
+    { name: "October 2026", y: 2026, mo: 9, days: 31, startDow: 4,
+      quiet: 1, pickNote: "Clear Fridays: Oct 2, 23, 30 — BYU plays Fri Oct 9; Nebo fall break Oct 15–19",
+      cells: {
+        3:  { ev: [["church","Gen. Conference"],["byu","BYU @ TCU"]] },
+        4:  { ev: [["church","Gen. Conference"],["nfl","NFL"]] },
+        9:  { ev: [["byu","BYU v Iowa St (Friday game!)"]] },
+        10: { ev: [["utah","Utah v Kansas"]] },
+        11: { ev: [["nfl","NFL"]] },
+        15: { ev: [["school","Fall break (15–19)"]] },
+        16: { ev: [["school","Fall break"],["byu","BYU MBB exh. v Nebraska"]] },
+        17: { ev: [["school","Fall break"],["byu","BYU v Notre Dame"],["utah","Utah @ Colorado"]] },
+        18: { ev: [["school","Fall break"],["nfl","NFL"]] },
+        19: { ev: [["school","Fall break"]] },
+        20: { ev: [["jazz","NBA season opens"]] },
+        24: { ev: [["byu","BYU @ UCF"],["utah","Utah v Houston"],["byu","BYU MBB exh. @ UNLV"]] },
+        25: { ev: [["nfl","NFL"]] },
+        31: { ev: [["hol","Halloween"],["byu","BYU v ASU"],["utah","Utah @ Cincy"]] }
+      } },
+    { name: "November 2026", y: 2026, mo: 10, days: 30, startDow: 0,
+      pickNote: "★ Wed Nov 11 — FH Gratitude Night (Veterans Day) · ★ Thu Nov 19 — AI Night",
+      cells: {
+        1:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"]] },
+        2:  { ev: [["byu","BYU MBB v Ohio St"]] },
+        5:  { ev: [["utah","Utah MBB v Towson*"]] },
+        6:  { ev: [["byu","BYU MBB v Omaha"]] },
+        7:  { ev: [["byu","BYU @ Utah — rivalry game"]] },
+        8:  { ev: [["nfl","NFL"]] },
+        10: { ev: [["byu","BYU MBB v Queens"],["utah","Utah MBB v Weber St*"]] },
+        11: { star: ["fh","Family History Gratitude Night","Gratitude Night"], ev: [["hol","Veterans Day"]] },
+        12: { ev: [["byu","BYU MBB v Montana St"]] },
+        14: { ev: [["byu","BYU v Baylor"],["utah","Utah @ Arizona"]] },
+        15: { ev: [["nfl","NFL"]] },
+        17: { ev: [["utah","Utah MBB v E. Washington*"]] },
+        18: { ev: [["byu","BYU MBB v N. Colorado"]] },
+        19: { star: ["ai","AI Night"] },
+        21: { ev: [["byu","BYU @ Kansas"],["utah","Utah @ TCU"]] },
+        22: { ev: [["nfl","NFL"]] },
+        23: { ev: [["byu","BYU MBB — Maui Invitational (thru 25th)"]] },
+        25: { ev: [["school","Thanksgiving break (25–27)"]] },
+        26: { ev: [["hol","Thanksgiving"],["school","Break"],["nfl","NFL"]] },
+        27: { ev: [["hol","Holiday weekend"],["school","Break"]] },
+        28: { ev: [["byu","BYU v Cincinnati"],["utah","Utah v West Virginia"]] },
+        29: { ev: [["nfl","NFL"]] }
+      } },
+    { name: "December 2026", y: 2026, mo: 11, days: 31, startDow: 2,
+      quiet: 1, pickNote: "Ward Christmas party month — best clear window Dec 11–12",
+      cells: {
+        4:  { ev: [["byu","Big 12 championship (Arlington)"]] },
+        5:  { ev: [["byu","BYU MBB v Northwestern"]] },
+        6:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"]] },
+        13: { ev: [["nfl","NFL"]] },
+        18: { ev: [["school","Last school day (½) — break thru Jan 1"]] },
+        19: { ev: [["nfl","Bowls / CFP 1st round"]] },
+        20: { ev: [["nfl","NFL"]] },
+        21: { ev: [["school","Christmas break"]] },
+        22: { ev: [["school","Christmas break"]] },
+        23: { ev: [["school","Christmas break"]] },
+        24: { ev: [["hol","Christmas Eve"],["school","Break"]] },
+        25: { ev: [["hol","Christmas"],["school","Break"]] },
+        26: { ev: [["hol","Holiday weekend"],["school","Break"],["nfl","NFL Sat"]] },
+        27: { ev: [["school","Christmas break"],["nfl","NFL"]] },
+        28: { ev: [["school","Christmas break"]] },
+        29: { ev: [["school","Christmas break"]] },
+        30: { ev: [["school","Christmas break"]] },
+        31: { ev: [["hol","New Year's Eve"],["school","Break"]] }
+      } },
+    { name: "January 2027", y: 2027, mo: 0, days: 31, startDow: 5,
+      pickNote: "★ Sat Jan 9 — Winter Dutch Oven FH Night (re-check vs Big 12 hoops this fall)",
+      cells: {
+        1:  { ev: [["hol","New Year's"],["school","Break ends"],["nfl","CFP quarterfinals"]] },
+        2:  { ev: [["hol","Holiday weekend"]] },
+        3:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"]] },
+        9:  { star: ["fh","Winter Dutch Oven Family History Night","Dutch Oven Night"] },
+        10: { ev: [["nfl","NFL final week"]] },
+        14: { ev: [["nfl","CFP semifinal"]] },
+        15: { ev: [["nfl","CFP semifinal"]] },
+        16: { ev: [["nfl","NFL Wild Card"]] },
+        17: { ev: [["nfl","NFL Wild Card"]] },
+        18: { ev: [["hol","MLK Day"],["school","No school"],["nfl","NFL Wild Card"]] },
+        23: { ev: [["nfl","NFL Divisional"]] },
+        24: { ev: [["nfl","NFL Divisional"]] },
+        25: { ev: [["nfl","CFP title game (Las Vegas)"]] },
+        31: { ev: [["nfl","Conference championships"]] }
+      } },
+    { name: "February 2027", y: 2027, mo: 1, days: 28, startDow: 1,
+      pickNote: "★ Thu Feb 18 — AI Night (month is otherwise wide open)",
+      cells: {
+        7:  { ev: [["church","Fast Sunday flyers"]] },
+        13: { ev: [["hol","Valentine's eve"]] },
+        14: { ev: [["hol","Super Bowl LXI + Valentine's"]] },
+        15: { ev: [["hol","Presidents Day"],["school","No school"]] },
+        18: { star: ["ai","AI Night"] }
+      } },
+    { name: "March 2027", y: 2027, mo: 2, days: 31, startDow: 1,
+      quiet: 1, pickNote: "Go early — first two weekends, before March Madness and Easter",
+      cells: {
+        7:  { ev: [["church","Fast Sunday flyers"]] },
+        17: { ev: [["school","Staff dev — ½ day"]] },
+        19: { ev: [["nfl","March Madness (approx)"]] },
+        20: { ev: [["nfl","March Madness (approx)"]] },
+        26: { ev: [["nfl","NCAA regionals (approx)"]] },
+        27: { ev: [["nfl","NCAA regionals (approx)"]] },
+        28: { ev: [["hol","Easter"]] }
+      } },
+    { name: "April 2027", y: 2027, mo: 3, days: 30, startDow: 4,
+      quiet: 1, pickNote: "Conference Apr 3–4, spring break Apr 5–9 — clear from Apr 16 onward",
+      cells: {
+        3:  { ev: [["church","Gen. Conference"],["nfl","Final Four (approx)"]] },
+        4:  { ev: [["church","Gen. Conference"]] },
+        5:  { ev: [["school","Spring break (5–9)"]] },
+        6:  { ev: [["school","Spring break"]] },
+        7:  { ev: [["school","Spring break"]] },
+        8:  { ev: [["school","Spring break"]] },
+        9:  { ev: [["school","Spring break"]] }
+      } },
+    { name: "May 2027", y: 2027, mo: 4, days: 31, startDow: 6,
+      pickNote: "★ Sat May 15 — Spring Temple Celebration · ★ Wed May 19 — AI Night",
+      cells: {
+        2:  { ev: [["church","Fast Sunday flyers"]] },
+        8:  { ev: [["hol","Mother's Day eve"]] },
+        9:  { ev: [["hol","Mother's Day"]] },
+        15: { star: ["fh","Spring Temple Celebration — the year's names","Temple Celebration"] },
+        19: { star: ["ai","AI Night"] },
+        20: { ev: [["school","Last day of school (½ day)"]] },
+        28: { ev: [["hol","Graduation / Memorial weekend"]] },
+        29: { ev: [["hol","Memorial weekend"]] },
+        31: { ev: [["hol","Memorial Day"]] }
+      } },
+    { name: "June 2027", y: 2027, mo: 5, days: 30, startDow: 2,
+      quiet: 1, pickNote: "Wide open — but watch for girls camp / FSY weeks on the stake calendar",
+      cells: {
+        6:  { ev: [["church","Fast Sunday flyers"]] },
+        20: { ev: [["hol","Father's Day"]] }
+      } },
+    { name: "July 2027", y: 2027, mo: 6, days: 31, startDow: 4,
+      quiet: 1, pickNote: "Middle of the month only — dodge July 4th and Pioneer Day weekends",
+      cells: {
+        2:  { ev: [["hol","July 4th weekend"]] },
+        3:  { ev: [["hol","July 4th weekend"]] },
+        4:  { ev: [["hol","Independence Day"]] },
+        5:  { ev: [["hol","July 4th observed"]] },
+        23: { ev: [["hol","Pioneer Day eve"]] },
+        24: { ev: [["hol","Pioneer Day"]] }
+      } },
+    { name: "August 2027", y: 2027, mo: 7, days: 31, startDow: 0,
+      pickNote: "★ Sat Aug 21 — Year-2 Kickoff · ★ Thu Aug 26 — AI Night",
+      cells: {
+        1:  { ev: [["church","Fast Sunday flyers"]] },
+        21: { star: ["fh","Year-2 Family History Kickoff","FH Kickoff Yr 2"] },
+        26: { star: ["ai","AI Night"] },
+        28: { ev: [["nfl","College football week 0"]] }
+      } },
+    { name: "September 2027", y: 2027, mo: 8, days: 30, startDow: 3,
+      quiet: 1, pickNote: "Fridays again: Sept 10, 17, 24 — 2027 CFB Saturdays TBD",
+      cells: {
+        3:  { ev: [["hol","Labor Day weekend"]] },
+        4:  { ev: [["nfl","College FB (dates TBD)"]] },
+        5:  { ev: [["church","Fast Sunday flyers"]] },
+        6:  { ev: [["hol","Labor Day"]] },
+        9:  { ev: [["nfl","NFL kickoff (approx)"]] },
+        11: { ev: [["nfl","College FB (dates TBD)"]] },
+        12: { ev: [["nfl","NFL"]] },
+        18: { ev: [["nfl","College FB (dates TBD)"]] },
+        19: { ev: [["nfl","NFL"]] },
+        25: { ev: [["nfl","College FB (dates TBD)"]] },
+        26: { ev: [["nfl","NFL"]] }
+      } },
+    { name: "October 2027", y: 2027, mo: 9, days: 31, startDow: 5,
+      quiet: 1, pickNote: "Clear Fridays: Oct 8, 15, 22, 29 (UEA break mid-month — verify)",
+      cells: {
+        2:  { ev: [["church","Gen. Conference"]] },
+        3:  { ev: [["church","Gen. Conference"]] },
+        9:  { ev: [["nfl","College FB (dates TBD)"]] },
+        10: { ev: [["nfl","NFL"]] },
+        16: { ev: [["nfl","College FB (dates TBD)"]] },
+        17: { ev: [["nfl","NFL"]] },
+        23: { ev: [["nfl","College FB (dates TBD)"]] },
+        24: { ev: [["nfl","NFL"]] },
+        30: { ev: [["nfl","College FB (dates TBD)"]] },
+        31: { ev: [["hol","Halloween (Sun)"],["nfl","NFL"]] }
+      } },
+    { name: "November 2027", y: 2027, mo: 10, days: 30, startDow: 1,
+      pickNote: "★ Thu Nov 18 — AI Night · BYU hosts Utah in 2027, date TBD",
+      cells: {
+        6:  { ev: [["nfl","College FB (dates TBD)"]] },
+        7:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"]] },
+        13: { ev: [["nfl","College FB (dates TBD)"]] },
+        14: { ev: [["nfl","NFL"]] },
+        18: { star: ["ai","AI Night"] },
+        20: { ev: [["nfl","College FB (dates TBD)"]] },
+        21: { ev: [["nfl","NFL"]] },
+        25: { ev: [["hol","Thanksgiving"],["nfl","NFL"]] },
+        26: { ev: [["hol","Holiday weekend"]] },
+        27: { ev: [["nfl","College FB (dates TBD)"]] },
+        28: { ev: [["nfl","NFL"]] }
+      } },
+    { name: "December 2027", y: 2027, mo: 11, days: 31, startDow: 3,
+      quiet: 1, pickNote: "Ward Christmas party month — best clear window Dec 4–11",
+      cells: {
+        3:  { ev: [["nfl","Big 12 championship (likely)"]] },
+        5:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"]] },
+        12: { ev: [["nfl","NFL"]] },
+        18: { ev: [["nfl","Bowls / CFP 1st round"]] },
+        19: { ev: [["nfl","NFL"]] },
+        24: { ev: [["hol","Christmas Eve"]] },
+        25: { ev: [["hol","Christmas (Sat)"]] },
+        26: { ev: [["nfl","NFL"]] },
+        31: { ev: [["hol","New Year's Eve"]] }
+      } }
+  ];
+
+  const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const root = document.getElementById("calendar-root");
+  const filterBar = document.getElementById("filters");
+  const tooltip = document.getElementById("tooltip");
+  const daycard = document.getElementById("daycard");
+  const mnav = document.getElementById("mnav");
+  const mTitle = document.getElementById("mtitle");
+  const mPrev = document.getElementById("mprev");
+  const mNext = document.getElementById("mnext");
+  const mqMobile = window.matchMedia("(max-width: 900px)");
+  const mqHover = window.matchMedia("(hover: hover)");
+
+  /* filters always start all-on; a click isolates that category */
+  const enabled = {};
+  for (const t of Object.keys(TYPES)) enabled[t] = true;
+  const chipBtns = {};
+
+  /* default mobile month = current month if in range */
+  let mIdx = 0;
+  {
+    const now = new Date();
+    const i = MONTHS.findIndex(m => m.y === now.getFullYear() && m.mo === now.getMonth());
+    if (i >= 0) mIdx = i;
+  }
+  let selDay = null;
+
+  function buildFilters() {
+    filterBar.innerHTML = "";
+    let lastGroup = null;
+    for (const [t, def] of Object.entries(TYPES)) {
+      if (def.group !== lastGroup) {
+        const g = document.createElement("span");
+        g.className = "grp"; g.textContent = def.group;
+        filterBar.appendChild(g);
+        lastGroup = def.group;
+      }
+      const btn = document.createElement("button");
+      btn.type = "button"; btn.className = "chip";
+      btn.setAttribute("aria-pressed", String(enabled[t]));
+      btn.innerHTML = `<span class="swatch" style="background:var(--${t}-bg);outline:1px solid var(--${t})"></span>${def.label}`;
+      btn.addEventListener("click", () => {
+        const keys = Object.keys(TYPES);
+        const activeCount = keys.filter(k => enabled[k]).length;
+        if (activeCount === keys.length) {
+          for (const k of keys) enabled[k] = (k === t);   // all on -> isolate this one
+        } else if (enabled[t]) {
+          enabled[t] = false;                              // remove from selection...
+          if (!keys.some(k => enabled[k]))                 // ...last one off -> back to all
+            for (const k of keys) enabled[k] = true;
+        } else {
+          enabled[t] = true;                               // add to selection
+        }
+        for (const k of keys) chipBtns[k].setAttribute("aria-pressed", String(enabled[k]));
+        renderAll();
+      });
+      chipBtns[t] = btn;
+      filterBar.appendChild(btn);
+    }
+  }
+
+  function visibleItems(info) {
+    const items = [];
+    if (info.star && enabled[info.star[0]])
+      items.push({ t: info.star[0], l: info.star[1], d: info.star[2] || info.star[1], star: true });
+    for (const [t, l] of (info.ev || [])) if (enabled[t]) items.push({ t, l });
+    return items;
+  }
+
+  function cellHtml(m, mi, day) {
+    const dayNum = `<span class="d">${day}</span>`;
+    const info = m.cells[day];
+    if (!info) return `<td>${dayNum}</td>`;
+    const items = visibleItems(info);
+    if (!items.length) return `<td>${dayNum}</td>`;
+    const star = items.find(i => i.star);
+    let cls;
+    if (star) cls = `pick pick-${star.t}`;
+    else {
+      const types = items.map(i => i.t);
+      cls = (types.includes("byu") && types.includes("utah")) ? "both" : `bg-${types[0]}`;
+    }
+    const dotted = items.filter(i => !i.star && i.t !== "church");
+    const dots = dotted.slice(0, 5)
+      .map(i => `<span class="dt" style="background:var(--${i.t})"></span>`).join("");
+    let labs = "";
+    const s = items.find(i => i.star);
+    if (s) labs += `<span class="lab star" style="color:var(--${s.t})">${s.d}</span>`;
+    labs += items.filter(i => !i.star && i.t === "church")
+      .map(i => `<span class="lab" style="color:var(--church)">${i.l}</span>`).join("");
+    const aria = items.map(i => i.l).join("; ");
+    return `<td class="${cls}" tabindex="0" data-mi="${mi}" data-day="${day}" aria-label="${m.name} ${day}: ${aria.replace(/"/g,"&quot;")}">${dayNum}${labs}${dots ? `<span class="dots">${dots}</span>` : ""}</td>`;
+  }
+
+  function monthTable(m, mi) {
+    let html = `<table class="cal"><thead><tr>${DOW.map(d => `<th scope="col">${d}</th>`).join("")}</tr></thead><tbody><tr>`;
+    let col = 0;
+    for (let i = 0; i < m.startDow; i++) { html += `<td class="blank"></td>`; col++; }
+    for (let day = 1; day <= m.days; day++) {
+      html += cellHtml(m, mi, day);
+      col++;
+      if (col === 7 && day < m.days) { html += `</tr><tr>`; col = 0; }
+    }
+    while (col > 0 && col < 7) { html += `<td class="blank"></td>`; col++; }
+    return html + `</tr></tbody></table>`;
+  }
+
+  function detailHtml(mi, day) {
+    const m = MONTHS[mi];
+    const info = m.cells[day];
+    const items = info ? visibleItems(info) : [];
+    let html = `<div class="tt-date">${m.name.split(" ")[0]} ${day}, ${m.y}</div>`;
+    if (!items.length) return html + `<div class="hint">Nothing scheduled — clear date.</div>`;
+    for (const i of items) {
+      html += `<div class="tt-row"><span class="dt" style="background:var(--${i.t})"></span><span class="${i.star ? "tt-star" : ""}" style="${i.star ? `color:var(--${i.t})` : ""}">${i.star ? "★ " : ""}${i.l}</span></div>`;
+    }
+    return html;
+  }
+
+  function renderAll() {
+    root.innerHTML = "";
+    const mobile = mqMobile.matches;
+    if (mobile) {
+      mnav.style.display = "flex";
+      const m = MONTHS[mIdx];
+      mTitle.textContent = m.name;
+      mPrev.disabled = mIdx === 0;
+      mNext.disabled = mIdx === MONTHS.length - 1;
+      const div = document.createElement("div");
+      div.className = "month active";
+      div.innerHTML = `<p class="pick-note${m.quiet ? " quiet" : ""}">${m.pickNote}</p>` + monthTable(m, mIdx);
+      root.appendChild(div);
+      daycard.innerHTML = (selDay != null && m.cells[selDay])
+        ? detailHtml(mIdx, selDay)
+        : `<div class="hint">Tap any day with dots to see what's happening.</div>`;
+    } else {
+      mnav.style.display = "none";
+      let year = null, grid = null;
+      MONTHS.forEach((m, mi) => {
+        if (m.y !== year) {
+          year = m.y;
+          const h = document.createElement("h2");
+          h.className = "year"; h.textContent = String(year);
+          root.appendChild(h);
+          grid = document.createElement("div");
+          grid.className = "months";
+          root.appendChild(grid);
+        }
+        const div = document.createElement("div");
+        div.className = "month";
+        div.innerHTML = `<h3>${m.name}</h3><p class="pick-note${m.quiet ? " quiet" : ""}">${m.pickNote}</p>` + monthTable(m, mi);
+        grid.appendChild(div);
+      });
+    }
+  }
+
+  /* tooltip (desktop, hover-capable only) */
+  function showTip(td) {
+    if (mqMobile.matches || !mqHover.matches) return;
+    tooltip.innerHTML = detailHtml(+td.dataset.mi, +td.dataset.day);
+    tooltip.style.display = "block";
+    const r = td.getBoundingClientRect();
+    const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
+    let x = r.left + r.width / 2 - tw / 2;
+    x = Math.max(8, Math.min(x, window.innerWidth - tw - 8));
+    let y = r.top - th - 8;
+    if (y < 8) y = r.bottom + 8;
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+  }
+  function hideTip() { tooltip.style.display = "none"; }
+
+  root.addEventListener("mouseover", e => {
+    const td = e.target.closest("td[data-mi]");
+    if (td) showTip(td); else hideTip();
+  });
+  root.addEventListener("mouseleave", hideTip);
+  root.addEventListener("focusin", e => {
+    const td = e.target.closest("td[data-mi]");
+    if (td) showTip(td);
+  });
+  root.addEventListener("focusout", hideTip);
+  window.addEventListener("scroll", hideTip, { passive: true });
+
+  /* tap -> day card (mobile) */
+  root.addEventListener("click", e => {
+    const td = e.target.closest("td[data-mi]");
+    if (!td || !mqMobile.matches) return;
+    selDay = +td.dataset.day;
+    daycard.innerHTML = detailHtml(+td.dataset.mi, selDay);
+  });
+
+  /* month nav + swipe (mobile) */
+  function goMonth(delta) {
+    mIdx = Math.max(0, Math.min(MONTHS.length - 1, mIdx + delta));
+    selDay = null;
+    renderAll();
+  }
+  mPrev.addEventListener("click", () => goMonth(-1));
+  mNext.addEventListener("click", () => goMonth(1));
+  let touchX = null;
+  root.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; }, { passive: true });
+  root.addEventListener("touchend", e => {
+    if (touchX == null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if (Math.abs(dx) > 50 && mqMobile.matches) goMonth(dx < 0 ? 1 : -1);
+  }, { passive: true });
+  mqMobile.addEventListener("change", () => { hideTip(); renderAll(); });
+
+  /* theme: auto -> light -> dark -> auto */
+  const themeBtn = document.getElementById("theme-btn");
+  const THEMES = ["auto", "light", "dark"];
+  let theme = localStorage.getItem("fh-theme") || "auto";
+  function applyTheme() {
+    if (theme === "auto") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", theme);
+    themeBtn.textContent = "Theme: " + theme.charAt(0).toUpperCase() + theme.slice(1);
+  }
+  themeBtn.addEventListener("click", () => {
+    theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+    try { localStorage.setItem("fh-theme", theme); } catch (e) {}
+    applyTheme();
+  });
+
+  applyTheme();
+  buildFilters();
+  renderAll();
+</script>
