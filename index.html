@@ -222,6 +222,44 @@
   .mnav { display: none; }
   #daycard { display: none; }
 
+  #suggest-btn {
+    background: var(--fh); color: var(--paper); border: none; border-radius: 6px;
+    padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  }
+  #suggest-btn:hover { filter: brightness(1.1); }
+  dialog#suggest-dlg {
+    background: var(--cell); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: var(--shadow); padding: 1.2rem 1.3rem;
+    width: min(24rem, calc(100vw - 2rem));
+  }
+  dialog#suggest-dlg::backdrop { background: rgba(0,0,0,0.45); }
+  #suggest-dlg h2 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.15rem; margin: 0 0 0.8rem;
+  }
+  #suggest-dlg label { display: block; font-size: 0.8rem; font-weight: 600; margin: 0.6rem 0 0.2rem; }
+  #suggest-dlg input, #suggest-dlg textarea {
+    width: 100%; font: inherit; font-size: 0.85rem;
+    background: var(--paper); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px; padding: 0.45rem 0.55rem;
+  }
+  #suggest-dlg input:focus-visible, #suggest-dlg textarea:focus-visible { outline: 2px solid var(--ai); }
+  #suggest-dlg .sug-note { font-size: 0.74rem; color: var(--muted); margin: 0.7rem 0 0.8rem; }
+  #suggest-dlg .sug-actions { display: flex; justify-content: flex-end; gap: 0.5rem; }
+  #suggest-dlg .sug-actions button {
+    font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.4rem 0.8rem; cursor: pointer;
+    background: var(--cell); color: var(--ink); border: 1px solid var(--line);
+  }
+  #suggest-dlg .sug-actions button.primary {
+    background: var(--fh); color: var(--paper); border: none; font-weight: 600;
+  }
+  .tt-hint { color: var(--muted); font-size: 0.68rem; margin-top: 0.3rem; }
+  #daycard .sug-link {
+    display: inline-block; margin-top: 0.6rem; font: inherit; font-size: 0.8rem; font-weight: 600;
+    background: none; border: none; color: var(--fh); cursor: pointer; padding: 0.4rem 0;
+  }
+
   section.notes { margin-top: 2.2rem; max-width: 46rem; }
   section.notes h2 {
     font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
@@ -278,7 +316,10 @@
         <p class="eyebrow">Elk Ridge 7th Ward · Family History Plan · Aug 2026 – Dec 2027</p>
         <h1>EQ Activity Date Finder</h1>
       </div>
-      <button id="theme-btn" type="button">Theme: Auto</button>
+      <div style="display:flex; gap:0.5rem; flex:none;">
+        <button id="suggest-btn" type="button">✎ Suggest a change</button>
+        <button id="theme-btn" type="button">Theme: Auto</button>
+      </div>
     </div>
     <p class="lede">Ward activities color-coded by type over every BYU / Utah / Jazz / NFL date, General Conference,
     school break, and holiday. Starred ★ days are the planned activities; an unmarked Friday or Saturday is clear.
@@ -342,6 +383,24 @@
 </div>
 
 <div id="tooltip" role="tooltip"></div>
+
+<dialog id="suggest-dlg">
+  <form id="suggest-form">
+    <h2>Suggest a change</h2>
+    <label for="sug-name">Your name</label>
+    <input id="sug-name" required autocomplete="name">
+    <label for="sug-date">Date or event</label>
+    <input id="sug-date" placeholder="e.g. Nov 11 — Gratitude Night">
+    <label for="sug-text">What should change?</label>
+    <textarea id="sug-text" rows="4" required placeholder="Move it, rename it, add something, cancel it — say the word."></textarea>
+    <p class="sug-note">Submitting opens GitHub with this request pre-filled — press the green button there to file it
+    (free GitHub account needed). No GitHub? Just text Wyatt instead.</p>
+    <div class="sug-actions">
+      <button type="button" id="sug-cancel">Cancel</button>
+      <button type="submit" class="primary">Open GitHub issue</button>
+    </div>
+  </form>
+</dialog>
 
 <script>
   const TYPES = {
@@ -667,10 +726,11 @@
 
   function cellHtml(m, mi, day) {
     const dayNum = `<span class="d">${day}</span>`;
+    const base = `data-mi="${mi}" data-day="${day}"`;
     const info = m.cells[day];
-    if (!info) return `<td>${dayNum}</td>`;
+    if (!info) return `<td ${base}>${dayNum}</td>`;
     const items = visibleItems(info);
-    if (!items.length) return `<td>${dayNum}</td>`;
+    if (!items.length) return `<td ${base}>${dayNum}</td>`;
     const star = items.find(i => i.star);
     let cls;
     if (star) cls = `pick pick-${star.t}`;
@@ -687,7 +747,7 @@
     labs += items.filter(i => !i.star && i.t === "church")
       .map(i => `<span class="lab" style="color:var(--church)">${i.l}</span>`).join("");
     const aria = items.map(i => i.l).join("; ");
-    return `<td class="${cls}" tabindex="0" data-mi="${mi}" data-day="${day}" aria-label="${m.name} ${day}: ${aria.replace(/"/g,"&quot;")}">${dayNum}${labs}${dots ? `<span class="dots">${dots}</span>` : ""}</td>`;
+    return `<td class="${cls}" tabindex="0" ${base} aria-label="${m.name} ${day}: ${aria.replace(/"/g,"&quot;")}">${dayNum}${labs}${dots ? `<span class="dots">${dots}</span>` : ""}</td>`;
   }
 
   function monthTable(m, mi) {
@@ -713,6 +773,11 @@
       html += `<div class="tt-row"><span class="dt" style="background:var(--${i.t})"></span><span class="${i.star ? "tt-star" : ""}" style="${i.star ? `color:var(--${i.t})` : ""}">${i.star ? "★ " : ""}${i.l}</span></div>`;
     }
     return html;
+  }
+
+  function dateLabel(mi, day) {
+    const m = MONTHS[mi];
+    return `${m.name.split(" ")[0]} ${day}, ${m.y}`;
   }
 
   function renderAll() {
@@ -755,7 +820,8 @@
   /* tooltip (desktop, hover-capable only) */
   function showTip(td) {
     if (mqMobile.matches || !mqHover.matches) return;
-    tooltip.innerHTML = detailHtml(+td.dataset.mi, +td.dataset.day);
+    tooltip.innerHTML = detailHtml(+td.dataset.mi, +td.dataset.day)
+      + `<div class="tt-hint">Click day to suggest a change</div>`;
     tooltip.style.display = "block";
     const r = td.getBoundingClientRect();
     const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
@@ -780,12 +846,52 @@
   root.addEventListener("focusout", hideTip);
   window.addEventListener("scroll", hideTip, { passive: true });
 
-  /* tap -> day card (mobile) */
+  /* click: mobile -> day card, desktop -> suggest dialog for that day */
   root.addEventListener("click", e => {
     const td = e.target.closest("td[data-mi]");
-    if (!td || !mqMobile.matches) return;
-    selDay = +td.dataset.day;
-    daycard.innerHTML = detailHtml(+td.dataset.mi, selDay);
+    if (!td) return;
+    const mi = +td.dataset.mi, day = +td.dataset.day;
+    if (mqMobile.matches) {
+      selDay = day;
+      daycard.innerHTML = detailHtml(mi, day)
+        + `<button type="button" class="sug-link" data-mi="${mi}" data-day="${day}">✎ Suggest a change for this day</button>`;
+    } else {
+      openSuggest(dateLabel(mi, day));
+    }
+  });
+  daycard.addEventListener("click", e => {
+    const b = e.target.closest(".sug-link");
+    if (b) openSuggest(dateLabel(+b.dataset.mi, +b.dataset.day));
+  });
+
+  /* suggest-a-change -> pre-filled GitHub issue */
+  const dlg = document.getElementById("suggest-dlg");
+  const sugName = document.getElementById("sug-name");
+  const sugDate = document.getElementById("sug-date");
+  const sugText = document.getElementById("sug-text");
+  function openSuggest(dateStr) {
+    hideTip();
+    if (dateStr) sugDate.value = dateStr;
+    dlg.showModal();
+  }
+  document.getElementById("suggest-btn").addEventListener("click", () => { sugDate.value = ""; openSuggest(""); });
+  document.getElementById("sug-cancel").addEventListener("click", () => dlg.close());
+  document.getElementById("suggest-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const title = `Change request: ${sugDate.value || "general"} — ${sugText.value.slice(0, 60)}`;
+    const body = [
+      `**From:** ${sugName.value}`,
+      `**Date / event:** ${sugDate.value || "(none given)"}`,
+      ``,
+      `**Request:**`,
+      sugText.value,
+      ``,
+      `_Submitted from the EQ Activity Date Finder._`
+    ].join("\n");
+    const url = `https://github.com/wyatt-oi/eq-activity-date-finder/issues/new?labels=change-request&title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    window.open(url, "_blank", "noopener");
+    dlg.close();
+    sugText.value = "";
   });
 
   /* month nav + swipe (mobile) */
