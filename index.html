@@ -82,6 +82,15 @@
     text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem;
     font-weight: 600; color: var(--muted); margin: 0 0 0.4rem;
   }
+  .sports-warn {
+    max-width: 82rem; margin: 0 auto 1.2rem; padding: 0.9rem 1.1rem;
+    background: var(--utah-bg); border: 1px solid var(--utah); border-left: 4px solid var(--utah);
+    border-radius: 8px; color: var(--ink); font-size: 0.85rem;
+  }
+  .sports-warn strong { color: var(--utah); }
+  .sports-warn ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+  .sports-warn li { margin-bottom: 0.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; }
+  .sports-warn code { font-size: 0.95em; }
   .eyebrow .eb-link { color: var(--fh); text-underline-offset: 2px; }
   .eyebrow .eb-link:hover { color: var(--ink); }
   h1 {
@@ -477,6 +486,143 @@
     church: { label: "Church",         group: "Calendar" }
   };
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     SPORTS SCHEDULES — this is the part you edit when a schedule comes out.
+
+     One line per game:
+
+         YYYY-MM-DD   type   the label you want on the calendar
+
+     type is one of:  byu   utah   jazz   nfl
+
+       · Spacing doesn't matter — any run of spaces or tabs splits the columns.
+       · Blank lines are ignored. A line starting with # is a comment.
+       · Order doesn't matter; keep it sorted by date for your own sanity.
+       · A day can have as many lines as you like.
+
+     Paste a whole season in at once. If a line is malformed or falls outside
+     the months this calendar covers, the page shows a red banner naming the
+     line instead of dropping it silently — so check the top of the page after
+     you paste. Run ./check-schedules.py for the same checks plus a report of
+     which of the planned activities the new games collide with.
+     ══════════════════════════════════════════════════════════════════════════ */
+  const SPORTS = `
+# ── BYU — football, and men's basketball where known ────────────────
+2026-09-05  byu   BYU v Utah Tech
+2026-09-12  byu   BYU v Arizona
+2026-09-19  byu   BYU @ CSU
+2026-09-26  byu   BYU bye
+2026-10-03  byu   BYU @ TCU
+2026-10-09  byu   BYU v Iowa St (Friday game!)
+2026-10-16  byu   BYU MBB exh. v Nebraska
+2026-10-17  byu   BYU v Notre Dame
+2026-10-24  byu   BYU @ UCF
+2026-10-24  byu   BYU MBB exh. @ UNLV
+2026-10-31  byu   BYU v ASU
+2026-11-02  byu   BYU MBB v Ohio St
+2026-11-06  byu   BYU MBB v Omaha
+2026-11-07  byu   BYU @ Utah — rivalry game
+2026-11-10  byu   BYU MBB v Queens
+2026-11-12  byu   BYU MBB v Montana St
+2026-11-14  byu   BYU v Baylor
+2026-11-18  byu   BYU MBB v N. Colorado
+2026-11-21  byu   BYU @ Kansas
+2026-11-23  byu   BYU MBB — Maui Invitational (thru 25th)
+2026-11-28  byu   BYU v Cincinnati
+2026-12-04  byu   Big 12 championship (Arlington)
+2026-12-05  byu   BYU MBB v Northwestern
+
+# ── Utah — football and men's basketball ────────────────────────────
+2026-09-03  utah  Utah v Idaho (Thu)
+2026-09-12  utah  Utah v Arkansas
+2026-09-19  utah  Utah v USU
+2026-09-26  utah  Utah @ Iowa St
+2026-10-10  utah  Utah v Kansas
+2026-10-17  utah  Utah @ Colorado
+2026-10-24  utah  Utah v Houston
+2026-10-31  utah  Utah @ Cincy
+2026-11-05  utah  Utah MBB v Towson*
+2026-11-10  utah  Utah MBB v Weber St*
+2026-11-14  utah  Utah @ Arizona
+2026-11-17  utah  Utah MBB v E. Washington*
+2026-11-21  utah  Utah @ TCU
+2026-11-28  utah  Utah v West Virginia
+
+# ── Jazz / NBA ──────────────────────────────────────────────────────
+2026-10-20  jazz  NBA season opens
+
+# ── NFL, college playoff, March Madness and other national TV ───────
+2026-09-09  nfl   NFL kickoff
+2026-09-13  nfl   NFL
+2026-09-20  nfl   NFL
+2026-09-27  nfl   NFL
+2026-10-04  nfl   NFL
+2026-10-11  nfl   NFL
+2026-10-18  nfl   NFL
+2026-10-25  nfl   NFL
+2026-11-01  nfl   NFL
+2026-11-08  nfl   NFL
+2026-11-15  nfl   NFL
+2026-11-22  nfl   NFL
+2026-11-26  nfl   NFL
+2026-11-29  nfl   NFL
+2026-12-06  nfl   NFL
+2026-12-13  nfl   NFL
+2026-12-19  nfl   Bowls / CFP 1st round
+2026-12-20  nfl   NFL
+2026-12-26  nfl   NFL Sat
+2026-12-27  nfl   NFL
+2027-01-01  nfl   CFP quarterfinals
+2027-01-03  nfl   NFL
+2027-01-10  nfl   NFL final week
+2027-01-14  nfl   CFP semifinal
+2027-01-15  nfl   CFP semifinal
+2027-01-16  nfl   NFL Wild Card
+2027-01-17  nfl   NFL Wild Card
+2027-01-18  nfl   NFL Wild Card
+2027-01-23  nfl   NFL Divisional
+2027-01-24  nfl   NFL Divisional
+2027-01-25  nfl   CFP title game (Las Vegas)
+2027-01-31  nfl   Conference championships
+2027-03-19  nfl   March Madness (approx)
+2027-03-20  nfl   March Madness (approx)
+2027-03-26  nfl   NCAA regionals (approx)
+2027-03-27  nfl   NCAA regionals (approx)
+2027-04-03  nfl   Final Four (approx)
+2027-08-28  nfl   College football week 0
+2027-09-04  nfl   College FB (dates TBD)
+2027-09-09  nfl   NFL kickoff (approx)
+2027-09-11  nfl   College FB (dates TBD)
+2027-09-12  nfl   NFL
+2027-09-18  nfl   College FB (dates TBD)
+2027-09-19  nfl   NFL
+2027-09-25  nfl   College FB (dates TBD)
+2027-09-26  nfl   NFL
+2027-10-09  nfl   College FB (dates TBD)
+2027-10-10  nfl   NFL
+2027-10-16  nfl   College FB (dates TBD)
+2027-10-17  nfl   NFL
+2027-10-23  nfl   College FB (dates TBD)
+2027-10-24  nfl   NFL
+2027-10-30  nfl   College FB (dates TBD)
+2027-10-31  nfl   NFL
+2027-11-06  nfl   College FB (dates TBD)
+2027-11-07  nfl   NFL
+2027-11-13  nfl   College FB (dates TBD)
+2027-11-14  nfl   NFL
+2027-11-20  nfl   College FB (dates TBD)
+2027-11-21  nfl   NFL
+2027-11-25  nfl   NFL
+2027-11-27  nfl   College FB (dates TBD)
+2027-11-28  nfl   NFL
+2027-12-03  nfl   Big 12 championship (likely)
+2027-12-05  nfl   NFL
+2027-12-12  nfl   NFL
+2027-12-18  nfl   Bowls / CFP 1st round
+2027-12-19  nfl   NFL
+2027-12-26  nfl   NFL
+  `;
+
   /* cells: day -> { star: [type,label], ev: [[type,label],...] } */
   const MONTHS = [
     { name: "August 2026", y: 2026, mo: 7, days: 31, startDow: 6,
@@ -512,19 +658,17 @@
         10: { ev: [["church","Stake Primary leadership meeting, 6pm","Primary ldrs."],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         23: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         24: { ev: [["church","ER7 Relief Society activity, 6pm","RS activity"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
-        3:  { ev: [["utah","Utah v Idaho (Thu)"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
-        5:  { ev: [["byu","BYU v Utah Tech"]] },
+        3:  { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         6:  { ev: [["church","Fast Sunday flyers"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         7:  { ev: [["hol","Labor Day"],["school","No school"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
-        9:  { ev: [["nfl","NFL kickoff"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
+        9:  { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         21: { ev: [["school","No school — district day"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
-        12: { ev: [["byu","BYU v Arizona"],["utah","Utah v Arkansas"],["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
-        13: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"],["stake","Video for Children (churchwide)","Children's video","churchwide"]] },
-        19: { ev: [["byu","BYU @ CSU"],["utah","Utah v USU"]] },
-        20: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        12: { ev: [["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
+        13: { ev: [["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"],["stake","Video for Children (churchwide)","Children's video","churchwide"]] },
+        20: { ev: [["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         25: { star: ["fel","Car Show — every car has a story","Car Show"] },
-        26: { ev: [["utah","Utah @ Iowa St"],["byu","BYU bye"],["church","Stake Camp Helaman, 8:30am–2pm","Camp Helaman"]] },
-        27: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
+        26: { ev: [["church","Stake Camp Helaman, 8:30am–2pm","Camp Helaman"]] },
+        27: { ev: [["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
       } },
     { name: "October 2026", y: 2026, mo: 9, days: 31, startDow: 4,
       quiet: 1, pickNote: "Clear Fridays: Oct 2, 23, 30 — BYU plays Fri Oct 9; Nebo fall break Oct 15–19",
@@ -538,49 +682,40 @@
         29: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         14: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         28: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        3:  { ev: [["church","Gen. Conference"],["byu","BYU @ TCU"]] },
-        4:  { ev: [["church","Gen. Conference"],["nfl","NFL"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
-        9:  { ev: [["byu","BYU v Iowa St (Friday game!)"]] },
-        10: { ev: [["utah","Utah v Kansas"],["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
-        11: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"]] },
+        3:  { ev: [["church","Gen. Conference"]] },
+        4:  { ev: [["church","Gen. Conference"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        10: { ev: [["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
+        11: { ev: [["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"]] },
         15: { ev: [["school","Fall break (15–19)"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
-        16: { ev: [["school","Fall break"],["byu","BYU MBB exh. v Nebraska"]] },
-        17: { ev: [["school","Fall break"],["byu","BYU v Notre Dame"],["utah","Utah @ Colorado"]] },
-        18: { ev: [["school","Fall break"],["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        16: { ev: [["school","Fall break"]] },
+        17: { ev: [["school","Fall break"]] },
+        18: { ev: [["school","Fall break"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         19: { ev: [["school","Fall break"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
-        20: { ev: [["jazz","NBA season opens"]] },
-        24: { ev: [["byu","BYU @ UCF"],["utah","Utah v Houston"],["byu","BYU MBB exh. @ UNLV"],["stake","ER7 Primary program practice, 10am–12pm","Primary practice","youth"]] },
-        25: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
-        31: { ev: [["hol","Halloween"],["byu","BYU v ASU"],["utah","Utah @ Cincy"]] }
+        24: { ev: [["stake","ER7 Primary program practice, 10am–12pm","Primary practice","youth"]] },
+        25: { ev: [["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
+        31: { ev: [["hol","Halloween"]] }
       } },
     { name: "November 2026", y: 2026, mo: 10, days: 30, startDow: 0,
       pickNote: "★ Mon Nov 9 — Gratitude Night, done at home as family home evening · ★ Thu Nov 19 — AI Night",
       cells: {
         16: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         30: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
-        1:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"],["stake","Worldwide devotional for young adults, 6pm–7pm","YA devotional","churchwide"]] },
-        2:  { ev: [["byu","BYU MBB v Ohio St"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
-        5:  { ev: [["utah","Utah MBB v Towson*"],["church","Stake quarterly Sunday School council, 7pm","SS council"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
-        6:  { ev: [["byu","BYU MBB v Omaha"]] },
-        7:  { ev: [["byu","BYU @ Utah — rivalry game"]] },
-        8:  { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"],["stake","Rebroadcast: worldwide YA devotional, 12am–1am","YA rebroadcast","churchwide"]] },
-        10: { ev: [["byu","BYU MBB v Queens"],["utah","Utah MBB v Weber St*"]] },
+        1:  { ev: [["church","Fast Sunday flyers"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"],["stake","Worldwide devotional for young adults, 6pm–7pm","YA devotional","churchwide"]] },
+        2:  { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        5:  { ev: [["church","Stake quarterly Sunday School council, 7pm","SS council"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        8:  { ev: [["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"],["stake","Rebroadcast: worldwide YA devotional, 12am–1am","YA rebroadcast","churchwide"]] },
         9:  { star: ["fh","Gratitude Night — a family home evening every family runs at home, two days before Veterans Day","Gratitude FHE"], ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         11: { ev: [["hol","Veterans Day"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        12: { ev: [["byu","BYU MBB v Montana St"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
-        14: { ev: [["byu","BYU v Baylor"],["utah","Utah @ Arizona"],["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
-        15: { ev: [["nfl","NFL"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
-        17: { ev: [["utah","Utah MBB v E. Washington*"]] },
-        18: { ev: [["byu","BYU MBB v N. Colorado"]] },
+        12: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        14: { ev: [["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
+        15: { ev: [["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         19: { star: ["ai","AI Night"], ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
-        21: { ev: [["byu","BYU @ Kansas"],["utah","Utah @ TCU"]] },
-        22: { ev: [["nfl","NFL"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
-        23: { ev: [["byu","BYU MBB — Maui Invitational (thru 25th)"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        22: { ev: [["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
+        23: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         25: { ev: [["school","Thanksgiving break (25–27)"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        26: { ev: [["hol","Thanksgiving"],["school","Break"],["nfl","NFL"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        26: { ev: [["hol","Thanksgiving"],["school","Break"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         27: { ev: [["hol","Holiday weekend"],["school","Break"]] },
-        28: { ev: [["byu","BYU v Cincinnati"],["utah","Utah v West Virginia"]] },
-        29: { ev: [["nfl","NFL"],["church","Fifth Sunday fireside — all youth, 7pm","Youth fireside"]] },
+        29: { ev: [["church","Fifth Sunday fireside — all youth, 7pm","Youth fireside"]] },
       } },
     { name: "December 2026", y: 2026, mo: 11, days: 31, startDow: 2,
       quiet: 1, pickNote: "Ward Christmas party month — best clear window Dec 11–12",
@@ -592,20 +727,18 @@
         14: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         17: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         9:  { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        4:  { ev: [["byu","Big 12 championship (Arlington)"]] },
-        5:  { ev: [["byu","BYU MBB v Northwestern"],["church","Stake Primary Christmas activity, 9–10:30am","Primary Christmas"]] },
-        6:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"],["church","First Presidency's Christmas devotional, 6pm","Christmas devo."],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
-        13: { ev: [["nfl","NFL"],["stake","Stake high council meeting, 7am–8am","High council","leadership"]] },
+        5:  { ev: [["church","Stake Primary Christmas activity, 9–10:30am","Primary Christmas"]] },
+        6:  { ev: [["church","Fast Sunday flyers"],["church","First Presidency's Christmas devotional, 6pm","Christmas devo."],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        13: { ev: [["stake","Stake high council meeting, 7am–8am","High council","leadership"]] },
         18: { ev: [["school","Last school day (½) — break thru Jan 1"]] },
-        19: { ev: [["nfl","Bowls / CFP 1st round"]] },
-        20: { ev: [["nfl","NFL"],["church","Stake Christmas Sunday — one-hour sacrament meetings","1-hr sacrament"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        20: { ev: [["church","Stake Christmas Sunday — one-hour sacrament meetings","1-hr sacrament"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         21: { ev: [["school","Christmas break"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         22: { ev: [["school","Christmas break"]] },
         23: { ev: [["school","Christmas break"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         24: { ev: [["hol","Christmas Eve"],["school","Break"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         25: { ev: [["hol","Christmas"],["school","Break"]] },
-        26: { ev: [["hol","Holiday weekend"],["school","Break"],["nfl","NFL Sat"]] },
-        27: { ev: [["school","Christmas break"],["nfl","NFL"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
+        26: { ev: [["hol","Holiday weekend"],["school","Break"]] },
+        27: { ev: [["school","Christmas break"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
         28: { ev: [["school","Christmas break"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         29: { ev: [["school","Christmas break"]] },
         30: { ev: [["school","Christmas break"]] },
@@ -616,20 +749,12 @@
       cells: {
         13: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         27: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        1:  { ev: [["hol","New Year's"],["school","Break ends"],["nfl","CFP quarterfinals"]] },
+        1:  { ev: [["hol","New Year's"],["school","Break ends"]] },
         2:  { ev: [["hol","Holiday weekend"]] },
-        3:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"]] },
+        3:  { ev: [["church","Fast Sunday flyers"]] },
         9:  { star: ["fh","Winter Dutch Oven Family History Night","Dutch Oven Night"] },
-        10: { ev: [["nfl","NFL final week"]] },
-        14: { ev: [["nfl","CFP semifinal"]] },
-        15: { ev: [["nfl","CFP semifinal"]] },
-        16: { ev: [["nfl","NFL Wild Card"]] },
-        17: { ev: [["nfl","NFL Wild Card"]] },
-        18: { ev: [["hol","MLK Day"],["school","No school"],["nfl","NFL Wild Card"]] },
-        23: { ev: [["nfl","NFL Divisional"]] },
-        24: { ev: [["nfl","NFL Divisional"]] },
-        25: { ev: [["nfl","CFP title game (Las Vegas)"]] },
-        31: { ev: [["nfl","Conference championships"],["church","Fifth Sunday fireside — all youth, 7pm","Youth fireside"]] },
+        18: { ev: [["hol","MLK Day"],["school","No school"]] },
+        31: { ev: [["church","Fifth Sunday fireside — all youth, 7pm","Youth fireside"]] },
       } },
     { name: "February 2027", y: 2027, mo: 1, days: 28, startDow: 1,
       pickNote: "★ Thu Feb 18 — AI Night (month is otherwise wide open)",
@@ -649,10 +774,6 @@
         24: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         7:  { ev: [["church","Fast Sunday flyers"]] },
         17: { ev: [["school","Staff dev — ½ day"]] },
-        19: { ev: [["nfl","March Madness (approx)"]] },
-        20: { ev: [["nfl","March Madness (approx)"]] },
-        26: { ev: [["nfl","NCAA regionals (approx)"]] },
-        27: { ev: [["nfl","NCAA regionals (approx)"]] },
         28: { ev: [["hol","Easter"]] }
       } },
     { name: "April 2027", y: 2027, mo: 3, days: 30, startDow: 4,
@@ -660,7 +781,7 @@
       cells: {
         14: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         28: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        3:  { ev: [["church","Gen. Conference"],["nfl","Final Four (approx)"]] },
+        3:  { ev: [["church","Gen. Conference"]] },
         4:  { ev: [["church","Gen. Conference"]] },
         5:  { ev: [["school","Spring break (5–9)"]] },
         6:  { ev: [["school","Spring break"]] },
@@ -706,66 +827,97 @@
         1:  { ev: [["church","Fast Sunday flyers"]] },
         21: { star: ["fh","Year-2 Family History Kickoff","FH Kickoff Yr 2"] },
         26: { star: ["ai","AI Night"] },
-        28: { ev: [["nfl","College football week 0"]] }
       } },
     { name: "September 2027", y: 2027, mo: 8, days: 30, startDow: 3,
       quiet: 1, pickNote: "Fridays again: Sept 10, 17, 24 — 2027 CFB Saturdays TBD",
       cells: {
         3:  { ev: [["hol","Labor Day weekend"]] },
-        4:  { ev: [["nfl","College FB (dates TBD)"]] },
         5:  { ev: [["church","Fast Sunday flyers"]] },
         6:  { ev: [["hol","Labor Day"]] },
-        9:  { ev: [["nfl","NFL kickoff (approx)"]] },
-        11: { ev: [["nfl","College FB (dates TBD)"]] },
-        12: { ev: [["nfl","NFL"]] },
-        18: { ev: [["nfl","College FB (dates TBD)"]] },
-        19: { ev: [["nfl","NFL"]] },
-        25: { ev: [["nfl","College FB (dates TBD)"]] },
-        26: { ev: [["nfl","NFL"]] }
       } },
     { name: "October 2027", y: 2027, mo: 9, days: 31, startDow: 5,
       quiet: 1, pickNote: "Clear Fridays: Oct 8, 15, 22, 29 (UEA break mid-month — verify)",
       cells: {
         2:  { ev: [["church","Gen. Conference"]] },
         3:  { ev: [["church","Gen. Conference"]] },
-        9:  { ev: [["nfl","College FB (dates TBD)"]] },
-        10: { ev: [["nfl","NFL"]] },
-        16: { ev: [["nfl","College FB (dates TBD)"]] },
-        17: { ev: [["nfl","NFL"]] },
-        23: { ev: [["nfl","College FB (dates TBD)"]] },
-        24: { ev: [["nfl","NFL"]] },
-        30: { ev: [["nfl","College FB (dates TBD)"]] },
-        31: { ev: [["hol","Halloween (Sun)"],["nfl","NFL"]] }
+        31: { ev: [["hol","Halloween (Sun)"]] }
       } },
     { name: "November 2027", y: 2027, mo: 10, days: 30, startDow: 1,
       pickNote: "★ Thu Nov 18 — AI Night · BYU hosts Utah in 2027, date TBD",
       cells: {
-        6:  { ev: [["nfl","College FB (dates TBD)"]] },
-        7:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"]] },
-        13: { ev: [["nfl","College FB (dates TBD)"]] },
-        14: { ev: [["nfl","NFL"]] },
+        7:  { ev: [["church","Fast Sunday flyers"]] },
         18: { star: ["ai","AI Night"] },
-        20: { ev: [["nfl","College FB (dates TBD)"]] },
-        21: { ev: [["nfl","NFL"]] },
-        25: { ev: [["hol","Thanksgiving"],["nfl","NFL"]] },
+        25: { ev: [["hol","Thanksgiving"]] },
         26: { ev: [["hol","Holiday weekend"]] },
-        27: { ev: [["nfl","College FB (dates TBD)"]] },
-        28: { ev: [["nfl","NFL"]] }
       } },
     { name: "December 2027", y: 2027, mo: 11, days: 31, startDow: 3,
       quiet: 1, pickNote: "Ward Christmas party month — best clear window Dec 4–11",
       cells: {
-        3:  { ev: [["nfl","Big 12 championship (likely)"]] },
-        5:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"]] },
-        12: { ev: [["nfl","NFL"]] },
-        18: { ev: [["nfl","Bowls / CFP 1st round"]] },
-        19: { ev: [["nfl","NFL"]] },
+        5:  { ev: [["church","Fast Sunday flyers"]] },
         24: { ev: [["hol","Christmas Eve"]] },
         25: { ev: [["hol","Christmas (Sat)"]] },
-        26: { ev: [["nfl","NFL"]] },
         31: { ev: [["hol","New Year's Eve"]] }
       } }
   ];
+
+  /* Fold the SPORTS text block into the month cells. Anything that can't be
+     placed is collected and shown to whoever just pasted it — never dropped. */
+  const SPORT_TYPES = ["byu", "utah", "jazz", "nfl"];
+  const sportsProblems = [];
+
+  function loadSports(text) {
+    const index = new Map();                       // "y-mo" -> month object
+    MONTHS.forEach(m => index.set(`${m.y}-${m.mo}`, m));
+    let added = 0, lineNo = 0;
+
+    for (const raw of text.split("\n")) {
+      lineNo++;
+      const line = raw.trim();
+      if (!line || line.startsWith("#")) continue;
+
+      const m = line.match(/^(\d{4})-(\d{1,2})-(\d{1,2})\s+(\S+)\s+(.+)$/);
+      if (!m) { sportsProblems.push(`line ${lineNo}: can't read this — "${line}"`); continue; }
+
+      const [, ys, mos, ds, type, label] = m;
+      const y = +ys, mo = +mos - 1, day = +ds;
+
+      if (!SPORT_TYPES.includes(type)) {
+        sportsProblems.push(`line ${lineNo}: "${type}" isn't one of ${SPORT_TYPES.join(", ")} — "${line}"`);
+        continue;
+      }
+      const mon = index.get(`${y}-${mo}`);
+      if (!mon) {
+        sportsProblems.push(`line ${lineNo}: ${ys}-${mos} is outside the months this calendar covers — "${line}"`);
+        continue;
+      }
+      if (day < 1 || day > mon.days) {
+        sportsProblems.push(`line ${lineNo}: ${mon.name} has no day ${day} — "${line}"`);
+        continue;
+      }
+      if (!mon.cells[day]) mon.cells[day] = {};
+      if (!mon.cells[day].ev) mon.cells[day].ev = [];
+      mon.cells[day].ev.push([type, label]);
+      added++;
+    }
+    return added;
+  }
+
+  function reportSportsProblems() {
+    if (!sportsProblems.length) return;
+    const box = document.createElement("div");
+    box.className = "sports-warn";
+    box.innerHTML =
+      `<strong>${sportsProblems.length} schedule line${sportsProblems.length > 1 ? "s" : ""} couldn't be added.</strong>` +
+      ` Everything else loaded fine — fix these in the <code>SPORTS</code> block near the top of the file.` +
+      `<ul>${sportsProblems.map(p => `<li>${p.replace(/[<&]/g, c => c === "<" ? "&lt;" : "&amp;")}</li>`).join("")}</ul>`;
+    document.body.insertBefore(box, document.body.firstChild);
+    for (const p of sportsProblems) console.warn("SPORTS " + p);
+  }
+
+  loadSports(SPORTS);
+
+  /* which event type wins the cell's background tint when a day has several */
+  const TINT_ORDER = ["hol", "school", "church", "byu", "utah", "jazz", "nfl"];
 
   const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   const root = document.getElementById("calendar-root");
@@ -880,9 +1032,13 @@
       /* the stake detail layer never tints a cell — it would wash the whole grid
          violet and ruin the "unmarked day is clear" scan. Dots only. */
       const types = items.filter(i => i.t !== "stake").map(i => i.t);
+      /* Fixed priority rather than array order, so the tint doesn't depend on
+         which line happens to sit first in the data. Hard blocks first, then
+         the church items that print words in the cell, then the sports backdrop. */
+      const first = TINT_ORDER.find(t => types.includes(t));
       cls = !types.length ? ""
           : (types.includes("byu") && types.includes("utah")) ? "both"
-          : `bg-${types[0]}`;
+          : first ? `bg-${first}` : "";
     }
     const dotted = items.filter(i => !i.star && i.t !== "church");
     const dots = dotted.slice(0, 5)
@@ -1032,8 +1188,7 @@
       `**Request:**`,
       sugText.value,
       ``,
-      `_Submitted from the EQ Activity Date Finder._`
-    ].join("\n");
+      `_Submitted from the EQ Activity Date Finder._`].join("\n");
     const url = `https://github.com/wyatt-oi/eq-activity-date-finder/issues/new?labels=change-request&title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
     window.open(url, "_blank", "noopener");
     dlg.close();
@@ -1149,6 +1304,7 @@
     if (e.key === "Escape" && stakePickBox.open) { stakePickBox.open = false; stakeSum.focus(); }
   });
 
+  reportSportsProblems();
   applyTheme();
   buildStakePicker();
   applyStake();
