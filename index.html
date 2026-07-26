@@ -94,22 +94,44 @@
     padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; cursor: pointer;
   }
   #theme-btn:hover { border-color: var(--muted); }
-  #stake-pick {
-    flex: none; display: inline-flex; align-items: center; gap: 0.45rem;
+  /* stake picker: a details/summary dropdown holding checkboxes, so several
+     buckets can be on at once. Native <select multiple> is unusable on a phone. */
+  #stake-pick { flex: none; position: relative; font-size: 0.8rem; }
+  #stake-sum {
+    display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer;
     background: var(--cell); border: 1px solid var(--line); border-radius: 6px;
-    padding: 0.28rem 0.45rem 0.28rem 0.7rem; font-size: 0.8rem;
+    padding: 0.45rem 0.65rem 0.45rem 0.7rem; list-style: none; white-space: nowrap;
   }
-  #stake-pick > span { color: var(--muted); white-space: nowrap; }
-  #stake-pick:hover { border-color: var(--muted); }
-  #stake-sel {
-    background: transparent; color: var(--ink); border: 0;
-    font: inherit; font-size: 0.8rem; cursor: pointer; padding: 0.17rem 0.1rem; max-width: 13rem;
+  #stake-sum::-webkit-details-marker { display: none; }
+  #stake-sum:hover { border-color: var(--muted); }
+  #stake-sum .sp-lab { color: var(--muted); }
+  #stake-sum .sp-val { font-weight: 650; }
+  #stake-sum .sp-caret { color: var(--muted); font-size: 0.7rem; }
+  #stake-pick[open] #stake-sum .sp-caret { transform: rotate(180deg); }
+  /* the control reads "live" whenever something is showing */
+  #stake-pick.on #stake-sum { background: var(--church-bg); border-color: var(--church); }
+  #stake-pick.on #stake-sum .sp-lab, #stake-pick.on #stake-sum .sp-val { color: var(--church); }
+  .sp-panel {
+    position: absolute; z-index: 40; right: 0; top: calc(100% + 0.3rem); min-width: 15rem;
+    background: var(--cell); border: 1px solid var(--line); border-radius: 8px;
+    box-shadow: var(--shadow); padding: 0.6rem;
   }
-  #stake-sel option { background: var(--cell); color: var(--ink); }
-  /* the control reads "live" whenever it isn't hidden */
-  #stake-pick.on { background: var(--church-bg); border-color: var(--church); }
-  #stake-pick.on > span, #stake-pick.on #stake-sel { color: var(--church); font-weight: 650; }
-  #theme-btn:focus-visible, #stake-sel:focus-visible, .chip:focus-visible, .mnav button:focus-visible {
+  .sp-actions { display: flex; gap: 0.35rem; margin-bottom: 0.5rem; }
+  .sp-actions button {
+    flex: 1; background: transparent; color: var(--ink); font: inherit; font-size: 0.75rem;
+    border: 1px solid var(--line); border-radius: 5px; padding: 0.3rem 0.4rem; cursor: pointer;
+  }
+  .sp-actions button:hover { border-color: var(--church); color: var(--church); }
+  .sp-list { display: flex; flex-direction: column; gap: 0.1rem; }
+  .sp-list label {
+    display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+    padding: 0.28rem 0.35rem; border-radius: 5px; white-space: nowrap;
+  }
+  .sp-list label:hover { background: var(--church-bg); }
+  .sp-list input { accent-color: var(--church); width: 0.95rem; height: 0.95rem; flex: none; }
+  .sp-list .sp-n { color: var(--muted); font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 0.6rem; }
+  #theme-btn:focus-visible, #stake-sum:focus-visible, .sp-actions button:focus-visible,
+  .sp-list input:focus-visible, .chip:focus-visible, .mnav button:focus-visible {
     outline: 2px solid var(--ai); outline-offset: 2px;
   }
   .cal td[tabindex]:focus-visible { outline: 2px solid var(--ai); outline-offset: -2px; }
@@ -334,12 +356,21 @@
   <header class="masthead">
     <div class="mast-top">
       <div>
-        <p class="eyebrow">Elk Ridge 7th Ward · Family History Plan · Aug 2026 – Dec 2027</p>
+        <p class="eyebrow">Elk Ridge 7th Ward · Aug 2026 – Dec 2027</p>
         <h1>EQ Activity Date Finder</h1>
       </div>
       <div class="mast-actions">
         <button id="suggest-btn" type="button">✎ Suggest a change</button>
-        <label id="stake-pick"><span>Stake calendar</span><select id="stake-sel"></select></label>
+        <details id="stake-pick">
+          <summary id="stake-sum"><span class="sp-lab">Stake calendar</span><span class="sp-val">Hidden</span><span class="sp-caret">▾</span></summary>
+          <div class="sp-panel">
+            <div class="sp-actions">
+              <button type="button" id="stake-all">All on</button>
+              <button type="button" id="stake-none">All off</button>
+            </div>
+            <div class="sp-list" id="stake-list"></div>
+          </div>
+        </details>
         <button id="theme-btn" type="button">Theme: Auto</button>
       </div>
     </div>
@@ -347,9 +378,9 @@
     school break, and holiday. Starred ★ days are the planned activities; an unmarked Friday or Saturday is clear.
     Hover any dotted day for details (tap on a phone). Click a chip to see only that kind of event —
     click more chips to add them, or click the last one again to bring everything back.
-    The <strong>Stake calendar</strong> dropdown adds the rest of the stake feed on top — pick
-    <em>Everything</em>, or one bucket at a time: leadership meetings, baptisms &amp; recommends, youth,
-    YSA, ward athletics, churchwide broadcasts.</p>
+    The <strong>Stake calendar</strong> dropdown adds the rest of the stake feed on top — all on, all off,
+    or tick just the kinds you care about: leadership meetings, baptisms &amp; recommends, youth, YSA,
+    ward athletics, churchwide broadcasts.</p>
     <div class="filters" id="filters"></div>
   </header>
 
@@ -398,8 +429,8 @@
           <li><strong>Basketball is partially mapped.</strong> BYU's non-conference is official (incl. Ohio State Nov 2, Maui over Thanksgiving, Northwestern Dec 5). Utah's is reported but unofficial until mid-August (Towson Nov 5, Weber St Nov 10, E. Washington Nov 17, Charleston Classic Thanksgiving week). Big 12 conference slates (Jan–Mar) release in the fall — January and March picks get re-checked then.</li>
           <li><strong>2026 football kickoff times aren't announced yet.</strong> College Saturdays are blocked whole-day to be safe.</li>
           <li><strong>Fall 2027 college dates are TBD.</strong> Opponents are set (BYU hosts Utah in Provo) but dates release late fall 2026 — Sept–Nov 2027 Saturdays are blocked generically until then.</li>
-          <li><strong>Stake calendar is merged in, at two levels.</strong> By default the day squares show only the items that can actually cost you a date — youth nights, leadership meetings that land on a Thursday, firesides, Camp Helaman, the Christmas devotional. The <strong>Stake calendar</strong> dropdown in the header opens up the other 83 events, either all at once or one bucket at a time: <em>Leadership meetings</em> (10 — stake council, high council), <em>Baptisms &amp; recommends</em> (16), <em>Youth &amp; Primary</em> (9 — mission-prep course, Primary program practice), <em>YSA</em> (22 — Gathering Place nights), <em>Ward athletics</em> (22 — 8th Ward men's basketball), <em>Churchwide broadcasts</em> (4). Those show as dots — hover or tap a day for the full list with times. Your pick is remembered, and the Church chip still filters both levels together.</li>
-          <li><strong>Two things the default view leaves out on purpose.</strong> 8th Ward men's basketball holds the ward gym every Thursday 9–10:30 p.m. — late enough that it never touches a 7 p.m. activity, so marking every Thursday would just make clear nights look busy. Temple recommend interviews run 1st and 3rd Sundays 2–4 p.m. Both are one dropdown pick away — <em>Ward athletics</em> and <em>Baptisms &amp; recommends</em>.</li>
+          <li><strong>Stake calendar is merged in, at two levels.</strong> By default the day squares show only the items that can actually cost you a date — youth nights, leadership meetings that land on a Thursday, firesides, Camp Helaman, the Christmas devotional. The <strong>Stake calendar</strong> dropdown in the header opens up the other 83 events — <em>All on</em>, <em>All off</em>, or tick any combination of: <em>Leadership meetings</em> (10 — stake council, high council), <em>Baptisms &amp; recommends</em> (16), <em>Youth &amp; Primary</em> (9 — mission-prep course, Primary program practice), <em>YSA</em> (22 — Gathering Place nights), <em>Ward athletics</em> (22 — 8th Ward men's basketball), <em>Churchwide broadcasts</em> (4). Those show as dots — hover or tap a day for the full list with times. Your selection is remembered, and the Church chip still filters both levels together.</li>
+          <li><strong>Two things the default view leaves out on purpose.</strong> 8th Ward men's basketball holds the ward gym every Thursday 9–10:30 p.m. — late enough that it never touches a 7 p.m. activity, so marking every Thursday would just make clear nights look busy. Temple recommend interviews run 1st and 3rd Sundays 2–4 p.m. Both are one tick away in the dropdown — <em>Ward athletics</em> and <em>Baptisms &amp; recommends</em>.</li>
           <li><strong>Still missing from the stake feed:</strong> stake conference, youth conference, girls camp, FSY, and temple closures — none are posted yet. Jan–May 2027 is only lightly filled in (youth nights and fifth-Sunday firesides), so winter and spring picks need a re-check once the stake publishes the rest.</li>
           <li><strong>March Madness dates are approximate</strong> until the NCAA publishes the 2027 bracket calendar.</li>
         </ul>
@@ -751,7 +782,7 @@
   for (const t of Object.keys(TYPES)) enabled[t] = true;
   /* "stake" is deliberately NOT one of TYPES — it's a detail layer, not a filter
      category, so the chips' all-on / isolate-on-first-click behaviour is untouched.
-     stakePick is "off", "all", or one bucket key. */
+     stakePicks is the set of bucket keys currently showing — empty means hidden. */
   const STAKE_BUCKETS = [
     ["leadership", "Leadership meetings"],
     ["ordinance",  "Baptisms & recommends"],
@@ -760,11 +791,19 @@
     ["athletics",  "Ward athletics"],
     ["churchwide", "Churchwide broadcasts"]
   ];
-  let stakePick = "off";
+  const STAKE_KEYS = STAKE_BUCKETS.map(b => b[0]);
+  const stakePicks = new Set();
   try {
-    const saved = localStorage.getItem("fh-stake-pick");
-    if (saved) stakePick = saved;
-    else if (localStorage.getItem("fh-show-stake") === "1") stakePick = "all";  // migrate old toggle
+    const saved = localStorage.getItem("fh-stake-picks");        // current: comma-joined keys
+    const legacy = localStorage.getItem("fh-stake-pick");        // previous: single pick
+    const older  = localStorage.getItem("fh-show-stake");        // original: on/off boolean
+    if (saved !== null) {
+      for (const k of saved.split(",")) if (STAKE_KEYS.includes(k)) stakePicks.add(k);
+    } else if (legacy === "all" || older === "1") {
+      for (const k of STAKE_KEYS) stakePicks.add(k);
+    } else if (legacy && STAKE_KEYS.includes(legacy)) {
+      stakePicks.add(legacy);
+    }
   } catch (e) {}
   const chipBtns = {};
 
@@ -817,8 +856,7 @@
       items.push({ t: info.star[0], l: info.star[1], d: info.star[2] || info.star[1], star: true });
     for (const [t, l, d, b] of (info.ev || [])) {
       if (t === "stake") {                        // detail layer, gated by its own picker
-        if (stakePick === "off" || !enabled.church) continue;
-        if (stakePick === "all" || stakePick === b) items.push({ t, l, d: d || l, b });
+        if (enabled.church && stakePicks.has(b)) items.push({ t, l, d: d || l, b });
         continue;
       }
       if (enabled[t]) items.push({ t, l, d: d || l });
@@ -1035,41 +1073,78 @@
 
   /* full stake calendar: an extra detail layer, hidden by default so the default
      view stays a clean date-finder. Rides the Church chip when shown. */
-  const stakeSel = document.getElementById("stake-sel");
   const stakePickBox = document.getElementById("stake-pick");
+  const stakeSum = document.getElementById("stake-sum");
+  const stakeList = document.getElementById("stake-list");
+  const stakeCounts = {};
+  let stakeTotal = 0;
 
   function buildStakePicker() {
-    const counts = { all: 0 };
     for (const m of MONTHS)
       for (const day of Object.keys(m.cells))
         for (const e of (m.cells[day].ev || []))
-          if (e[0] === "stake") { counts.all++; counts[e[3]] = (counts[e[3]] || 0) + 1; }
+          if (e[0] === "stake") { stakeTotal++; stakeCounts[e[3]] = (stakeCounts[e[3]] || 0) + 1; }
 
-    const opts = [["off", "Hidden"], ["all", "Everything (" + counts.all + ")"]];
-    for (const [key, label] of STAKE_BUCKETS)
-      if (counts[key]) opts.push([key, label + " (" + counts[key] + ")"]);
+    // a saved bucket with nothing in the data would be an invisible selection
+    for (const k of [...stakePicks]) if (!stakeCounts[k]) stakePicks.delete(k);
 
-    // a saved bucket that no longer exists in the data would silently show nothing
-    if (!opts.some(o => o[0] === stakePick)) stakePick = "off";
+    stakeList.innerHTML = STAKE_BUCKETS
+      .filter(([key]) => stakeCounts[key])
+      .map(([key, label]) =>
+        `<label><input type="checkbox" value="${key}"${stakePicks.has(key) ? " checked" : ""}>` +
+        `<span>${label}</span><span class="sp-n">${stakeCounts[key]}</span></label>`).join("");
 
-    stakeSel.innerHTML = opts
-      .map(([v, l]) => `<option value="${v}">${l}</option>`).join("");
-    stakeSel.value = stakePick;
+    stakeList.addEventListener("change", e => {
+      const cb = e.target.closest("input[type=checkbox]");
+      if (!cb) return;
+      if (cb.checked) stakePicks.add(cb.value); else stakePicks.delete(cb.value);
+      commitStake();
+    });
+    document.getElementById("stake-all").addEventListener("click", () => {
+      for (const k of STAKE_KEYS) if (stakeCounts[k]) stakePicks.add(k);
+      syncStakeBoxes(); commitStake();
+    });
+    document.getElementById("stake-none").addEventListener("click", () => {
+      stakePicks.clear();
+      syncStakeBoxes(); commitStake();
+    });
+  }
+
+  function syncStakeBoxes() {
+    for (const cb of stakeList.querySelectorAll("input[type=checkbox]"))
+      cb.checked = stakePicks.has(cb.value);
   }
 
   function applyStake() {
-    stakePickBox.classList.toggle("on", stakePick !== "off");
-    stakeSel.title = stakePick === "off"
-      ? "Show the rest of the stake calendar — pick everything, or one kind of event at a time."
+    const n = stakePicks.size;
+    const live = STAKE_BUCKETS.filter(([k]) => stakeCounts[k]).length;
+    const shown = STAKE_BUCKETS.filter(([k]) => stakePicks.has(k))
+      .reduce((s, [k]) => s + stakeCounts[k], 0);
+    let val;
+    if (n === 0) val = "Hidden";
+    else if (n === live) val = `Everything (${stakeTotal})`;
+    else if (n === 1) val = `${STAKE_BUCKETS.find(([k]) => stakePicks.has(k))[1]} (${shown})`;
+    else val = `${n} kinds (${shown})`;
+    stakeSum.querySelector(".sp-val").textContent = val;
+    stakePickBox.classList.toggle("on", n > 0);
+    stakeSum.title = n === 0
+      ? "Show the rest of the stake calendar — all of it, or just the kinds you care about."
       : "Showing stake events as dots. Hover or tap a day for the full list with times.";
   }
 
-  stakeSel.addEventListener("change", () => {
-    stakePick = stakeSel.value;
-    try { localStorage.setItem("fh-stake-pick", stakePick); } catch (e) {}
+  function commitStake() {
+    try { localStorage.setItem("fh-stake-picks", [...stakePicks].join(",")); } catch (e) {}
     applyStake();
     hideTip();
     renderAll();
+  }
+
+  /* click outside closes the panel */
+  document.addEventListener("click", e => {
+    if (stakePickBox.open && !stakePickBox.contains(e.target)) stakePickBox.open = false;
+  });
+  stakePickBox.addEventListener("keydown", e => {
+    if (e.key === "Escape" && stakePickBox.open) { stakePickBox.open = false; stakeSum.focus(); }
   });
 
   applyTheme();
