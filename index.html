@@ -273,16 +273,27 @@
   .mnav { display: none; }
   /* the day card is the read view at every width — a tap/click fills it.
      Hidden only while it has nothing in it. */
+  /* The read view. Fixed to the bottom of the screen rather than sitting in
+     the flow — in the flow it lands below every month, so on a wide screen
+     (a phone in landscape included) tapping a day appeared to do nothing. */
   #daycard {
-    display: block; margin-top: 0.9rem; max-width: 46rem;
-    background: var(--cell); border: 1px solid var(--line); border-radius: 8px;
-    padding: 0.8rem 0.9rem; font-size: 0.85rem; min-height: 3.4rem;
+    position: fixed; z-index: 60; left: 50%; transform: translateX(-50%);
+    bottom: 0.85rem; width: min(32rem, calc(100vw - 1.5rem));
+    background: var(--cell); border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: var(--shadow); padding: 0.85rem 2.2rem 0.8rem 1rem;
+    font-size: 0.86rem; max-height: 46vh; overflow-y: auto;
   }
   #daycard:empty { display: none; }
   #daycard .tt-date { font-weight: 700; margin-bottom: 0.3rem; }
   #daycard .tt-row { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.12rem 0; }
   #daycard .tt-row .dt { position: relative; top: -1px; flex: none; }
   #daycard .hint { color: var(--muted); }
+  #daycard .dc-close {
+    position: absolute; top: 0.35rem; right: 0.4rem;
+    background: none; border: 0; color: var(--muted); cursor: pointer;
+    font: inherit; font-size: 1.15rem; line-height: 1; padding: 0.3rem 0.45rem; border-radius: 6px;
+  }
+  #daycard .dc-close:hover { color: var(--ink); background: var(--line); }
 
   #suggest-btn {
     background: var(--fh); color: var(--paper); border: none; border-radius: 6px;
@@ -390,8 +401,9 @@
     </div>
     <p class="lede">Ward activities color-coded by type over every BYU / Utah / Jazz / NFL date, General Conference,
     school break, and holiday. Starred ★ days are the planned activities; an unmarked Friday or Saturday is clear.
-    Tap or click any day to read everything on it in the panel below the calendar — it stays put until you
-    pick another day. (On a mouse, hovering shows the same thing.) Click a chip to see only that kind of event —
+    Tap or click any day to read everything on it — a panel opens at the bottom of the screen and stays
+    until you pick another day or close it. (On a mouse, hovering shows the same thing.)
+    Click a chip to see only that kind of event —
     click more chips to add them, or click the last one again to bring everything back.
     The <strong>Stake calendar</strong> dropdown adds the rest of the stake feed on top — all on, all off,
     or tick just the kinds you care about: leadership meetings, baptisms &amp; recommends, youth, YSA,
@@ -1092,16 +1104,16 @@
   function refreshDayCard() {
     const mobile = mqMobile.matches;
     const onScreen = selDay != null && selMi != null && (!mobile || selMi === mIdx);
-    if (onScreen && MONTHS[selMi].cells[selDay]) {
-      daycard.innerHTML = detailHtml(selMi, selDay)
-        + `<button type="button" class="sug-link" data-mi="${selMi}" data-day="${selDay}">✎ Suggest a change for this day</button>`;
-    } else if (onScreen) {
-      daycard.innerHTML = detailHtml(selMi, selDay);       // nothing scheduled — say so
-    } else if (mobile) {
-      daycard.innerHTML = `<div class="hint">Tap any day to see what's on it.</div>`;
-    } else {
-      daycard.innerHTML = "";                              // :empty hides it
-    }
+    if (!onScreen) { daycard.innerHTML = ""; return; }     // :empty hides it
+    daycard.innerHTML =
+      `<button type="button" class="dc-close" aria-label="Close">×</button>`
+      + detailHtml(selMi, selDay)
+      + `<button type="button" class="sug-link" data-mi="${selMi}" data-day="${selDay}">✎ Suggest a change for this day</button>`;
+  }
+
+  function closeDayCard() {
+    selDay = null; selMi = null;
+    daycard.innerHTML = "";
   }
 
   function renderAll() {
@@ -1180,11 +1192,14 @@
     selMi = mi;
     refreshDayCard();
     hideTip();
-    if (mqMobile.matches) daycard.scrollIntoView({ block: "nearest", behavior: "smooth" });
   });
   daycard.addEventListener("click", e => {
+    if (e.target.closest(".dc-close")) { closeDayCard(); return; }
     const b = e.target.closest(".sug-link");
     if (b) openSuggest(dateLabel(+b.dataset.mi, +b.dataset.day));
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && !dlg.open && daycard.innerHTML) closeDayCard();
   });
 
   /* suggest-a-change -> pre-filled GitHub issue */
