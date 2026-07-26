@@ -8,39 +8,27 @@
   :root {
     --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
     --fh: #2C6E3F;   --fh-bg: #CFE8D4;
-    --ai: #0E7490;   --ai-bg: #D2E9F0;
-    --fel: #C2410C;  --fel-bg: #FAE3D3;
-    --temple: #0369A1; --temple-bg: #D9EBF7;
-    --church: #5B4A7A; --church-bg: #EAE4F2;
+    --ai: #0E7490;
     --shadow: 0 6px 24px rgba(35,32,27,0.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
       --fh: #8FCB9E;   --fh-bg: #27492F;
-      --ai: #74C4DB;   --ai-bg: #10333D;
-      --fel: #F0A374;  --fel-bg: #3D2113;
-      --temple: #82C0E5; --temple-bg: #122A3B;
-      --church: #BCA9DE; --church-bg: #2A2338;
+      --ai: #74C4DB;
       --shadow: 0 6px 24px rgba(0,0,0,0.5);
     }
   }
   :root[data-theme="light"] {
     --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
     --fh: #2C6E3F;   --fh-bg: #CFE8D4;
-    --ai: #0E7490;   --ai-bg: #D2E9F0;
-    --fel: #C2410C;  --fel-bg: #FAE3D3;
-    --temple: #0369A1; --temple-bg: #D9EBF7;
-    --church: #5B4A7A; --church-bg: #EAE4F2;
+    --ai: #0E7490;
     --shadow: 0 6px 24px rgba(35,32,27,0.10);
   }
   :root[data-theme="dark"] {
     --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
     --fh: #8FCB9E;   --fh-bg: #27492F;
-    --ai: #74C4DB;   --ai-bg: #10333D;
-    --fel: #F0A374;  --fel-bg: #3D2113;
-    --temple: #82C0E5; --temple-bg: #122A3B;
-    --church: #BCA9DE; --church-bg: #2A2338;
+    --ai: #74C4DB;
     --shadow: 0 6px 24px rgba(0,0,0,0.5);
   }
   * { box-sizing: border-box; }
@@ -51,7 +39,6 @@
     -webkit-text-size-adjust: 100%;
   }
   .wrap { max-width: 47rem; margin: 0 auto; }
-  .serif { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; }
 
   .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
   .eyebrow {
@@ -79,10 +66,8 @@
     font-size: 1.5rem; margin: 2.6rem 0 0.2rem; line-height: 1.2;
   }
   h2 + .kicker { color: var(--muted); font-size: 0.88rem; margin: 0 0 1rem; }
-  h3 { font-size: 1rem; margin: 1.5rem 0 0.35rem; }
   p { margin: 0 0 0.9rem; }
   a { color: var(--fh); text-decoration-thickness: 1px; text-underline-offset: 2px; }
-  hr { border: 0; border-top: 1px solid var(--line); margin: 2.4rem 0 0; }
 
   .lead-rule {
     background: var(--fh-bg); border-left: 4px solid var(--fh);
@@ -98,47 +83,6 @@
   }
   .facet b { display: block; font-size: 0.94rem; }
   .facet span { color: var(--muted); font-size: 0.84rem; }
-
-  ol.year { list-style: none; margin: 1.2rem 0 0; padding: 0; }
-  ol.year > li {
-    position: relative; padding: 0 0 1.5rem 1.85rem;
-    border-left: 2px solid var(--line); margin-left: 0.4rem;
-  }
-  ol.year > li:last-child { border-left-color: transparent; padding-bottom: 0.2rem; }
-  ol.year > li::before {
-    content: ""; position: absolute; left: -0.47rem; top: 0.42rem;
-    width: 0.8rem; height: 0.8rem; border-radius: 50%;
-    background: var(--paper); border: 2.5px solid var(--muted);
-  }
-  ol.year > li.big::before { border-color: var(--fh); background: var(--fh); }
-  ol.year > li.fel::before { border-color: var(--fel); }
-  ol.year > li.temple::before { border-color: var(--temple); background: var(--temple); }
-  ol.year > li.home::before { border-color: var(--fh); }
-  .when {
-    display: block; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.05em;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 0.1rem;
-  }
-  .what { font-weight: 700; font-size: 1.06rem; display: block; margin-bottom: 0.2rem; }
-  ol.year > li.big .what { color: var(--fh); }
-  ol.year > li.temple .what { color: var(--temple); }
-  ol.year > li p { margin: 0; font-size: 0.93rem; color: var(--muted); }
-  .tag {
-    display: inline-block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.07em; padding: 0.1rem 0.42rem; border-radius: 4px; vertical-align: 0.12em;
-    margin-left: 0.4rem; background: var(--fh-bg); color: var(--fh);
-  }
-  .tag.home { background: var(--church-bg); color: var(--church); }
-
-  .ai-box {
-    background: var(--ai-bg); border: 1px solid var(--ai); border-radius: 10px;
-    padding: 1.1rem 1.25rem; margin: 1.3rem 0;
-  }
-  .ai-box h3 { margin-top: 0; color: var(--ai); }
-  .ai-dates { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.7rem 0 0; padding: 0; list-style: none; }
-  .ai-dates li {
-    background: var(--cell); border: 1px solid var(--ai); color: var(--ai);
-    border-radius: 999px; padding: 0.18rem 0.65rem; font-size: 0.8rem; font-weight: 650;
-  }
 
   ul.plain { margin: 0.6rem 0 0.9rem; padding-left: 1.15rem; }
   ul.plain li { margin-bottom: 0.45rem; }
@@ -173,7 +117,7 @@
     body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
     #theme-btn, .cta { display: none; }
     h2 { page-break-after: avoid; }
-    ol.year > li { page-break-inside: avoid; }
+    .facet, blockquote.msg, table.who tr { page-break-inside: avoid; }
   }
 </style>
 </head>
@@ -186,8 +130,9 @@
       <button id="theme-btn" type="button">Theme: Auto</button>
     </div>
     <h1>Making the Connection<span class="sub">Using today's tools to connect with the people who made us.</span></h1>
-    <p class="standfirst">This is the ward's family history plan for the year — what we're doing, when,
-    and the one thing we're asking of you. It's short on purpose.</p>
+    <p class="standfirst">This is the ward's family history plan — why we're doing it and the one thing
+    we're asking of you. It's short on purpose. Dates and activities live on
+    <a href="index.html">the calendar</a>.</p>
   </header>
 
   <h2>Why we're doing this</h2>
@@ -215,84 +160,30 @@
     <div class="facet"><b>Indexing</b><span>Make records searchable for everyone else. Do it in your slippers.</span></div>
   </div>
 
-  <h2>The year</h2>
-  <p class="kicker">Two big rocks, a few gatherings, and a rhythm that already exists.</p>
-
-  <ol class="year">
-    <li class="fel">
-      <span class="when">Tuesday, August 11</span>
-      <span class="what">Pickleball Night</span>
-      <p>Pure fellowship, zero program. The last night of summer break — come play. If you're there,
-      you'll get a personal invite to the 22nd.</p>
-    </li>
-    <li class="big">
-      <span class="when">Saturday, August 22</span>
-      <span class="what">Family History Kickoff <span class="tag">Big rock</span></span>
-      <p>Root beer floats and pie, and stories about your relatives. Two or three members tell one real
-      family story — Clint on recording his living father, Scott on filming his father-in-law's D-Day
-      story. Short program, good food, and the year starts.</p>
-    </li>
-    <li class="fel">
-      <span class="when">Friday, September 25</span>
-      <span class="what">Car Show, family history edition</span>
-      <p>Dave's car show, on a football-free Friday. Every car has a story — so does every family.
-      Rusty and the consultants will have a table if you want to start something.</p>
-    </li>
-    <li class="home">
-      <span class="when">Monday, November 9</span>
-      <span class="what">Gratitude Night <span class="tag home">At home</span></span>
-      <p>Not a ward event — there's nothing to come to. We'll hand your family a one-page lesson and you
-      run it at your own table on family home evening: name one person you're grateful for, and write down
-      one thing about them. Two days before Veterans Day, so veteran and family stories fit.</p>
-    </li>
-    <li class="big">
-      <span class="when">Saturday, January 9</span>
-      <span class="what">Winter Dutch Oven Night <span class="tag">Big rock</span></span>
-      <p>Dutch oven dinner in the middle of winter. Bring one photo, one object, or one story — and leave
-      with it <em>saved</em>: recorded, uploaded, attached to the tree before you go home.</p>
-    </li>
-    <li class="temple">
-      <span class="when">Saturday, May 15</span>
-      <span class="what">Spring Temple Celebration</span>
-      <p>The payoff. Every name found since August goes to the temple, and we go with the Relief Society
-      temple night so members can attend with their <em>own</em> family name. That's &ldquo;baptize a ward
-      in heaven&rdquo; you can actually see. We'll celebrate the count and tell the stories behind the names.</p>
-    </li>
-  </ol>
-
-  <div class="ai-box">
-    <h3>AI Nights — the hands-on hour</h3>
-    <p>Four times a year, always a Thursday, the week after the big event. Bring a phone or a laptop.
-    Consultants and a few tech-comfortable members work the tables.</p>
-    <p><strong>One hour, one thing done.</strong> Record a grandparent telling one story. Upload it to
-    FamilySearch Memories. See the &ldquo;AI recreation of Grandpa&rdquo; demo. Pull a temple name with
-    Ordinances Ready. Nobody leaves without having actually done one thing.</p>
-    <ul class="ai-dates">
-      <li>Thu Aug 27, 2026</li>
-      <li>Thu Nov 19, 2026</li>
-      <li>Thu Feb 18, 2027</li>
-      <li>Wed May 19, 2027</li>
-    </ul>
-  </div>
-
   <h2>Every month, without adding a meeting</h2>
   <ul class="plain">
     <li><strong>Relief Society temple night</strong> — already happening, every month. This is the engine.
     Elders quorum promotes it and comes along.</li>
     <li><strong>Fast Sunday</strong> — the deacons deliver the invite for whatever's next, with a short
-    word from the presidencies.</li>
+    word from the presidencies. If you want to know what's coming, that invite is it.</li>
     <li><strong>Once a quarter</strong> — one member shares a three-to-five minute family history
     experience in quorum or class. Clint volunteered to go first.</li>
   </ul>
 
-  <h2>What happens after an event</h2>
-  <p class="kicker">Events open doors. Visits are where things actually change.</p>
+  <h2>How you actually get started</h2>
+  <p class="kicker">Gatherings open doors. Visits are where things change.</p>
   <ul class="plain">
-    <li>Rusty and the consultants take the sign-up list and visit interested members in twos and threes.</li>
+    <li>Say yes at any gathering, or just tell someone. Rusty and the consultants visit interested members
+    in twos and threes.</li>
     <li>Ward council members carry the two-minute message below and pass warm leads to Rusty. Nobody
     freelances a full lesson on a doorstep — spark the interest, hand it off.</li>
     <li>One visit does one thing: help you start your one facet. Nothing more.</li>
   </ul>
+  <p>Through the year there are a handful of gatherings built around this — a kickoff, a car show, a Dutch
+  oven night, a temple celebration, and quarterly hands-on nights where you bring a phone and leave having
+  actually recorded or uploaded one thing. <strong>You don't need to track any of that here.</strong>
+  Every date is on <a href="index.html">the calendar</a>, checked against ball games, school breaks and the
+  stake calendar.</p>
 
   <h2>The two-minute message</h2>
   <p class="kicker">If you carry one thing from this page, carry this.</p>
@@ -330,15 +221,16 @@
   show that costs nothing, and a temple night that already exists.</p>
 
   <a class="cta" href="index.html">
-    <b>See the calendar →</b>
-    <span>The EQ Activity Date Finder has every date above laid over ball games, school breaks, holidays
-    and the stake calendar — so you can see what else is going on that night.</span>
+    <b>Looking for the dates? →</b>
+    <span>They're all on the EQ Activity Date Finder — every activity laid over ball games, school breaks,
+    holidays and the stake calendar, so you can see what else is going on that night. This page is the
+    <em>why</em>; that one is the <em>when</em>.</span>
   </a>
 
   <footer>
     Elk Ridge 7th Ward · Under the direction of the elders quorum and Relief Society presidencies, with
-    Rusty as ward temple &amp; family history leader. Dates are checked against school, stake and sports
-    calendars and can move — the date finder is always the current version.
+    Rusty as ward temple &amp; family history leader. Activities and dates are kept separately, on
+    <a href="index.html">the date finder</a>, so this page doesn't go stale when something moves.
   </footer>
 
 </div>
