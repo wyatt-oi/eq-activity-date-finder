@@ -271,7 +271,18 @@
   #tooltip .tt-star { font-weight: 700; }
 
   .mnav { display: none; }
-  #daycard { display: none; }
+  /* the day card is the read view at every width — a tap/click fills it.
+     Hidden only while it has nothing in it. */
+  #daycard {
+    display: block; margin-top: 0.9rem; max-width: 46rem;
+    background: var(--cell); border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.8rem 0.9rem; font-size: 0.85rem; min-height: 3.4rem;
+  }
+  #daycard:empty { display: none; }
+  #daycard .tt-date { font-weight: 700; margin-bottom: 0.3rem; }
+  #daycard .tt-row { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.12rem 0; }
+  #daycard .tt-row .dt { position: relative; top: -1px; flex: none; }
+  #daycard .hint { color: var(--muted); }
 
   #suggest-btn {
     background: var(--fh); color: var(--paper); border: none; border-radius: 6px;
@@ -350,15 +361,7 @@
     .cal td { height: 3.1rem; }
     .cal td .d { font-size: 0.82rem; }
     .dt { width: 8px; height: 8px; }
-    #daycard {
-      display: block; margin-top: 0.8rem;
-      background: var(--cell); border: 1px solid var(--line); border-radius: 8px;
-      padding: 0.8rem 0.9rem; font-size: 0.85rem; min-height: 3.4rem;
-    }
-    #daycard .tt-date { font-weight: 700; margin-bottom: 0.3rem; }
-    #daycard .tt-row { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.12rem 0; }
-    #daycard .tt-row .dt { position: relative; top: -1px; flex: none; }
-    #daycard .hint { color: var(--muted); }
+    #daycard { margin-top: 0.8rem; }
     #tooltip { display: none !important; }
   }
 </style>
@@ -387,7 +390,8 @@
     </div>
     <p class="lede">Ward activities color-coded by type over every BYU / Utah / Jazz / NFL date, General Conference,
     school break, and holiday. Starred ★ days are the planned activities; an unmarked Friday or Saturday is clear.
-    Hover any dotted day for details (tap on a phone). Click a chip to see only that kind of event —
+    Tap or click any day to read everything on it in the panel below the calendar — it stays put until you
+    pick another day. (On a mouse, hovering shows the same thing.) Click a chip to see only that kind of event —
     click more chips to add them, or click the last one again to bring everything back.
     The <strong>Stake calendar</strong> dropdown adds the rest of the stake feed on top — all on, all off,
     or tick just the kinds you care about: leadership meetings, baptisms &amp; recommends, youth, YSA,
@@ -969,6 +973,7 @@
     if (i >= 0) mIdx = i;
   }
   let selDay = null;
+  let selMi = null;
 
   function buildFilters() {
     filterBar.innerHTML = "";
@@ -1082,6 +1087,23 @@
     return `${m.name.split(" ")[0]} ${day}, ${m.y}`;
   }
 
+  /* One read view for every width. Kept in sync with whatever the filters are
+     currently showing, so a card left open doesn't go stale behind a chip click. */
+  function refreshDayCard() {
+    const mobile = mqMobile.matches;
+    const onScreen = selDay != null && selMi != null && (!mobile || selMi === mIdx);
+    if (onScreen && MONTHS[selMi].cells[selDay]) {
+      daycard.innerHTML = detailHtml(selMi, selDay)
+        + `<button type="button" class="sug-link" data-mi="${selMi}" data-day="${selDay}">✎ Suggest a change for this day</button>`;
+    } else if (onScreen) {
+      daycard.innerHTML = detailHtml(selMi, selDay);       // nothing scheduled — say so
+    } else if (mobile) {
+      daycard.innerHTML = `<div class="hint">Tap any day to see what's on it.</div>`;
+    } else {
+      daycard.innerHTML = "";                              // :empty hides it
+    }
+  }
+
   function renderAll() {
     root.innerHTML = "";
     const mobile = mqMobile.matches;
@@ -1095,9 +1117,6 @@
       div.className = "month active";
       div.innerHTML = `<p class="pick-note${m.quiet ? " quiet" : ""}">${m.pickNote}</p>` + monthTable(m, mIdx);
       root.appendChild(div);
-      daycard.innerHTML = (selDay != null && m.cells[selDay])
-        ? detailHtml(mIdx, selDay)
-        : `<div class="hint">Tap any day with dots to see what's happening.</div>`;
     } else {
       mnav.style.display = "none";
       let year = null, grid = null;
@@ -1117,6 +1136,7 @@
         grid.appendChild(div);
       });
     }
+    refreshDayCard();
   }
 
   /* tooltip (desktop, hover-capable only) */
@@ -1148,18 +1168,19 @@
   root.addEventListener("focusout", hideTip);
   window.addEventListener("scroll", hideTip, { passive: true });
 
-  /* click: mobile -> day card, desktop -> suggest dialog for that day */
+  /* Tapping a day only ever READS it — it opens the day card, never the
+     suggest dialog. Filing a change is an explicit second tap on the button
+     inside the card (or the one in the header). The old behaviour opened the
+     dialog on any viewport over 900px, which a phone in landscape hits. */
   root.addEventListener("click", e => {
     const td = e.target.closest("td[data-mi]");
     if (!td) return;
     const mi = +td.dataset.mi, day = +td.dataset.day;
-    if (mqMobile.matches) {
-      selDay = day;
-      daycard.innerHTML = detailHtml(mi, day)
-        + `<button type="button" class="sug-link" data-mi="${mi}" data-day="${day}">✎ Suggest a change for this day</button>`;
-    } else {
-      openSuggest(dateLabel(mi, day));
-    }
+    selDay = day;
+    selMi = mi;
+    refreshDayCard();
+    hideTip();
+    if (mqMobile.matches) daycard.scrollIntoView({ block: "nearest", behavior: "smooth" });
   });
   daycard.addEventListener("click", e => {
     const b = e.target.closest(".sug-link");
@@ -1198,7 +1219,7 @@
   /* month nav + swipe (mobile) */
   function goMonth(delta) {
     mIdx = Math.max(0, Math.min(MONTHS.length - 1, mIdx + delta));
-    selDay = null;
+    selDay = null; selMi = null;
     renderAll();
   }
   mPrev.addEventListener("click", () => goMonth(-1));
