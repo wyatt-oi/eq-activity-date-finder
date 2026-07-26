@@ -113,7 +113,8 @@
     font-size: 1.05rem; padding-top: 1.1rem; border-bottom: 2px solid var(--ink); color: var(--ink);
     text-transform: none; letter-spacing: 0;
   }
-  table.sched td:last-child { white-space: nowrap; width: 1%; }
+  table.sched td:last-child { white-space: nowrap; width: 1%; vertical-align: top; }
+  table.sched .blurb { display: block; color: var(--muted); font-size: 0.88rem; margin-top: 0.25rem; max-width: 34rem; }
   .k {
     display: inline-block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
     letter-spacing: 0.06em; padding: 0.12rem 0.45rem; border-radius: 999px; white-space: nowrap;
@@ -129,7 +130,7 @@
   .scroller { overflow-x: auto; }
 
   .cta {
-    display: block; margin: 2.6rem 0 0; padding: 1.15rem 1.3rem;
+    display: block; margin: 1rem 0 0; padding: 1.15rem 1.3rem;
     background: var(--cell); border: 1px solid var(--fh); border-radius: 10px;
     text-decoration: none; color: inherit; box-shadow: var(--shadow);
   }
@@ -209,20 +210,61 @@
   oven night, a temple celebration, and quarterly hands-on nights where you bring a phone and leave having
   actually recorded or uploaded one thing. They're all listed below.</p>
 
-  <h2>The temple and family history activities, in order</h2>
-  <p class="kicker">Every temple and family history activity in one place, start to finish.</p>
+  <h2>The year, in order</h2>
+  <p class="kicker">The year has two halves on purpose. <strong>August to November we're finding</strong> —
+  names, stories, photos, whatever you've got. <strong>January to May we're taking them to the
+  temple.</strong> Find first, then go. You can't do the second half without the first.</p>
 
   <div class="scroller">
     <table class="sched">
       <thead><tr><th>When</th><th>What</th><th>Kind</th></tr></thead>
       <tbody>
-        <tr class="yr"><th colspan="3">2026</th></tr>
-        <tr><td>Sat Aug 22</td><td><strong>Family History Kickoff</strong> — root beer floats + pie</td><td><span class="k fh">Big rock</span></td></tr>
-        <tr><td>Mon Nov 9</td><td><strong>Gratitude Night</strong> — run it at your own table</td><td><span class="k home">At home</span></td></tr>
-        <tr class="yr"><th colspan="3">2027</th></tr>
-        <tr><td>Sat Jan 9</td><td><strong>Winter Dutch Oven Night</strong> — bring one photo, object or story</td><td><span class="k fh">Big rock</span></td></tr>
-        <tr><td>Sat May 15</td><td><strong>Spring Temple Celebration</strong> — the year's names go to the temple</td><td><span class="k temple">Temple</span></td></tr>
-        <tr><td>Sat Aug 21</td><td>Year-2 Family History Kickoff</td><td><span class="k fh">Big rock</span></td></tr>
+        <tr class="yr" data-year="2026"><th colspan="3">Aug – Nov 2026 · Finding your family</th></tr>
+        <tr>
+          <td>Sat Aug 22</td>
+          <td><strong>Family History Kickoff</strong>
+            <span class="blurb">Root beer floats and pie, and two or three members telling one real family
+            story out loud. The whole point is to make this feel like something you'd want to do, not
+            something you've been assigned. You leave having picked your one facet.</span></td>
+          <td><span class="k fh">Big rock</span></td>
+        </tr>
+        <tr>
+          <td>Mon Nov 9</td>
+          <td><strong>Gratitude Night</strong>
+            <span class="blurb">Nothing to come to — we hand your family a one-page lesson and you run it at
+            your own table on family home evening. Name one person you're grateful for and write down one
+            thing about them. This is the week to pull out the boxes: the photos nobody's labelled, the
+            recording somebody made years ago, the story only Grandma still tells. Two days before Veterans
+            Day and two weeks before Thanksgiving — when everyone's already thinking about family, and
+            about to be in a room with the people who remember.</span></td>
+          <td><span class="k home">At home</span></td>
+        </tr>
+        <tr class="yr" data-year="2027"><th colspan="3">Jan – May 2027 · Taking them to the temple</th></tr>
+        <tr>
+          <td>Sat Jan 9</td>
+          <td><strong>Winter Dutch Oven Temple Night</strong>
+            <span class="blurb">Dutch oven dinner in the middle of winter, and the night the finding turns
+            into going. Bring the names you turned up in the fall and consultants help you reserve the
+            ordinances and print the cards — or pull one with Ordinances Ready if you came empty-handed.
+            Nobody leaves without a name in hand and a date to take it.</span></td>
+          <td><span class="k temple">Temple</span></td>
+        </tr>
+        <tr>
+          <td>Sat May 15</td>
+          <td><strong>Spring Temple Celebration</strong>
+            <span class="blurb">The payoff. Every name found since August goes to the temple, and we go with
+            the Relief Society temple night so you can attend with your <em>own</em> family's name. We'll
+            tell the stories behind the names and count what the ward did together.</span></td>
+          <td><span class="k temple">Temple</span></td>
+        </tr>
+        <tr class="yr" data-year="2027"><th colspan="3">And then it starts again</th></tr>
+        <tr>
+          <td>Sat Aug 21</td>
+          <td><strong>Year-2 Kickoff</strong>
+            <span class="blurb">Same rhythm, second lap — with a year of the ward's own stories to tell
+            instead of borrowed ones.</span></td>
+          <td><span class="k fh">Big rock</span></td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -266,6 +308,15 @@
   <p>The budget, for the record, is close to nothing by design — potluck and Dutch oven, donated pie, a car
   show that costs nothing, and a temple night that already exists.</p>
 
+  <h2>The other half of the same work</h2>
+  <p>Gathering Israel happens on <em>both</em> sides of the veil. This is one side of it; the ward mission
+  plan is the other, and they're meant to be run as one effort rather than two competing ones.</p>
+
+  <a class="cta" href="mission-plan.html">
+    <b>The Ward Mission Plan →</b>
+    <span>The same gathering, on this side of the veil — love, share, invite, and what we're aiming at
+    this year.</span>
+  </a>
   <a class="cta" href="index.html">
     <b>See it against everything else →</b>
     <span>The EQ Activity Date Finder puts these same dates over ball games, school breaks, holidays and

@@ -381,7 +381,7 @@
   <header class="masthead">
     <div class="mast-top">
       <div>
-        <p class="eyebrow">Elk Ridge 7th Ward · Aug 2026 – Dec 2027 · <a class="eb-link" href="family-history.html">Temple &amp; Family History Plan</a></p>
+        <p class="eyebrow">Elk Ridge 7th Ward · Aug 2026 – Dec 2027 · <a class="eb-link" href="family-history.html">Temple &amp; Family History Plan</a> · <a class="eb-link" href="mission-plan.html">Ward Mission Plan</a></p>
         <h1>EQ Activity Date Finder</h1>
       </div>
       <div class="mast-actions">
@@ -426,9 +426,9 @@
       </ul>
       <h3>2027</h3>
       <ul>
-        <li class="t-fh"><span class="when">Jan 9</span><span class="what"><strong>Winter Dutch Oven Family History Night</strong> (Sat)</span></li>
+        <li class="t-temple"><span class="when">Jan 9</span><span class="what"><strong>Winter Dutch Oven Temple Night</strong> (Sat) — take the names you found to the temple</span></li>
         <li class="t-ai"><span class="when">Feb 18</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
-        <li class="t-fh"><span class="when">May 15</span><span class="what"><strong>Spring Temple Celebration</strong> — the year's names go to the temple (Sat)</span></li>
+        <li class="t-temple"><span class="when">May 15</span><span class="what"><strong>Spring Temple Celebration</strong> — the year's names go to the temple (Sat)</span></li>
         <li class="t-ai"><span class="when">May 19</span><span class="what"><strong>AI Night</strong> (Wed — day before school lets out)</span></li>
         <li class="t-fh"><span class="when">Aug 21</span><span class="what"><strong>Year-2 Kickoff</strong> (Sat)</span></li>
         <li class="t-ai"><span class="when">Aug 26</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
@@ -761,14 +761,14 @@
         31: { ev: [["hol","New Year's Eve"],["school","Break"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
       } },
     { name: "January 2027", y: 2027, mo: 0, days: 31, startDow: 5,
-      pickNote: "★ Sat Jan 9 — Winter Dutch Oven FH Night (re-check vs Big 12 hoops this fall)",
+      pickNote: "★ Sat Jan 9 — Winter Dutch Oven Temple Night (re-check vs Big 12 hoops this fall)",
       cells: {
         13: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         27: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         1:  { ev: [["hol","New Year's"],["school","Break ends"]] },
         2:  { ev: [["hol","Holiday weekend"]] },
         3:  { ev: [["church","Fast Sunday flyers"]] },
-        9:  { star: ["fh","Winter Dutch Oven Family History Night","Dutch Oven Night"] },
+        9:  { star: ["temple","Winter Dutch Oven Temple Night","Dutch Oven Temple Night"] },
         18: { ev: [["hol","MLK Day"],["school","No school"]] },
         31: { ev: [["church","Fifth Sunday fireside — all youth, 7pm","Youth fireside"]] },
       } },
@@ -814,7 +814,7 @@
         2:  { ev: [["church","Fast Sunday flyers"]] },
         8:  { ev: [["hol","Mother's Day eve"]] },
         9:  { ev: [["hol","Mother's Day"]] },
-        15: { star: ["fh","Spring Temple Celebration — the year's names","Temple Celebration"] },
+        15: { star: ["temple","Spring Temple Celebration — the year's names","Temple Celebration"] },
         19: { star: ["ai","AI Night"] },
         20: { ev: [["school","Last day of school (½ day)"]] },
         28: { ev: [["hol","Graduation / Memorial weekend"]] },
@@ -951,7 +951,7 @@
   const enabled = {};
   for (const t of Object.keys(TYPES)) enabled[t] = true;
   /* "stake" is deliberately NOT one of TYPES — it's a detail layer, not a filter
-     category, so the chips' all-on / isolate-on-first-click behaviour is untouched.
+     category, so the chips' all-on / isolate-on-first-click behavior is untouched.
      stakePicks is the set of bucket keys currently showing — empty means hidden. */
   const STAKE_BUCKETS = [
     ["leadership", "Leadership meetings"],
@@ -1182,7 +1182,7 @@
 
   /* Tapping a day only ever READS it — it opens the day card, never the
      suggest dialog. Filing a change is an explicit second tap on the button
-     inside the card (or the one in the header). The old behaviour opened the
+     inside the card (or the one in the header). The old behavior opened the
      dialog on any viewport over 900px, which a phone in landscape hits. */
   root.addEventListener("click", e => {
     const td = e.target.closest("td[data-mi]");

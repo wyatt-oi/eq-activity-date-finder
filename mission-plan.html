@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ward Mission Plan — Elk Ridge 7th Ward</title>
+<style>
+  :root {
+    --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
+    --fh: #2C6E3F;   --fh-bg: #CFE8D4;
+    --ai: #0E7490;
+    --love: #A6121F;   --love-bg: #F6E3E4;
+    --share: #8A5A0B;  --share-bg: #F5E9CF;
+    --invite: #0369A1; --invite-bg: #D9EBF7;
+    --shadow: 0 6px 24px rgba(35,32,27,0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
+      --fh: #8FCB9E;   --fh-bg: #27492F;
+      --ai: #74C4DB;
+      --love: #E58A92;   --love-bg: #3A1A1E;
+      --share: #D9B96A;  --share-bg: #3A2F17;
+      --invite: #82C0E5; --invite-bg: #122A3B;
+      --shadow: 0 6px 24px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
+    --fh: #2C6E3F;   --fh-bg: #CFE8D4;
+    --ai: #0E7490;
+    --love: #A6121F;   --love-bg: #F6E3E4;
+    --share: #8A5A0B;  --share-bg: #F5E9CF;
+    --invite: #0369A1; --invite-bg: #D9EBF7;
+    --shadow: 0 6px 24px rgba(35,32,27,0.10);
+  }
+  :root[data-theme="dark"] {
+    --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
+    --fh: #8FCB9E;   --fh-bg: #27492F;
+    --ai: #74C4DB;
+    --love: #E58A92;   --love-bg: #3A1A1E;
+    --share: #D9B96A;  --share-bg: #3A2F17;
+    --invite: #82C0E5; --invite-bg: #122A3B;
+    --shadow: 0 6px 24px rgba(0,0,0,0.5);
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6; margin: 0; padding: 2rem 1.25rem 4rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 47rem; margin: 0 auto; }
+
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.7rem;
+    font-weight: 600; color: var(--muted); margin: 0 0 0.5rem;
+  }
+  #theme-btn {
+    flex: none; background: var(--cell); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; cursor: pointer;
+  }
+  #theme-btn:hover { border-color: var(--muted); }
+  #theme-btn:focus-visible, a:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+
+  h1 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: clamp(1.75rem, 6vw, 2.7rem); line-height: 1.12; margin: 0 0 0.6rem;
+    text-wrap: balance; letter-spacing: -0.01em;
+  }
+  h1 .sub { display: block; font-size: 0.44em; font-style: italic; color: var(--muted); margin-top: 0.5rem; letter-spacing: 0; }
+  .standfirst { font-size: 1.06rem; color: var(--muted); margin: 0 0 0.4rem; max-width: 38rem; }
+
+  h2 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.5rem; margin: 2.6rem 0 0.2rem; line-height: 1.2;
+  }
+  h2 + .kicker { color: var(--muted); font-size: 0.88rem; margin: 0 0 1rem; }
+  h3 { font-size: 1rem; margin: 1.6rem 0 0.35rem; }
+  p { margin: 0 0 0.9rem; }
+  a { color: var(--fh); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+  .principles { display: grid; gap: 0.9rem; margin: 1.3rem 0 0.4rem; }
+  .principle { border: 1px solid var(--line); border-left: 5px solid; border-radius: 0 10px 10px 0; padding: 1rem 1.15rem; background: var(--cell); }
+  .principle h3 {
+    margin: 0 0 0.5rem; font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.25rem; letter-spacing: 0.01em;
+  }
+  .principle p { margin: 0; font-style: italic; }
+  .principle.love   { border-left-color: var(--love);   background: var(--love-bg); }
+  .principle.love h3   { color: var(--love); }
+  .principle.share  { border-left-color: var(--share);  background: var(--share-bg); }
+  .principle.share h3  { color: var(--share); }
+  .principle.invite { border-left-color: var(--invite); background: var(--invite-bg); }
+  .principle.invite h3 { color: var(--invite); }
+
+  ol.goals { list-style: none; counter-reset: g; margin: 1.2rem 0 0.4rem; padding: 0; }
+  ol.goals li {
+    counter-increment: g; position: relative; padding: 0.55rem 0 0.55rem 3.2rem;
+    border-bottom: 1px solid var(--line);
+  }
+  ol.goals li:last-child { border-bottom: 0; }
+  ol.goals li::before {
+    content: counter(g); position: absolute; left: 0; top: 0.5rem;
+    width: 2.3rem; text-align: center; padding: 0.12rem 0;
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.15rem; font-weight: 700; color: var(--fh);
+    background: var(--fh-bg); border-radius: 6px;
+  }
+  ol.goals .n { font-weight: 700; }
+
+  .action { border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem 1.15rem; margin-bottom: 0.8rem; background: var(--cell); }
+  .action h3 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+  .action.love h3   { color: var(--love); }
+  .action.share h3  { color: var(--share); }
+  .action.invite h3 { color: var(--invite); }
+  .action ul { margin: 0; padding-left: 1.15rem; }
+  .action li { margin-bottom: 0.4rem; }
+  .action li:last-child { margin-bottom: 0; }
+
+  .cta {
+    display: block; margin: 1rem 0 0; padding: 1.15rem 1.3rem;
+    background: var(--cell); border: 1px solid var(--fh); border-radius: 10px;
+    text-decoration: none; color: inherit; box-shadow: var(--shadow);
+  }
+  .cta:hover { background: var(--fh-bg); }
+  .cta b { color: var(--fh); display: block; font-size: 1.05rem; }
+  .cta span { color: var(--muted); font-size: 0.9rem; }
+
+  footer { margin-top: 2.6rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.82rem; }
+
+  @media print {
+    body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
+    #theme-btn, .cta { display: none; }
+    h2 { page-break-after: avoid; }
+    .principle, .action, ol.goals li { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="top">
+      <p class="eyebrow">Elk Ridge 7th Ward</p>
+      <button id="theme-btn" type="button">Theme: Auto</button>
+    </div>
+    <h1>Ward Mission Plan<span class="sub">Gathering Israel on both sides of the veil.</span></h1>
+    <p class="standfirst">What we've been asked to do, the three principles we're working from, what we're
+    aiming at this year, and how we'll actually run it.</p>
+  </header>
+
+  <h2>The charge</h2>
+  <p>Prophets have clearly and powerfully taught us the importance of gathering Israel on both sides of the
+  veil. President Russell M. Nelson called this <strong>the greatest work on earth today</strong>.</p>
+  <p>The Quorum of the Twelve Apostles has encouraged us to teach and practice normal and natural ways of
+  sharing the gospel with those who are not members of the Church. They have also approved guiding
+  principles to help members and missionaries in their efforts to gather Israel — and they have promised
+  that when we apply those principles, they will allow the light of the gospel to shine brightly into every
+  corner of the earth.</p>
+
+  <h2>The three guiding principles</h2>
+  <p class="kicker">Approved by the Apostles. Read them as first person — they're written to be your words,
+  not a description of someone else.</p>
+
+  <div class="principles">
+    <div class="principle love">
+      <h3>Love</h3>
+      <p>&ldquo;I love my Heavenly Father and His Son, Jesus Christ, and feel their love for me. I follow
+      the Savior and strive to love my neighbor as He does. I want others to feel the love of my Heavenly
+      Father and Jesus Christ.&rdquo;</p>
+    </div>
+    <div class="principle share">
+      <h3>Share</h3>
+      <p>&ldquo;As a faithful disciple of Jesus Christ, I let His light shine by serving others. I share my
+      time, resources, testimony, and personal experiences to bless my friends and their families. I want
+      them to feel the joy that comes from the Savior, His gospel, and His Church.&rdquo;</p>
+    </div>
+    <div class="principle invite">
+      <h3>Invite</h3>
+      <p>&ldquo;I pray for inspiration and courage to know how to invite my friends to &lsquo;come and
+      see&rsquo; and feel the goodness of the restored gospel and Church of Jesus Christ. I invite them to
+      &lsquo;come and help&rsquo; us serve God's children. I invite them to &lsquo;come and belong&rsquo; to
+      His Church.&rdquo;</p>
+    </div>
+  </div>
+
+  <h2>What we're aiming at</h2>
+  <p class="kicker">Identify individuals whom we feel are ready to progress along the covenant path, then
+  evaluate progress quarterly. Our efforts aim to achieve the following.</p>
+
+  <ol class="goals">
+    <li>Help at least <span class="n">two individuals</span> receive the restored gospel through faith in
+    Jesus Christ, repentance, baptism, and receiving the gift of the Holy Ghost.</li>
+    <li>Help at least <span class="n">four individuals</span> become reactivated in gospel living — through
+    faith in Jesus Christ and making, keeping, and renewing covenants with God through service to God's
+    children, partaking of the sacrament, participation in church meetings, and temple attendance.</li>
+    <li>Identify and cultivate new friendships with at least <span class="n">eight</span> less-active
+    members or non-members.</li>
+    <li>Help <span class="n">all newly baptized members</span> aged 11 and older attend the temple within
+    30 days of baptism.</li>
+  </ol>
+
+  <h2>How we'll do it</h2>
+
+  <div class="action love">
+    <h3>Love</h3>
+    <ul>
+      <li>Be intentional with ministering and fellowshipping assignments. This includes making assignments
+      to all inactive and non-member individuals or families within our ward boundaries.</li>
+    </ul>
+  </div>
+
+  <div class="action share">
+    <h3>Share</h3>
+    <ul>
+      <li>Educate our ward members about this mission plan and the principles of love, share and invite —
+      in ministering interviews, sacrament meeting talks, and second-hour discussions.</li>
+      <li>Encourage everyone to fulfill their assignments to minister and fellowship. Help ward members
+      exercise faith and prayerfully seek and act on inspiration to reach out and share our time, service,
+      friendship, testimonies and helpful life experiences with these individuals and families.</li>
+    </ul>
+  </div>
+
+  <div class="action invite">
+    <h3>Invite</h3>
+    <ul>
+      <li>Invitations to reach out to all households should include church-sponsored ward and stake
+      activities as well as community activities — service projects, neighborhood activities, and personal
+      family activities.</li>
+    </ul>
+  </div>
+
+  <div class="action">
+    <h3>Coordinate regularly</h3>
+    <ul>
+      <li><strong>Weekly huddles</strong> to report and organize the daily efforts to love, share and invite.
+        <ul>
+          <li>Auxiliary representatives who attend will share huddle outcomes with their presidencies.</li>
+          <li>The ward council will provide direction and assignments to the ward missionary committee as
+          they become aware of circumstances and needs.</li>
+          <li>Youth and Primary should be involved in carrying out these assignments, when possible.</li>
+          <li>Our stake's full-time missionaries should also be included, when possible.</li>
+        </ul>
+      </li>
+      <li>In coordination between the ward council and the ward mission leader, maintain a list of about
+      <strong>five families or individuals in need of special prayer and attention</strong>. Pray for those
+      people by name and coordinate efforts to meet their temporal and spiritual needs. Adjust the list
+      regularly as needed.</li>
+    </ul>
+  </div>
+
+  <h2>The other half of the same work</h2>
+  <p>Gathering Israel happens on <em>both</em> sides of the veil. This plan is one side of it; the ward's
+  temple and family history plan is the other, and they're meant to be run as one effort rather than two
+  competing ones.</p>
+
+  <a class="cta" href="family-history.html">
+    <b>The Temple and Family History Plan →</b>
+    <span>The same gathering, on the other side of the veil — what we're doing, why, and every activity in
+    order.</span>
+  </a>
+  <a class="cta" href="index.html">
+    <b>The EQ Activity Date Finder →</b>
+    <span>Every ward activity laid over ball games, school breaks, holidays and the stake calendar — so an
+    invitation lands on a night people can actually come.</span>
+  </a>
+
+  <footer>
+    Elk Ridge 7th Ward · Under the direction of the bishopric and the ward council, with the ward mission
+    leader and the ward missionary committee.
+  </footer>
+
+</div>
+
+<script>
+  /* shares the other pages' theme preference — same origin, same key */
+  const themeBtn = document.getElementById("theme-btn");
+  const THEMES = ["auto", "light", "dark"];
+  let theme = "auto";
+  try { theme = localStorage.getItem("fh-theme") || "auto"; } catch (e) {}
+  function applyTheme() {
+    if (theme === "auto") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", theme);
+    themeBtn.textContent = "Theme: " + theme.charAt(0).toUpperCase() + theme.slice(1);
+  }
+  themeBtn.addEventListener("click", () => {
+    theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+    try { localStorage.setItem("fh-theme", theme); } catch (e) {}
+    applyTheme();
+  });
+  applyTheme();
+</script>
+</body>
+</html>
