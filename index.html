@@ -99,12 +99,18 @@
     text-wrap: balance;
   }
   .lede { color: var(--muted); max-width: 46rem; margin: 0; font-size: 0.92rem; }
+  /* theme control: a small fixed icon, out of the way, bottom right.
+     z-index sits above the day card so it stays reachable while one is open. */
   #theme-btn {
-    flex: none; background: var(--cell); color: var(--ink);
-    border: 1px solid var(--line); border-radius: 6px;
-    padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; cursor: pointer;
+    position: fixed; z-index: 80; right: 0.9rem; bottom: 0.9rem;
+    width: 2.4rem; height: 2.4rem; padding: 0; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--cell); color: var(--muted);
+    border: 1px solid var(--line); border-radius: 50%;
+    font: inherit; font-size: 1.05rem; cursor: pointer;
+    box-shadow: var(--shadow); opacity: 0.75; transition: opacity .15s, color .15s;
   }
-  #theme-btn:hover { border-color: var(--muted); }
+  #theme-btn:hover { opacity: 1; color: var(--ink); border-color: var(--muted); }
   /* stake picker: a details/summary dropdown holding checkboxes, so several
      buckets can be on at once. Native <select multiple> is unusable on a phone. */
   #stake-pick { flex: none; position: relative; font-size: 0.8rem; }
@@ -279,6 +285,7 @@
   #daycard {
     position: fixed; z-index: 60; left: 50%; transform: translateX(-50%);
     bottom: 0.85rem; width: min(32rem, calc(100vw - 1.5rem));
+    padding-right: 3.6rem;
     background: var(--cell); border: 1px solid var(--line); border-radius: 10px;
     box-shadow: var(--shadow); padding: 0.85rem 2.2rem 0.8rem 1rem;
     font-size: 0.86rem; max-height: 46vh; overflow-y: auto;
@@ -396,7 +403,6 @@
             <div class="sp-list" id="stake-list"></div>
           </div>
         </details>
-        <button id="theme-btn" type="button">Theme: Auto</button>
       </div>
     </div>
     <p class="lede">Ward activities color-coded by type over every BYU / Utah / Jazz / NFL date, General Conference,
@@ -435,7 +441,7 @@
         <li class="open t-fel"><span class="when">Sept TBD</span><span class="what">Car Show #2 — pick the bye week when the schedule drops</span></li>
         <li class="t-ai"><span class="when">Nov 18</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
       </ul>
-      <p class="rhythm">Every month: RS temple night · fast-Sunday flyer delivery (deacons) · quarterly member story in quorum/class.</p>
+      <p class="rhythm">Every month: ward temple night · fast-Sunday flyer delivery (deacons) · quarterly member story in quorum/class.</p>
     </aside>
 
     <div class="main">
@@ -466,6 +472,8 @@
     </div>
   </div>
 </div>
+
+<button id="theme-btn" type="button" aria-label="Theme">◐</button>
 
 <div id="tooltip" role="tooltip"></div>
 
@@ -1256,7 +1264,11 @@
   function applyTheme() {
     if (theme === "auto") document.documentElement.removeAttribute("data-theme");
     else document.documentElement.setAttribute("data-theme", theme);
-    themeBtn.textContent = "Theme: " + theme.charAt(0).toUpperCase() + theme.slice(1);
+    const face = { auto: "\u25D0", light: "\u2600", dark: "\u263E" };
+    themeBtn.textContent = face[theme];
+    const name = theme.charAt(0).toUpperCase() + theme.slice(1);
+    themeBtn.title = "Theme: " + name + " \u2014 tap to change";
+    themeBtn.setAttribute("aria-label", "Theme: " + name + ". Tap to change.");
   }
   themeBtn.addEventListener("click", () => {
     theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];

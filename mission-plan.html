@@ -57,12 +57,17 @@
     text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.7rem;
     font-weight: 600; color: var(--muted); margin: 0 0 0.5rem;
   }
+  /* theme control: a small fixed icon, out of the way, bottom right */
   #theme-btn {
-    flex: none; background: var(--cell); color: var(--ink);
-    border: 1px solid var(--line); border-radius: 6px;
-    padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; cursor: pointer;
+    position: fixed; z-index: 80; right: 0.9rem; bottom: 0.9rem;
+    width: 2.4rem; height: 2.4rem; padding: 0; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--cell); color: var(--muted);
+    border: 1px solid var(--line); border-radius: 50%;
+    font: inherit; font-size: 1.05rem; cursor: pointer;
+    box-shadow: var(--shadow); opacity: 0.75; transition: opacity .15s, color .15s;
   }
-  #theme-btn:hover { border-color: var(--muted); }
+  #theme-btn:hover { opacity: 1; color: var(--ink); border-color: var(--muted); }
   #theme-btn:focus-visible, a:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
 
   h1 {
@@ -145,7 +150,6 @@
   <header>
     <div class="top">
       <p class="eyebrow">Elk Ridge 7th Ward</p>
-      <button id="theme-btn" type="button">Theme: Auto</button>
     </div>
     <h1>Ward Mission Plan<span class="sub">Gathering Israel on both sides of the veil.</span></h1>
     <p class="standfirst">What we've been asked to do, the three principles we're working from, what we're
@@ -275,6 +279,8 @@
 
 </div>
 
+<button id="theme-btn" type="button" aria-label="Theme">◐</button>
+
 <script>
   /* shares the other pages' theme preference — same origin, same key */
   const themeBtn = document.getElementById("theme-btn");
@@ -284,7 +290,11 @@
   function applyTheme() {
     if (theme === "auto") document.documentElement.removeAttribute("data-theme");
     else document.documentElement.setAttribute("data-theme", theme);
-    themeBtn.textContent = "Theme: " + theme.charAt(0).toUpperCase() + theme.slice(1);
+    const face = { auto: "\u25D0", light: "\u2600", dark: "\u263E" };
+    themeBtn.textContent = face[theme];
+    const name = theme.charAt(0).toUpperCase() + theme.slice(1);
+    themeBtn.title = "Theme: " + name + " \u2014 tap to change";
+    themeBtn.setAttribute("aria-label", "Theme: " + name + ". Tap to change.");
   }
   themeBtn.addEventListener("click", () => {
     theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];

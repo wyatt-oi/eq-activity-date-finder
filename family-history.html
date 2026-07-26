@@ -53,12 +53,17 @@
     text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.7rem;
     font-weight: 600; color: var(--muted); margin: 0 0 0.5rem;
   }
+  /* theme control: a small fixed icon, out of the way, bottom right */
   #theme-btn {
-    flex: none; background: var(--cell); color: var(--ink);
-    border: 1px solid var(--line); border-radius: 6px;
-    padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; cursor: pointer;
+    position: fixed; z-index: 80; right: 0.9rem; bottom: 0.9rem;
+    width: 2.4rem; height: 2.4rem; padding: 0; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--cell); color: var(--muted);
+    border: 1px solid var(--line); border-radius: 50%;
+    font: inherit; font-size: 1.05rem; cursor: pointer;
+    box-shadow: var(--shadow); opacity: 0.75; transition: opacity .15s, color .15s;
   }
-  #theme-btn:hover { border-color: var(--muted); }
+  #theme-btn:hover { opacity: 1; color: var(--ink); border-color: var(--muted); }
   #theme-btn:focus-visible, a:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
 
   h1 {
@@ -114,6 +119,7 @@
     text-transform: none; letter-spacing: 0;
   }
   table.sched td:last-child { white-space: nowrap; width: 1%; vertical-align: top; }
+  table.sched .purpose { display: block; color: var(--fh); font-size: 0.86rem; font-weight: 650; margin-top: 0.2rem; }
   table.sched .blurb { display: block; color: var(--muted); font-size: 0.88rem; margin-top: 0.25rem; max-width: 34rem; }
   .k {
     display: inline-block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
@@ -154,7 +160,6 @@
   <header>
     <div class="top">
       <p class="eyebrow">Elk Ridge 7th Ward · August 2026 – August 2027</p>
-      <button id="theme-btn" type="button">Theme: Auto</button>
     </div>
     <h1>The Temple and Family History Plan<span class="sub">&ldquo;Making the Connection&rdquo; — using
     today's tools to connect with the people who made us.</span></h1>
@@ -163,10 +168,13 @@
   </header>
 
   <h2>Why we're doing this</h2>
-  <p>Rusty and the Bishop have already named the goal: <strong>baptize a ward in heaven</strong> — at least
-  one complete set of ordinances for the family of every member of this ward.</p>
-  <p>But nobody starts there. People start with a <em>story</em> — a grandpa, a photo, a voice they don't
-  want to lose. So that's where we're starting too. <strong>Connection first; ordinances follow.</strong></p>
+  <p>The goal is <strong>a ward baptized in heaven</strong> — at least one complete set of ordinances for
+  the family of every member of this ward. That's what this whole year is pointed at, and it's the ward's
+  aim, not any one person's assignment.</p>
+  <p>Some of us are ready to work straight from the tree, and if that's you, go. Plenty of others start
+  somewhere else entirely — a <em>story</em>. A grandpa, a photo, a voice you don't want to lose. Both are
+  real family history, and both end up in the same place. <strong>Connection and ordinances feed each
+  other</strong>; you can start from whichever end is actually pulling at you.</p>
 
   <h2>The one thing we're asking</h2>
   <div class="lead-rule">
@@ -189,20 +197,20 @@
 
   <h2>Every month, without adding a meeting</h2>
   <ul class="plain">
-    <li><strong>Relief Society temple night</strong> — already happening, every month. This is the engine.
-    Elders quorum promotes it and comes along.</li>
+    <li><strong>The ward temple night</strong> — already happening, every month. This is the engine, and it
+    is the whole ward's, not one auxiliary's. Come whether or not you have a name of your own yet.</li>
     <li><strong>Fast Sunday</strong> — the deacons deliver the invite for whatever's next, with a short
     word from the presidencies. If you want to know what's coming, that invite is it.</li>
     <li><strong>Once a quarter</strong> — one member shares a three-to-five minute family history
-    experience in quorum or class. Clint volunteered to go first.</li>
+    experience in quorum or class. Someone has already volunteered to go first.</li>
   </ul>
 
   <h2>How you actually get started</h2>
   <p class="kicker">Gatherings open doors. Visits are where things change.</p>
   <ul class="plain">
-    <li>Say yes at any gathering, or just tell someone. Rusty and the consultants visit interested members
-    in twos and threes.</li>
-    <li>Ward council members carry the two-minute message below and pass warm leads to Rusty. Nobody
+    <li>Say yes at any gathering, or just tell someone. The ward temple and family history leader and the
+    consultants visit interested members in twos and threes.</li>
+    <li>Ward council members carry the two-minute message below and pass warm leads on. Nobody
     freelances a full lesson on a doorstep — spark the interest, hand it off.</li>
     <li>One visit does one thing: help you start your one facet. Nothing more.</li>
   </ul>
@@ -223,6 +231,7 @@
         <tr>
           <td>Sat Aug 22</td>
           <td><strong>Family History Kickoff</strong>
+            <span class="purpose">Get people in the room and make this feel like something worth doing.</span>
             <span class="blurb">Root beer floats and pie, and two or three members telling one real family
             story out loud. The whole point is to make this feel like something you'd want to do, not
             something you've been assigned. You leave having picked your one facet.</span></td>
@@ -231,6 +240,7 @@
         <tr>
           <td>Mon Nov 9</td>
           <td><strong>Gratitude Night</strong>
+            <span class="purpose">Reach the families who never come out — at their own table, on their own night.</span>
             <span class="blurb">Nothing to come to — we hand your family a one-page lesson and you run it at
             your own table on family home evening. Name one person you're grateful for and write down one
             thing about them. This is the week to pull out the boxes: the photos nobody's labelled, the
@@ -243,6 +253,7 @@
         <tr>
           <td>Sat Jan 9</td>
           <td><strong>Winter Dutch Oven Temple Night</strong>
+            <span class="purpose">Turn the names people found into ordinances actually reserved.</span>
             <span class="blurb">Dutch oven dinner in the middle of winter, and the night the finding turns
             into going. Bring the names you turned up in the fall and consultants help you reserve the
             ordinances and print the cards — or pull one with Ordinances Ready if you came empty-handed.
@@ -252,8 +263,9 @@
         <tr>
           <td>Sat May 15</td>
           <td><strong>Spring Temple Celebration</strong>
+            <span class="purpose">Take the year to the temple, together, and show the ward what it did.</span>
             <span class="blurb">The payoff. Every name found since August goes to the temple, and we go with
-            the Relief Society temple night so you can attend with your <em>own</em> family's name. We'll
+            the ward temple night so you can attend with your <em>own</em> family's name. We'll
             tell the stories behind the names and count what the ward did together.</span></td>
           <td><span class="k temple">Temple</span></td>
         </tr>
@@ -261,6 +273,7 @@
         <tr>
           <td>Sat Aug 21</td>
           <td><strong>Year-2 Kickoff</strong>
+            <span class="purpose">Start the second lap with our own stories instead of borrowed ones.</span>
             <span class="blurb">Same rhythm, second lap — with a year of the ward's own stories to tell
             instead of borrowed ones.</span></td>
           <td><span class="k fh">Big rock</span></td>
@@ -268,7 +281,7 @@
       </tbody>
     </table>
   </div>
-  <p class="kicker">Plus the monthly Relief Society temple night, and the fast-Sunday invite. The ward runs
+  <p class="kicker">Plus the monthly ward temple night, and the fast-Sunday invite. The ward runs
   other things alongside these — quarterly AI Nights for hands-on help, and fellowship evenings with no
   program at all — and they're all on <a href="index.html">the calendar</a>, which is also the version
   that's always current if a date moves.</p>
@@ -281,8 +294,8 @@
     that closes. And with the tools we have now, a recorded story lasts forever; your great-grandkids
     could hear Grandpa tell it himself.</p>
     <p>The ward's doing something simple this year: everybody picks one small piece of family history —
-    stories, photos, the tree, indexing, a temple name — just one. Which one would you pick? … Rusty and
-    his consultants will come help you start. Can I have him reach out?&rdquo;</p>
+    stories, photos, the tree, indexing, a temple name — just one. Which one would you pick? … Our temple
+    and family history leader and his consultants will come help you start. Can I have them reach out?&rdquo;</p>
   </blockquote>
 
   <h2>Who to talk to</h2>
@@ -290,12 +303,12 @@
     <table class="who">
       <thead><tr><th>Who</th><th>What they're carrying</th></tr></thead>
       <tbody>
-        <tr><td>Rusty</td><td>Ward temple &amp; family history leader. He owns this plan and runs the visits with the consultants. He's the one to ask for help starting.</td></tr>
-        <tr><td>EQ &amp; RS presidencies</td><td>Co-sponsor every event and supply the hands. New ideas go into the plan at the quarter mark — not on top of Rusty mid-stream.</td></tr>
-        <tr><td>Ward council</td><td>Carries the two-minute message and passes leads to Rusty.</td></tr>
+        <tr><td>Ward temple &amp; family history leader</td><td>Runs the visits with the consultants, and the person to ask for help getting started on your one facet.</td></tr>
+        <tr><td>Elders quorum &amp; Relief Society presidencies</td><td>Co-sponsor every activity and supply the hands. New ideas go into the plan at the quarter mark rather than on top of whoever is mid-stream.</td></tr>
+        <tr><td>Ward council</td><td>Carries the two-minute message and passes leads to the temple and family history leader.</td></tr>
         <tr><td>Deacons</td><td>Deliver the invites on fast Sundays.</td></tr>
-        <tr><td>Tisha</td><td>Runs the monthly Relief Society temple night.</td></tr>
-        <tr><td>Bishop &amp; Alaina</td><td>Ratify the plan. Then we run it.</td></tr>
+        <tr><td>Relief Society leadership</td><td>Runs the monthly ward temple night.</td></tr>
+        <tr><td>Bishopric</td><td>Ratifies the plan. Then the ward runs it.</td></tr>
       </tbody>
     </table>
   </div>
@@ -303,7 +316,7 @@
   <h2>What success looks like</h2>
   <p>We can't make anyone love family history, and we're not going to try. Success is simpler than that:
   <strong>we offered, we inspired, we invited</strong> — on a calendar, all year, without burying anybody.</p>
-  <p>If Rusty can end every month saying &ldquo;here's what's next and here's who we invited,&rdquo; this
+  <p>If we can end every month saying &ldquo;here's what's next and here's who we invited,&rdquo; this
   worked. Attendance is a bonus. Ordinances are the fruit that follows.</p>
   <p>The budget, for the record, is close to nothing by design — potluck and Dutch oven, donated pie, a car
   show that costs nothing, and a temple night that already exists.</p>
@@ -326,12 +339,14 @@
 
   <footer>
     Elk Ridge 7th Ward · Under the direction of the elders quorum and Relief Society presidencies, with
-    Rusty as ward temple &amp; family history leader. Dates here are checked against school, stake and
+    the ward temple and family history leader. Dates here are checked against school, stake and
     sports calendars and can still move — <a href="index.html">the date finder</a> is always the
     current version.
   </footer>
 
 </div>
+
+<button id="theme-btn" type="button" aria-label="Theme">◐</button>
 
 <script>
   /* shares the date finder's theme preference — same origin, same key */
@@ -342,7 +357,11 @@
   function applyTheme() {
     if (theme === "auto") document.documentElement.removeAttribute("data-theme");
     else document.documentElement.setAttribute("data-theme", theme);
-    themeBtn.textContent = "Theme: " + theme.charAt(0).toUpperCase() + theme.slice(1);
+    const face = { auto: "\u25D0", light: "\u2600", dark: "\u263E" };
+    themeBtn.textContent = face[theme];
+    const name = theme.charAt(0).toUpperCase() + theme.slice(1);
+    themeBtn.title = "Theme: " + name + " \u2014 tap to change";
+    themeBtn.setAttribute("aria-label", "Theme: " + name + ". Tap to change.");
   }
   themeBtn.addEventListener("click", () => {
     theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
