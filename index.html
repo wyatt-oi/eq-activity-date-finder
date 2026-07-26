@@ -88,16 +88,28 @@
     text-wrap: balance;
   }
   .lede { color: var(--muted); max-width: 46rem; margin: 0; font-size: 0.92rem; }
-  #theme-btn, #stake-btn {
+  #theme-btn {
     flex: none; background: var(--cell); color: var(--ink);
     border: 1px solid var(--line); border-radius: 6px;
     padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; cursor: pointer;
   }
-  #theme-btn:hover, #stake-btn:hover { border-color: var(--muted); }
-  #stake-btn[aria-pressed="true"] {
-    background: var(--church-bg); border-color: var(--church); color: var(--church); font-weight: 650;
+  #theme-btn:hover { border-color: var(--muted); }
+  #stake-pick {
+    flex: none; display: inline-flex; align-items: center; gap: 0.45rem;
+    background: var(--cell); border: 1px solid var(--line); border-radius: 6px;
+    padding: 0.28rem 0.45rem 0.28rem 0.7rem; font-size: 0.8rem;
   }
-  #theme-btn:focus-visible, #stake-btn:focus-visible, .chip:focus-visible, .mnav button:focus-visible {
+  #stake-pick > span { color: var(--muted); white-space: nowrap; }
+  #stake-pick:hover { border-color: var(--muted); }
+  #stake-sel {
+    background: transparent; color: var(--ink); border: 0;
+    font: inherit; font-size: 0.8rem; cursor: pointer; padding: 0.17rem 0.1rem; max-width: 13rem;
+  }
+  #stake-sel option { background: var(--cell); color: var(--ink); }
+  /* the control reads "live" whenever it isn't hidden */
+  #stake-pick.on { background: var(--church-bg); border-color: var(--church); }
+  #stake-pick.on > span, #stake-pick.on #stake-sel { color: var(--church); font-weight: 650; }
+  #theme-btn:focus-visible, #stake-sel:focus-visible, .chip:focus-visible, .mnav button:focus-visible {
     outline: 2px solid var(--ai); outline-offset: 2px;
   }
   .cal td[tabindex]:focus-visible { outline: 2px solid var(--ai); outline-offset: -2px; }
@@ -327,7 +339,7 @@
       </div>
       <div class="mast-actions">
         <button id="suggest-btn" type="button">✎ Suggest a change</button>
-        <button id="stake-btn" type="button" aria-pressed="false">Stake calendar: off</button>
+        <label id="stake-pick"><span>Stake calendar</span><select id="stake-sel"></select></label>
         <button id="theme-btn" type="button">Theme: Auto</button>
       </div>
     </div>
@@ -335,9 +347,9 @@
     school break, and holiday. Starred ★ days are the planned activities; an unmarked Friday or Saturday is clear.
     Hover any dotted day for details (tap on a phone). Click a chip to see only that kind of event —
     click more chips to add them, or click the last one again to bring everything back.
-    <strong>Stake calendar: on</strong> adds every event on the stake feed — recommend interviews, stake
-    council, YSA nights, ward basketball — for when you want the whole picture instead of just the
-    conflicts that matter.</p>
+    The <strong>Stake calendar</strong> dropdown adds the rest of the stake feed on top — pick
+    <em>Everything</em>, or one bucket at a time: leadership meetings, baptisms &amp; recommends, youth,
+    YSA, ward athletics, churchwide broadcasts.</p>
     <div class="filters" id="filters"></div>
   </header>
 
@@ -386,8 +398,8 @@
           <li><strong>Basketball is partially mapped.</strong> BYU's non-conference is official (incl. Ohio State Nov 2, Maui over Thanksgiving, Northwestern Dec 5). Utah's is reported but unofficial until mid-August (Towson Nov 5, Weber St Nov 10, E. Washington Nov 17, Charleston Classic Thanksgiving week). Big 12 conference slates (Jan–Mar) release in the fall — January and March picks get re-checked then.</li>
           <li><strong>2026 football kickoff times aren't announced yet.</strong> College Saturdays are blocked whole-day to be safe.</li>
           <li><strong>Fall 2027 college dates are TBD.</strong> Opponents are set (BYU hosts Utah in Provo) but dates release late fall 2026 — Sept–Nov 2027 Saturdays are blocked generically until then.</li>
-          <li><strong>Stake calendar is merged in, at two levels.</strong> By default the day squares show only the items that can actually cost you a date — youth nights, leadership meetings that land on a Thursday, firesides, Camp Helaman, the Christmas devotional. Hit <strong>Stake calendar: on</strong> in the header for the other 83 events: stake council and high council, temple recommend interviews, stake baptisms, the youth mission-prep course, YSA nights at the Gathering Place, and 8th Ward men's basketball. Those show as dots — hover or tap a day for the full list with times. The toggle remembers itself, and the Church chip still filters both levels together.</li>
-          <li><strong>Two things the default view leaves out on purpose.</strong> 8th Ward men's basketball holds the ward gym every Thursday 9–10:30 p.m. — late enough that it never touches a 7 p.m. activity, so marking every Thursday would just make clear nights look busy. Temple recommend interviews run 1st and 3rd Sundays 2–4 p.m. Both are in the stake layer when you want them.</li>
+          <li><strong>Stake calendar is merged in, at two levels.</strong> By default the day squares show only the items that can actually cost you a date — youth nights, leadership meetings that land on a Thursday, firesides, Camp Helaman, the Christmas devotional. The <strong>Stake calendar</strong> dropdown in the header opens up the other 83 events, either all at once or one bucket at a time: <em>Leadership meetings</em> (10 — stake council, high council), <em>Baptisms &amp; recommends</em> (16), <em>Youth &amp; Primary</em> (9 — mission-prep course, Primary program practice), <em>YSA</em> (22 — Gathering Place nights), <em>Ward athletics</em> (22 — 8th Ward men's basketball), <em>Churchwide broadcasts</em> (4). Those show as dots — hover or tap a day for the full list with times. Your pick is remembered, and the Church chip still filters both levels together.</li>
+          <li><strong>Two things the default view leaves out on purpose.</strong> 8th Ward men's basketball holds the ward gym every Thursday 9–10:30 p.m. — late enough that it never touches a 7 p.m. activity, so marking every Thursday would just make clear nights look busy. Temple recommend interviews run 1st and 3rd Sundays 2–4 p.m. Both are one dropdown pick away — <em>Ward athletics</em> and <em>Baptisms &amp; recommends</em>.</li>
           <li><strong>Still missing from the stake feed:</strong> stake conference, youth conference, girls camp, FSY, and temple closures — none are posted yet. Jan–May 2027 is only lightly filled in (youth nights and fifth-Sunday firesides), so winter and spring picks need a re-check once the stake publishes the rest.</li>
           <li><strong>March Madness dates are approximate</strong> until the NCAA publishes the 2027 bracket calendar.</li>
         </ul>
@@ -437,102 +449,102 @@
     { name: "August 2026", y: 2026, mo: 7, days: 31, startDow: 6,
       pickNote: "★ Tue Aug 11 — Pickleball · ★ Sat Aug 22 — FH Kickoff · ★ Thu Aug 27 — AI Night",
       cells: {
-        3: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        6: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        8: { ev: [["stake","Stake baptisms, 7am–4pm","Stake baptisms"]] },
-        9: { ev: [["stake","Stake high council meeting, 7am–8am","High council"]] },
-        10: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        13: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        16: { ev: [["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"]] },
-        17: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        23: { ev: [["stake","Stake council meeting, 7am–8am","Stake council"]] },
-        24: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        31: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        20: { ev: [["church","Stake quarterly Sunday School council, 7pm","SS council"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        3: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        6: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        8: { ev: [["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
+        9: { ev: [["stake","Stake high council meeting, 7am–8am","High council","leadership"]] },
+        10: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        13: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        16: { ev: [["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        17: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        23: { ev: [["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
+        24: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        31: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        20: { ev: [["church","Stake quarterly Sunday School council, 7pm","SS council"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         26: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         30: { ev: [["church","Fifth Sunday fireside — all youth, 7pm","Youth fireside"]] },
-        2:  { ev: [["church","Fast Sunday flyers"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"]] },
+        2:  { ev: [["church","Fast Sunday flyers"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         11: { star: ["fel","Pickleball Night"] },
         12: { ev: [["school","1st day of school"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        22: { star: ["fh","Family History Kickoff — root beer floats + pie","FH Kickoff"], ev: [["stake","Ward baptism at the stake center, 7am–12pm","Baptism"]] },
-        27: { star: ["ai","AI Night"], ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        22: { star: ["fh","Family History Kickoff — root beer floats + pie","FH Kickoff"], ev: [["stake","Ward baptism at the stake center, 7am–12pm","Baptism","ordinance"]] },
+        27: { star: ["ai","AI Night"], ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
       } },
     { name: "September 2026", y: 2026, mo: 8, days: 30, startDow: 2,
       pickNote: "★ Fri Sept 25 — Car Show (BYU bye week; Utah away Saturday)",
       cells: {
-        11: { ev: [["stake","National Day of Service","Day of Service"]] },
-        14: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        17: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        28: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        10: { ev: [["church","Stake Primary leadership meeting, 6pm","Primary ldrs."],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        11: { ev: [["stake","National Day of Service","Day of Service","churchwide"]] },
+        14: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        17: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        28: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        10: { ev: [["church","Stake Primary leadership meeting, 6pm","Primary ldrs."],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         23: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        24: { ev: [["church","ER7 Relief Society activity, 6pm","RS activity"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        3:  { ev: [["utah","Utah v Idaho (Thu)"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        24: { ev: [["church","ER7 Relief Society activity, 6pm","RS activity"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        3:  { ev: [["utah","Utah v Idaho (Thu)"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         5:  { ev: [["byu","BYU v Utah Tech"]] },
-        6:  { ev: [["church","Fast Sunday flyers"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"]] },
-        7:  { ev: [["hol","Labor Day"],["school","No school"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
+        6:  { ev: [["church","Fast Sunday flyers"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        7:  { ev: [["hol","Labor Day"],["school","No school"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         9:  { ev: [["nfl","NFL kickoff"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        21: { ev: [["school","No school — district day"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        12: { ev: [["byu","BYU v Arizona"],["utah","Utah v Arkansas"],["stake","Stake baptisms, 7am–4pm","Stake baptisms"]] },
-        13: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep"],["stake","Stake high council meeting, 7am–8am","High council"],["stake","Video for Children (churchwide)","Children's video"]] },
+        21: { ev: [["school","No school — district day"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        12: { ev: [["byu","BYU v Arizona"],["utah","Utah v Arkansas"],["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
+        13: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"],["stake","Video for Children (churchwide)","Children's video","churchwide"]] },
         19: { ev: [["byu","BYU @ CSU"],["utah","Utah v USU"]] },
-        20: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"]] },
+        20: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         25: { star: ["fel","Car Show — every car has a story","Car Show"] },
         26: { ev: [["utah","Utah @ Iowa St"],["byu","BYU bye"],["church","Stake Camp Helaman, 8:30am–2pm","Camp Helaman"]] },
-        27: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep"],["stake","Stake council meeting, 7am–8am","Stake council"]] },
+        27: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
       } },
     { name: "October 2026", y: 2026, mo: 9, days: 31, startDow: 4,
       quiet: 1, pickNote: "Clear Fridays: Oct 2, 23, 30 — BYU plays Fri Oct 9; Nebo fall break Oct 15–19",
       cells: {
-        1: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        5: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        8: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        12: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        22: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        26: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        29: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        1: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        5: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        8: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        12: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        22: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        26: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        29: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         14: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         28: { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         3:  { ev: [["church","Gen. Conference"],["byu","BYU @ TCU"]] },
-        4:  { ev: [["church","Gen. Conference"],["nfl","NFL"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"]] },
+        4:  { ev: [["church","Gen. Conference"],["nfl","NFL"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         9:  { ev: [["byu","BYU v Iowa St (Friday game!)"]] },
-        10: { ev: [["utah","Utah v Kansas"],["stake","Stake baptisms, 7am–4pm","Stake baptisms"]] },
-        11: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep"],["stake","Stake high council meeting, 7am–8am","High council"]] },
-        15: { ev: [["school","Fall break (15–19)"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        10: { ev: [["utah","Utah v Kansas"],["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
+        11: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"]] },
+        15: { ev: [["school","Fall break (15–19)"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         16: { ev: [["school","Fall break"],["byu","BYU MBB exh. v Nebraska"]] },
         17: { ev: [["school","Fall break"],["byu","BYU v Notre Dame"],["utah","Utah @ Colorado"]] },
-        18: { ev: [["school","Fall break"],["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"]] },
-        19: { ev: [["school","Fall break"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
+        18: { ev: [["school","Fall break"],["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        19: { ev: [["school","Fall break"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         20: { ev: [["jazz","NBA season opens"]] },
-        24: { ev: [["byu","BYU @ UCF"],["utah","Utah v Houston"],["byu","BYU MBB exh. @ UNLV"],["stake","ER7 Primary program practice, 10am–12pm","Primary practice"]] },
-        25: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep"],["stake","Stake council meeting, 7am–8am","Stake council"]] },
+        24: { ev: [["byu","BYU @ UCF"],["utah","Utah v Houston"],["byu","BYU MBB exh. @ UNLV"],["stake","ER7 Primary program practice, 10am–12pm","Primary practice","youth"]] },
+        25: { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
         31: { ev: [["hol","Halloween"],["byu","BYU v ASU"],["utah","Utah @ Cincy"]] }
       } },
     { name: "November 2026", y: 2026, mo: 10, days: 30, startDow: 0,
       pickNote: "★ Mon Nov 9 — Gratitude Night, done at home as family home evening · ★ Thu Nov 19 — AI Night",
       cells: {
-        16: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        30: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        1:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"],["stake","Worldwide devotional for young adults, 6pm–7pm","YA devotional"]] },
-        2:  { ev: [["byu","BYU MBB v Ohio St"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        5:  { ev: [["utah","Utah MBB v Towson*"],["church","Stake quarterly Sunday School council, 7pm","SS council"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        16: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        30: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        1:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"],["stake","Worldwide devotional for young adults, 6pm–7pm","YA devotional","churchwide"]] },
+        2:  { ev: [["byu","BYU MBB v Ohio St"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        5:  { ev: [["utah","Utah MBB v Towson*"],["church","Stake quarterly Sunday School council, 7pm","SS council"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         6:  { ev: [["byu","BYU MBB v Omaha"]] },
         7:  { ev: [["byu","BYU @ Utah — rivalry game"]] },
-        8:  { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep"],["stake","Stake high council meeting, 7am–8am","High council"],["stake","Rebroadcast: worldwide YA devotional, 12am–1am","YA rebroadcast"]] },
+        8:  { ev: [["nfl","NFL"],["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"],["stake","Rebroadcast: worldwide YA devotional, 12am–1am","YA rebroadcast","churchwide"]] },
         10: { ev: [["byu","BYU MBB v Queens"],["utah","Utah MBB v Weber St*"]] },
-        9:  { star: ["fh","Gratitude Night — a family home evening every family runs at home, two days before Veterans Day","Gratitude FHE"], ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
+        9:  { star: ["fh","Gratitude Night — a family home evening every family runs at home, two days before Veterans Day","Gratitude FHE"], ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         11: { ev: [["hol","Veterans Day"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        12: { ev: [["byu","BYU MBB v Montana St"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        14: { ev: [["byu","BYU v Baylor"],["utah","Utah @ Arizona"],["stake","Stake baptisms, 7am–4pm","Stake baptisms"]] },
-        15: { ev: [["nfl","NFL"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"]] },
+        12: { ev: [["byu","BYU MBB v Montana St"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        14: { ev: [["byu","BYU v Baylor"],["utah","Utah @ Arizona"],["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
+        15: { ev: [["nfl","NFL"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         17: { ev: [["utah","Utah MBB v E. Washington*"]] },
         18: { ev: [["byu","BYU MBB v N. Colorado"]] },
-        19: { star: ["ai","AI Night"], ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        19: { star: ["ai","AI Night"], ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         21: { ev: [["byu","BYU @ Kansas"],["utah","Utah @ TCU"]] },
-        22: { ev: [["nfl","NFL"],["stake","Stake council meeting, 7am–8am","Stake council"]] },
-        23: { ev: [["byu","BYU MBB — Maui Invitational (thru 25th)"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
+        22: { ev: [["nfl","NFL"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
+        23: { ev: [["byu","BYU MBB — Maui Invitational (thru 25th)"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         25: { ev: [["school","Thanksgiving break (25–27)"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        26: { ev: [["hol","Thanksgiving"],["school","Break"],["nfl","NFL"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        26: { ev: [["hol","Thanksgiving"],["school","Break"],["nfl","NFL"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         27: { ev: [["hol","Holiday weekend"],["school","Break"]] },
         28: { ev: [["byu","BYU v Cincinnati"],["utah","Utah v West Virginia"]] },
         29: { ev: [["nfl","NFL"],["church","Fifth Sunday fireside — all youth, 7pm","Youth fireside"]] },
@@ -540,31 +552,31 @@
     { name: "December 2026", y: 2026, mo: 11, days: 31, startDow: 2,
       quiet: 1, pickNote: "Ward Christmas party month — best clear window Dec 11–12",
       cells: {
-        3: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        7: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        10: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
-        12: { ev: [["stake","Stake baptisms, 7am–4pm","Stake baptisms"]] },
-        14: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
-        17: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        3: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        7: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        10: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        12: { ev: [["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
+        14: { ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
+        17: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         9:  { ev: [["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         4:  { ev: [["byu","Big 12 championship (Arlington)"]] },
         5:  { ev: [["byu","BYU MBB v Northwestern"],["church","Stake Primary Christmas activity, 9–10:30am","Primary Christmas"]] },
-        6:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"],["church","First Presidency's Christmas devotional, 6pm","Christmas devo."],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"]] },
-        13: { ev: [["nfl","NFL"],["stake","Stake high council meeting, 7am–8am","High council"]] },
+        6:  { ev: [["church","Fast Sunday flyers"],["nfl","NFL"],["church","First Presidency's Christmas devotional, 6pm","Christmas devo."],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        13: { ev: [["nfl","NFL"],["stake","Stake high council meeting, 7am–8am","High council","leadership"]] },
         18: { ev: [["school","Last school day (½) — break thru Jan 1"]] },
         19: { ev: [["nfl","Bowls / CFP 1st round"]] },
-        20: { ev: [["nfl","NFL"],["church","Stake Christmas Sunday — one-hour sacrament meetings","1-hr sacrament"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends"]] },
-        21: { ev: [["school","Christmas break"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
+        20: { ev: [["nfl","NFL"],["church","Stake Christmas Sunday — one-hour sacrament meetings","1-hr sacrament"],["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
+        21: { ev: [["school","Christmas break"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         22: { ev: [["school","Christmas break"]] },
         23: { ev: [["school","Christmas break"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        24: { ev: [["hol","Christmas Eve"],["school","Break"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        24: { ev: [["hol","Christmas Eve"],["school","Break"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         25: { ev: [["hol","Christmas"],["school","Break"]] },
         26: { ev: [["hol","Holiday weekend"],["school","Break"],["nfl","NFL Sat"]] },
-        27: { ev: [["school","Christmas break"],["nfl","NFL"],["stake","Stake council meeting, 7am–8am","Stake council"]] },
-        28: { ev: [["school","Christmas break"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA"]] },
+        27: { ev: [["school","Christmas break"],["nfl","NFL"],["stake","Stake council meeting, 7am–8am","Stake council","leadership"]] },
+        28: { ev: [["school","Christmas break"],["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         29: { ev: [["school","Christmas break"]] },
         30: { ev: [["school","Christmas break"]] },
-        31: { ev: [["hol","New Year's Eve"],["school","Break"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball"]] },
+        31: { ev: [["hol","New Year's Eve"],["school","Break"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
       } },
     { name: "January 2027", y: 2027, mo: 0, days: 31, startDow: 5,
       pickNote: "★ Sat Jan 9 — Winter Dutch Oven FH Night (re-check vs Big 12 hoops this fall)",
@@ -738,9 +750,22 @@
   const enabled = {};
   for (const t of Object.keys(TYPES)) enabled[t] = true;
   /* "stake" is deliberately NOT one of TYPES — it's a detail layer, not a filter
-     category, so the chips' all-on / isolate-on-first-click behaviour is untouched. */
-  let showStake = false;
-  try { showStake = localStorage.getItem("fh-show-stake") === "1"; } catch (e) {}
+     category, so the chips' all-on / isolate-on-first-click behaviour is untouched.
+     stakePick is "off", "all", or one bucket key. */
+  const STAKE_BUCKETS = [
+    ["leadership", "Leadership meetings"],
+    ["ordinance",  "Baptisms & recommends"],
+    ["youth",      "Youth & Primary"],
+    ["ysa",        "YSA"],
+    ["athletics",  "Ward athletics"],
+    ["churchwide", "Churchwide broadcasts"]
+  ];
+  let stakePick = "off";
+  try {
+    const saved = localStorage.getItem("fh-stake-pick");
+    if (saved) stakePick = saved;
+    else if (localStorage.getItem("fh-show-stake") === "1") stakePick = "all";  // migrate old toggle
+  } catch (e) {}
   const chipBtns = {};
 
   /* default mobile month = current month if in range */
@@ -790,9 +815,10 @@
     const items = [];
     if (info.star && enabled[info.star[0]])
       items.push({ t: info.star[0], l: info.star[1], d: info.star[2] || info.star[1], star: true });
-    for (const [t, l, d] of (info.ev || [])) {
-      if (t === "stake") {                        // detail layer, gated by its own toggle
-        if (showStake && enabled.church) items.push({ t, l, d: d || l });
+    for (const [t, l, d, b] of (info.ev || [])) {
+      if (t === "stake") {                        // detail layer, gated by its own picker
+        if (stakePick === "off" || !enabled.church) continue;
+        if (stakePick === "all" || stakePick === b) items.push({ t, l, d: d || l, b });
         continue;
       }
       if (enabled[t]) items.push({ t, l, d: d || l });
@@ -1007,25 +1033,47 @@
     applyTheme();
   });
 
-  /* full stake calendar: an extra detail layer, off by default so the default
+  /* full stake calendar: an extra detail layer, hidden by default so the default
      view stays a clean date-finder. Rides the Church chip when shown. */
-  const stakeBtn = document.getElementById("stake-btn");
-  function applyStake() {
-    stakeBtn.textContent = "Stake calendar: " + (showStake ? "on" : "off");
-    stakeBtn.setAttribute("aria-pressed", String(showStake));
-    stakeBtn.title = showStake
-      ? "Showing every event on the stake feed — recommend interviews, stake council, YSA nights, ward basketball. Hover a day for times."
-      : "Show every event on the stake feed, not just the ones that affect activity planning.";
+  const stakeSel = document.getElementById("stake-sel");
+  const stakePickBox = document.getElementById("stake-pick");
+
+  function buildStakePicker() {
+    const counts = { all: 0 };
+    for (const m of MONTHS)
+      for (const day of Object.keys(m.cells))
+        for (const e of (m.cells[day].ev || []))
+          if (e[0] === "stake") { counts.all++; counts[e[3]] = (counts[e[3]] || 0) + 1; }
+
+    const opts = [["off", "Hidden"], ["all", "Everything (" + counts.all + ")"]];
+    for (const [key, label] of STAKE_BUCKETS)
+      if (counts[key]) opts.push([key, label + " (" + counts[key] + ")"]);
+
+    // a saved bucket that no longer exists in the data would silently show nothing
+    if (!opts.some(o => o[0] === stakePick)) stakePick = "off";
+
+    stakeSel.innerHTML = opts
+      .map(([v, l]) => `<option value="${v}">${l}</option>`).join("");
+    stakeSel.value = stakePick;
   }
-  stakeBtn.addEventListener("click", () => {
-    showStake = !showStake;
-    try { localStorage.setItem("fh-show-stake", showStake ? "1" : "0"); } catch (e) {}
+
+  function applyStake() {
+    stakePickBox.classList.toggle("on", stakePick !== "off");
+    stakeSel.title = stakePick === "off"
+      ? "Show the rest of the stake calendar — pick everything, or one kind of event at a time."
+      : "Showing stake events as dots. Hover or tap a day for the full list with times.";
+  }
+
+  stakeSel.addEventListener("change", () => {
+    stakePick = stakeSel.value;
+    try { localStorage.setItem("fh-stake-pick", stakePick); } catch (e) {}
     applyStake();
     hideTip();
     renderAll();
   });
 
   applyTheme();
+  buildStakePicker();
   applyStake();
   buildFilters();
   renderAll();
