@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Making the Connection — Elk Ridge 7th Ward Family History</title>
+<style>
+  :root {
+    --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
+    --fh: #2C6E3F;   --fh-bg: #CFE8D4;
+    --ai: #0E7490;   --ai-bg: #D2E9F0;
+    --fel: #C2410C;  --fel-bg: #FAE3D3;
+    --temple: #0369A1; --temple-bg: #D9EBF7;
+    --church: #5B4A7A; --church-bg: #EAE4F2;
+    --shadow: 0 6px 24px rgba(35,32,27,0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
+      --fh: #8FCB9E;   --fh-bg: #27492F;
+      --ai: #74C4DB;   --ai-bg: #10333D;
+      --fel: #F0A374;  --fel-bg: #3D2113;
+      --temple: #82C0E5; --temple-bg: #122A3B;
+      --church: #BCA9DE; --church-bg: #2A2338;
+      --shadow: 0 6px 24px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
+    --fh: #2C6E3F;   --fh-bg: #CFE8D4;
+    --ai: #0E7490;   --ai-bg: #D2E9F0;
+    --fel: #C2410C;  --fel-bg: #FAE3D3;
+    --temple: #0369A1; --temple-bg: #D9EBF7;
+    --church: #5B4A7A; --church-bg: #EAE4F2;
+    --shadow: 0 6px 24px rgba(35,32,27,0.10);
+  }
+  :root[data-theme="dark"] {
+    --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
+    --fh: #8FCB9E;   --fh-bg: #27492F;
+    --ai: #74C4DB;   --ai-bg: #10333D;
+    --fel: #F0A374;  --fel-bg: #3D2113;
+    --temple: #82C0E5; --temple-bg: #122A3B;
+    --church: #BCA9DE; --church-bg: #2A2338;
+    --shadow: 0 6px 24px rgba(0,0,0,0.5);
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6; margin: 0; padding: 2rem 1.25rem 4rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 47rem; margin: 0 auto; }
+  .serif { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; }
+
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.7rem;
+    font-weight: 600; color: var(--muted); margin: 0 0 0.5rem;
+  }
+  #theme-btn {
+    flex: none; background: var(--cell); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 0.45rem 0.8rem; font: inherit; font-size: 0.8rem; cursor: pointer;
+  }
+  #theme-btn:hover { border-color: var(--muted); }
+  #theme-btn:focus-visible, a:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+
+  h1 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: clamp(1.75rem, 6vw, 2.7rem); line-height: 1.12; margin: 0 0 0.6rem;
+    text-wrap: balance; letter-spacing: -0.01em;
+  }
+  h1 .sub { display: block; font-size: 0.44em; font-style: italic; color: var(--muted); margin-top: 0.5rem; letter-spacing: 0; }
+  .standfirst { font-size: 1.06rem; color: var(--muted); margin: 0 0 0.4rem; max-width: 38rem; }
+
+  h2 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.5rem; margin: 2.6rem 0 0.2rem; line-height: 1.2;
+  }
+  h2 + .kicker { color: var(--muted); font-size: 0.88rem; margin: 0 0 1rem; }
+  h3 { font-size: 1rem; margin: 1.5rem 0 0.35rem; }
+  p { margin: 0 0 0.9rem; }
+  a { color: var(--fh); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 2.4rem 0 0; }
+
+  .lead-rule {
+    background: var(--fh-bg); border-left: 4px solid var(--fh);
+    border-radius: 0 8px 8px 0; padding: 1.1rem 1.25rem; margin: 1.4rem 0;
+  }
+  .lead-rule p:last-child { margin-bottom: 0; }
+  .lead-rule strong { color: var(--fh); }
+
+  .facets { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.7rem; margin: 1.2rem 0 0.4rem; }
+  .facet {
+    background: var(--cell); border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.75rem 0.9rem;
+  }
+  .facet b { display: block; font-size: 0.94rem; }
+  .facet span { color: var(--muted); font-size: 0.84rem; }
+
+  ol.year { list-style: none; margin: 1.2rem 0 0; padding: 0; }
+  ol.year > li {
+    position: relative; padding: 0 0 1.5rem 1.85rem;
+    border-left: 2px solid var(--line); margin-left: 0.4rem;
+  }
+  ol.year > li:last-child { border-left-color: transparent; padding-bottom: 0.2rem; }
+  ol.year > li::before {
+    content: ""; position: absolute; left: -0.47rem; top: 0.42rem;
+    width: 0.8rem; height: 0.8rem; border-radius: 50%;
+    background: var(--paper); border: 2.5px solid var(--muted);
+  }
+  ol.year > li.big::before { border-color: var(--fh); background: var(--fh); }
+  ol.year > li.fel::before { border-color: var(--fel); }
+  ol.year > li.temple::before { border-color: var(--temple); background: var(--temple); }
+  ol.year > li.home::before { border-color: var(--fh); }
+  .when {
+    display: block; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.1rem;
+  }
+  .what { font-weight: 700; font-size: 1.06rem; display: block; margin-bottom: 0.2rem; }
+  ol.year > li.big .what { color: var(--fh); }
+  ol.year > li.temple .what { color: var(--temple); }
+  ol.year > li p { margin: 0; font-size: 0.93rem; color: var(--muted); }
+  .tag {
+    display: inline-block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.07em; padding: 0.1rem 0.42rem; border-radius: 4px; vertical-align: 0.12em;
+    margin-left: 0.4rem; background: var(--fh-bg); color: var(--fh);
+  }
+  .tag.home { background: var(--church-bg); color: var(--church); }
+
+  .ai-box {
+    background: var(--ai-bg); border: 1px solid var(--ai); border-radius: 10px;
+    padding: 1.1rem 1.25rem; margin: 1.3rem 0;
+  }
+  .ai-box h3 { margin-top: 0; color: var(--ai); }
+  .ai-dates { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.7rem 0 0; padding: 0; list-style: none; }
+  .ai-dates li {
+    background: var(--cell); border: 1px solid var(--ai); color: var(--ai);
+    border-radius: 999px; padding: 0.18rem 0.65rem; font-size: 0.8rem; font-weight: 650;
+  }
+
+  ul.plain { margin: 0.6rem 0 0.9rem; padding-left: 1.15rem; }
+  ul.plain li { margin-bottom: 0.45rem; }
+
+  blockquote.msg {
+    margin: 1.3rem 0; padding: 1.2rem 1.35rem;
+    background: var(--cell); border: 1px solid var(--line); border-left: 4px solid var(--fh);
+    border-radius: 0 10px 10px 0; box-shadow: var(--shadow);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.04rem; line-height: 1.65;
+  }
+  blockquote.msg p:last-child { margin-bottom: 0; }
+
+  table.who { width: 100%; border-collapse: collapse; margin: 1.1rem 0 0.4rem; font-size: 0.93rem; }
+  table.who th, table.who td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.who th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); }
+  table.who td:first-child { font-weight: 700; white-space: nowrap; }
+  .scroller { overflow-x: auto; }
+
+  .cta {
+    display: block; margin: 2.6rem 0 0; padding: 1.15rem 1.3rem;
+    background: var(--cell); border: 1px solid var(--fh); border-radius: 10px;
+    text-decoration: none; color: inherit; box-shadow: var(--shadow);
+  }
+  .cta:hover { background: var(--fh-bg); }
+  .cta b { color: var(--fh); display: block; font-size: 1.05rem; }
+  .cta span { color: var(--muted); font-size: 0.9rem; }
+
+  footer { margin-top: 2.6rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.82rem; }
+
+  @media print {
+    body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
+    #theme-btn, .cta { display: none; }
+    h2 { page-break-after: avoid; }
+    ol.year > li { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="top">
+      <p class="eyebrow">Elk Ridge 7th Ward · August 2026 – July 2027</p>
+      <button id="theme-btn" type="button">Theme: Auto</button>
+    </div>
+    <h1>Making the Connection<span class="sub">Using today's tools to connect with the people who made us.</span></h1>
+    <p class="standfirst">This is the ward's family history plan for the year — what we're doing, when,
+    and the one thing we're asking of you. It's short on purpose.</p>
+  </header>
+
+  <h2>Why we're doing this</h2>
+  <p>Rusty and the Bishop have already named the goal: <strong>baptize a ward in heaven</strong> — at least
+  one complete set of ordinances for the family of every member of this ward.</p>
+  <p>But nobody starts there. People start with a <em>story</em> — a grandpa, a photo, a voice they don't
+  want to lose. So that's where we're starting too. <strong>Connection first; ordinances follow.</strong></p>
+
+  <h2>The one thing we're asking</h2>
+  <div class="lead-rule">
+    <p><strong>Pick one facet. That's it.</strong></p>
+    <p>Family history isn't one thing. It's temple work, indexing, the family tree, recorded stories,
+    photos and video, pulling a name with Ordinances Ready. <strong>Nobody has to do all of it.</strong>
+    Our whole job this year is helping you find the one piece that lights you up, and helping you start.</p>
+    <p>There is no wrong way to do family history, and nobody gets corrected here for doing it
+    &ldquo;improperly.&rdquo;</p>
+  </div>
+
+  <div class="facets">
+    <div class="facet"><b>Recorded stories</b><span>Sit down with a parent or grandparent. Their voice, their face, in their words.</span></div>
+    <div class="facet"><b>Photos &amp; video</b><span>Get the shoebox onto FamilySearch Memories before it's lost.</span></div>
+    <div class="facet"><b>The family tree</b><span>Fill in what you know. Fix what's wrong. Add sources.</span></div>
+    <div class="facet"><b>Temple work</b><span>Take your own family's names to the temple.</span></div>
+    <div class="facet"><b>Ordinances Ready</b><span>Two taps in the app and you have a name to take.</span></div>
+    <div class="facet"><b>Indexing</b><span>Make records searchable for everyone else. Do it in your slippers.</span></div>
+  </div>
+
+  <h2>The year</h2>
+  <p class="kicker">Two big rocks, a few gatherings, and a rhythm that already exists.</p>
+
+  <ol class="year">
+    <li class="fel">
+      <span class="when">Tuesday, August 11</span>
+      <span class="what">Pickleball Night</span>
+      <p>Pure fellowship, zero program. The last night of summer break — come play. If you're there,
+      you'll get a personal invite to the 22nd.</p>
+    </li>
+    <li class="big">
+      <span class="when">Saturday, August 22</span>
+      <span class="what">Family History Kickoff <span class="tag">Big rock</span></span>
+      <p>Root beer floats and pie, and stories about your relatives. Two or three members tell one real
+      family story — Clint on recording his living father, Scott on filming his father-in-law's D-Day
+      story. Short program, good food, and the year starts.</p>
+    </li>
+    <li class="fel">
+      <span class="when">Friday, September 25</span>
+      <span class="what">Car Show, family history edition</span>
+      <p>Dave's car show, on a football-free Friday. Every car has a story — so does every family.
+      Rusty and the consultants will have a table if you want to start something.</p>
+    </li>
+    <li class="home">
+      <span class="when">Monday, November 9</span>
+      <span class="what">Gratitude Night <span class="tag home">At home</span></span>
+      <p>Not a ward event — there's nothing to come to. We'll hand your family a one-page lesson and you
+      run it at your own table on family home evening: name one person you're grateful for, and write down
+      one thing about them. Two days before Veterans Day, so veteran and family stories fit.</p>
+    </li>
+    <li class="big">
+      <span class="when">Saturday, January 9</span>
+      <span class="what">Winter Dutch Oven Night <span class="tag">Big rock</span></span>
+      <p>Dutch oven dinner in the middle of winter. Bring one photo, one object, or one story — and leave
+      with it <em>saved</em>: recorded, uploaded, attached to the tree before you go home.</p>
+    </li>
+    <li class="temple">
+      <span class="when">Saturday, May 15</span>
+      <span class="what">Spring Temple Celebration</span>
+      <p>The payoff. Every name found since August goes to the temple, and we go with the Relief Society
+      temple night so members can attend with their <em>own</em> family name. That's &ldquo;baptize a ward
+      in heaven&rdquo; you can actually see. We'll celebrate the count and tell the stories behind the names.</p>
+    </li>
+  </ol>
+
+  <div class="ai-box">
+    <h3>AI Nights — the hands-on hour</h3>
+    <p>Four times a year, always a Thursday, the week after the big event. Bring a phone or a laptop.
+    Consultants and a few tech-comfortable members work the tables.</p>
+    <p><strong>One hour, one thing done.</strong> Record a grandparent telling one story. Upload it to
+    FamilySearch Memories. See the &ldquo;AI recreation of Grandpa&rdquo; demo. Pull a temple name with
+    Ordinances Ready. Nobody leaves without having actually done one thing.</p>
+    <ul class="ai-dates">
+      <li>Thu Aug 27, 2026</li>
+      <li>Thu Nov 19, 2026</li>
+      <li>Thu Feb 18, 2027</li>
+      <li>Wed May 19, 2027</li>
+    </ul>
+  </div>
+
+  <h2>Every month, without adding a meeting</h2>
+  <ul class="plain">
+    <li><strong>Relief Society temple night</strong> — already happening, every month. This is the engine.
+    Elders quorum promotes it and comes along.</li>
+    <li><strong>Fast Sunday</strong> — the deacons deliver the invite for whatever's next, with a short
+    word from the presidencies.</li>
+    <li><strong>Once a quarter</strong> — one member shares a three-to-five minute family history
+    experience in quorum or class. Clint volunteered to go first.</li>
+  </ul>
+
+  <h2>What happens after an event</h2>
+  <p class="kicker">Events open doors. Visits are where things actually change.</p>
+  <ul class="plain">
+    <li>Rusty and the consultants take the sign-up list and visit interested members in twos and threes.</li>
+    <li>Ward council members carry the two-minute message below and pass warm leads to Rusty. Nobody
+    freelances a full lesson on a doorstep — spark the interest, hand it off.</li>
+    <li>One visit does one thing: help you start your one facet. Nothing more.</li>
+  </ul>
+
+  <h2>The two-minute message</h2>
+  <p class="kicker">If you carry one thing from this page, carry this.</p>
+  <blockquote class="msg">
+    <p>&ldquo;Can I tell you the thing that got me? Someone pointed out that if you haven't sat down and
+    recorded your parents or grandparents — their voice, their face, their stories — that's the window
+    that closes. And with the tools we have now, a recorded story lasts forever; your great-grandkids
+    could hear Grandpa tell it himself.</p>
+    <p>The ward's doing something simple this year: everybody picks one small piece of family history —
+    stories, photos, the tree, indexing, a temple name — just one. Which one would you pick? … Rusty and
+    his consultants will come help you start. Can I have him reach out?&rdquo;</p>
+  </blockquote>
+
+  <h2>Who to talk to</h2>
+  <div class="scroller">
+    <table class="who">
+      <thead><tr><th>Who</th><th>What they're carrying</th></tr></thead>
+      <tbody>
+        <tr><td>Rusty</td><td>Ward temple &amp; family history leader. He owns this plan and runs the visits with the consultants. He's the one to ask for help starting.</td></tr>
+        <tr><td>EQ &amp; RS presidencies</td><td>Co-sponsor every event and supply the hands. New ideas go into the plan at the quarter mark — not on top of Rusty mid-stream.</td></tr>
+        <tr><td>Ward council</td><td>Carries the two-minute message and passes leads to Rusty.</td></tr>
+        <tr><td>Deacons</td><td>Deliver the invites on fast Sundays.</td></tr>
+        <tr><td>Tisha</td><td>Runs the monthly Relief Society temple night.</td></tr>
+        <tr><td>Bishop &amp; Alaina</td><td>Ratify the plan. Then we run it.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>What success looks like</h2>
+  <p>We can't make anyone love family history, and we're not going to try. Success is simpler than that:
+  <strong>we offered, we inspired, we invited</strong> — on a calendar, all year, without burying anybody.</p>
+  <p>If Rusty can end every month saying &ldquo;here's what's next and here's who we invited,&rdquo; this
+  worked. Attendance is a bonus. Ordinances are the fruit that follows.</p>
+  <p>The budget, for the record, is close to nothing by design — potluck and Dutch oven, donated pie, a car
+  show that costs nothing, and a temple night that already exists.</p>
+
+  <a class="cta" href="index.html">
+    <b>See the calendar →</b>
+    <span>The EQ Activity Date Finder has every date above laid over ball games, school breaks, holidays
+    and the stake calendar — so you can see what else is going on that night.</span>
+  </a>
+
+  <footer>
+    Elk Ridge 7th Ward · Under the direction of the elders quorum and Relief Society presidencies, with
+    Rusty as ward temple &amp; family history leader. Dates are checked against school, stake and sports
+    calendars and can move — the date finder is always the current version.
+  </footer>
+
+</div>
+
+<script>
+  /* shares the date finder's theme preference — same origin, same key */
+  const themeBtn = document.getElementById("theme-btn");
+  const THEMES = ["auto", "light", "dark"];
+  let theme = "auto";
+  try { theme = localStorage.getItem("fh-theme") || "auto"; } catch (e) {}
+  function applyTheme() {
+    if (theme === "auto") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", theme);
+    themeBtn.textContent = "Theme: " + theme.charAt(0).toUpperCase() + theme.slice(1);
+  }
+  themeBtn.addEventListener("click", () => {
+    theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+    try { localStorage.setItem("fh-theme", theme); } catch (e) {}
+    applyTheme();
+  });
+  applyTheme();
+</script>
+</body>
+</html>
