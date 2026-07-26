@@ -8,27 +8,35 @@
   :root {
     --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
     --fh: #2C6E3F;   --fh-bg: #CFE8D4;
-    --ai: #0E7490;
+    --ai: #0E7490;   --ai-bg: #D2E9F0;
+    --fel: #C2410C;  --fel-bg: #FAE3D3;
+    --church: #5B4A7A; --church-bg: #EAE4F2;
     --shadow: 0 6px 24px rgba(35,32,27,0.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
       --fh: #8FCB9E;   --fh-bg: #27492F;
-      --ai: #74C4DB;
+      --ai: #74C4DB;   --ai-bg: #10333D;
+      --fel: #F0A374;  --fel-bg: #3D2113;
+      --church: #BCA9DE; --church-bg: #2A2338;
       --shadow: 0 6px 24px rgba(0,0,0,0.5);
     }
   }
   :root[data-theme="light"] {
     --paper: #FAF7F2; --ink: #23201B; --muted: #6E675C; --line: #E2DCD2; --cell: #FFFFFF;
     --fh: #2C6E3F;   --fh-bg: #CFE8D4;
-    --ai: #0E7490;
+    --ai: #0E7490;   --ai-bg: #D2E9F0;
+    --fel: #C2410C;  --fel-bg: #FAE3D3;
+    --church: #5B4A7A; --church-bg: #EAE4F2;
     --shadow: 0 6px 24px rgba(35,32,27,0.10);
   }
   :root[data-theme="dark"] {
     --paper: #171512; --ink: #EDE8E0; --muted: #A29A8D; --line: #35312A; --cell: #201D19;
     --fh: #8FCB9E;   --fh-bg: #27492F;
-    --ai: #74C4DB;
+    --ai: #74C4DB;   --ai-bg: #10333D;
+    --fel: #F0A374;  --fel-bg: #3D2113;
+    --church: #BCA9DE; --church-bg: #2A2338;
     --shadow: 0 6px 24px rgba(0,0,0,0.5);
   }
   * { box-sizing: border-box; }
@@ -96,6 +104,25 @@
   }
   blockquote.msg p:last-child { margin-bottom: 0; }
 
+  table.sched { width: 100%; border-collapse: collapse; margin: 1.2rem 0 0.6rem; font-size: 0.92rem; }
+  table.sched th, table.sched td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.sched thead th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); font-weight: 700; }
+  table.sched td:first-child { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 650; }
+  table.sched tr.yr th {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 1.05rem; padding-top: 1.1rem; border-bottom: 2px solid var(--ink); color: var(--ink);
+    text-transform: none; letter-spacing: 0;
+  }
+  table.sched td:last-child { white-space: nowrap; width: 1%; }
+  .k {
+    display: inline-block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 0.12rem 0.45rem; border-radius: 999px; white-space: nowrap;
+  }
+  .k.fh   { background: var(--fh-bg);     color: var(--fh); }
+  .k.ai   { background: var(--ai-bg);     color: var(--ai); }
+  .k.fel  { background: var(--fel-bg);    color: var(--fel); }
+  .k.home { background: var(--church-bg); color: var(--church); }
+
   table.who { width: 100%; border-collapse: collapse; margin: 1.1rem 0 0.4rem; font-size: 0.93rem; }
   table.who th, table.who td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
   table.who th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); }
@@ -117,7 +144,7 @@
     body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
     #theme-btn, .cta { display: none; }
     h2 { page-break-after: avoid; }
-    .facet, blockquote.msg, table.who tr { page-break-inside: avoid; }
+    .facet, blockquote.msg, table.who tr, table.sched tr { page-break-inside: avoid; }
   }
 </style>
 </head>
@@ -126,13 +153,12 @@
 
   <header>
     <div class="top">
-      <p class="eyebrow">Elk Ridge 7th Ward · August 2026 – July 2027</p>
+      <p class="eyebrow">Elk Ridge 7th Ward · August 2026 – November 2027</p>
       <button id="theme-btn" type="button">Theme: Auto</button>
     </div>
     <h1>Making the Connection<span class="sub">Using today's tools to connect with the people who made us.</span></h1>
-    <p class="standfirst">This is the ward's family history plan — why we're doing it and the one thing
-    we're asking of you. It's short on purpose. Dates and activities live on
-    <a href="index.html">the calendar</a>.</p>
+    <p class="standfirst">This is the ward's family history plan — why we're doing it, the one thing
+    we're asking of you, and everything that's happening, in order. It's short on purpose.</p>
   </header>
 
   <h2>Why we're doing this</h2>
@@ -181,9 +207,39 @@
   </ul>
   <p>Through the year there are a handful of gatherings built around this — a kickoff, a car show, a Dutch
   oven night, a temple celebration, and quarterly hands-on nights where you bring a phone and leave having
-  actually recorded or uploaded one thing. <strong>You don't need to track any of that here.</strong>
-  Every date is on <a href="index.html">the calendar</a>, checked against ball games, school breaks and the
-  stake calendar.</p>
+  actually recorded or uploaded one thing. They're all listed below.</p>
+
+  <h2>Everything, in order</h2>
+  <p class="kicker">Every family history activity in one place, start to finish. Two kinds of thing repeat:
+  <strong>AI Nights</strong> are the hands-on hour, always a Thursday, the week after each big event —
+  bring a phone, leave having done one thing. <strong>Fellowship</strong> nights have no program at all;
+  they're just how we get people out and talking.</p>
+
+  <div class="scroller">
+    <table class="sched">
+      <thead><tr><th>When</th><th>What</th><th>Kind</th></tr></thead>
+      <tbody>
+        <tr class="yr"><th colspan="3">2026</th></tr>
+        <tr><td>Tue Aug 11</td><td>Pickleball Night</td><td><span class="k fel">Fellowship</span></td></tr>
+        <tr><td>Sat Aug 22</td><td><strong>Family History Kickoff</strong> — root beer floats + pie</td><td><span class="k fh">Big rock</span></td></tr>
+        <tr><td>Thu Aug 27</td><td>AI Night</td><td><span class="k ai">Hands-on</span></td></tr>
+        <tr><td>Fri Sep 25</td><td>Car Show — every car has a story</td><td><span class="k fel">Fellowship</span></td></tr>
+        <tr><td>Mon Nov 9</td><td><strong>Gratitude Night</strong> — run it at your own table</td><td><span class="k home">At home</span></td></tr>
+        <tr><td>Thu Nov 19</td><td>AI Night</td><td><span class="k ai">Hands-on</span></td></tr>
+        <tr class="yr"><th colspan="3">2027</th></tr>
+        <tr><td>Sat Jan 9</td><td><strong>Winter Dutch Oven Night</strong> — bring one photo, object or story</td><td><span class="k fh">Big rock</span></td></tr>
+        <tr><td>Thu Feb 18</td><td>AI Night</td><td><span class="k ai">Hands-on</span></td></tr>
+        <tr><td>Sat May 15</td><td><strong>Spring Temple Celebration</strong> — the year's names go to the temple</td><td><span class="k fh">Big rock</span></td></tr>
+        <tr><td>Wed May 19</td><td>AI Night</td><td><span class="k ai">Hands-on</span></td></tr>
+        <tr><td>Sat Aug 21</td><td>Year-2 Family History Kickoff</td><td><span class="k fh">Big rock</span></td></tr>
+        <tr><td>Thu Aug 26</td><td>AI Night</td><td><span class="k ai">Hands-on</span></td></tr>
+        <tr><td>Thu Nov 18</td><td>AI Night</td><td><span class="k ai">Hands-on</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="kicker">Plus the monthly rhythm above — Relief Society temple night, and the fast-Sunday invite.
+  <a href="index.html">The calendar</a> shows all of this laid over ball games, school breaks, holidays and
+  the stake calendar, and it's the version that's always current if something moves.</p>
 
   <h2>The two-minute message</h2>
   <p class="kicker">If you carry one thing from this page, carry this.</p>
@@ -221,16 +277,17 @@
   show that costs nothing, and a temple night that already exists.</p>
 
   <a class="cta" href="index.html">
-    <b>Looking for the dates? →</b>
-    <span>They're all on the EQ Activity Date Finder — every activity laid over ball games, school breaks,
-    holidays and the stake calendar, so you can see what else is going on that night. This page is the
-    <em>why</em>; that one is the <em>when</em>.</span>
+    <b>See it against everything else →</b>
+    <span>The EQ Activity Date Finder puts these same dates over ball games, school breaks, holidays and
+    the stake calendar, so you can see what else is going on that night. It's also the version that's
+    always current — if a date ever moves, trust the calendar over this page.</span>
   </a>
 
   <footer>
     Elk Ridge 7th Ward · Under the direction of the elders quorum and Relief Society presidencies, with
-    Rusty as ward temple &amp; family history leader. Activities and dates are kept separately, on
-    <a href="index.html">the date finder</a>, so this page doesn't go stale when something moves.
+    Rusty as ward temple &amp; family history leader. Dates here are checked against school, stake and
+    sports calendars and can still move — <a href="index.html">the date finder</a> is always the
+    current version.
   </footer>
 
 </div>
