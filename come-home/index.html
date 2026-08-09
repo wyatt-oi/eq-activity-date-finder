@@ -22,8 +22,8 @@ html,body{height:100%;overflow:hidden;background:#EDE9E1}
 body{font-family:var(--serif);color:var(--ink);-webkit-font-smoothing:antialiased}
 
 /* ---------- stage ---------- */
-#stage{position:fixed;inset:0;display:grid;place-items:center}
-#deck{position:relative;width:1280px;height:720px;transform-origin:center center;
+#stage{position:fixed;inset:0;overflow:hidden}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;
   background:var(--paper);box-shadow:0 30px 90px rgba(50,40,25,.28),0 2px 6px rgba(50,40,25,.10);
   overflow:hidden}
 
@@ -244,6 +244,11 @@ body.work #wbadge{display:block}
   border-radius:8px;padding:18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6}
 
 /* respect reduced-motion: show everything, skip the entrances */
+#rotate{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:80;display:none;
+  font-family:var(--sans);font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#8A6034;
+  background:#F0E2CC;padding:9px 16px;border-radius:99px;white-space:nowrap;box-shadow:0 3px 14px rgba(40,30,16,.18)}
+@media (orientation:portrait) and (max-width:900px){ #rotate{display:block} }
+
 @media (prefers-reduced-motion: reduce){
   [data-a]{opacity:1!important;transform:none!important;transition:none!important}
   .art img,.full-art img{opacity:1!important;transform:none!important;transition:none!important}
@@ -253,11 +258,11 @@ body.work #wbadge{display:block}
 }
 
 @media print{
-  #hint,#ov,#work,#wbadge,#fb,#bar,#meta{display:none!important}
+  #hint,#ov,#work,#wbadge,#fb,#bar,#meta,#rotate{display:none!important}
   @page{size:1280px 720px;margin:0}
   html,body{overflow:visible!important;height:auto;background:#fff}
   #stage{position:static!important;display:block!important;inset:auto}
-  #deck{width:1280px;height:auto;transform:none!important;box-shadow:none;overflow:visible}
+  #deck{position:static!important;left:auto!important;top:auto!important;width:1280px;height:auto;transform:none!important;box-shadow:none;overflow:visible}
   .slide{position:relative!important;display:block!important;opacity:1!important;visibility:visible!important;
     width:1280px;height:720px;overflow:hidden;break-after:page;page-break-after:always;
     transition:none!important;pointer-events:auto!important}
@@ -875,6 +880,7 @@ body.work #wbadge{display:block}
   </div>
 </div>
 <div id="fb"><p>Clipboard was blocked &mdash; the text is selected below. Press &#8984;C to copy, then Esc.</p><textarea id="fbT" readonly></textarea></div>
+<div id="rotate">&#8635;&nbsp; Turn your phone sideways to fill the screen</div>
 <div id="hint">← → navigate · O overview · W working notes · F fullscreen</div>
 <script>
 const deck=document.getElementById('deck'), ovEl=document.getElementById('ov');
@@ -887,10 +893,11 @@ function save(){ try{ localStorage.setItem(KEY,JSON.stringify(notes)) }catch(e){
 
 const PANEL=392;
 function fit(){
-  const on = document.body.classList.contains('work');
+  const on = document.body.classList.contains('work') && innerWidth > 900;
   const w = on ? innerWidth-PANEL : innerWidth;
   const s = Math.min(w/1280, innerHeight/720)*.955;
-  deck.style.transform='translateX('+(on?-PANEL/2:0)+'px) scale('+s+')';
+  const dx = on ? -PANEL/2 : 0;
+  deck.style.transform='translate(calc(-50% + '+dx+'px), -50%) scale('+s+')';
 }
 addEventListener('resize',fit);
 
