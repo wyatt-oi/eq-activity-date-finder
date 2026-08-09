@@ -169,6 +169,13 @@ ol.steps li strong{color:var(--ink);font-weight:600;display:block;margin-bottom:
   transition:transform 1.0s cubic-bezier(.72,.02,.30,1) .06s}
 .active .art:after{transform:scaleX(0)}
 
+/* ---------- QR ---------- */
+.qr{position:absolute;display:flex;align-items:center;gap:14px;z-index:20}
+.qr img{width:132px;height:132px;display:block;border-radius:7px;background:#FBF9F5;padding:7px}
+.qr .qt{font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;line-height:1.7;max-width:11.5em;color:var(--accent)}
+.qr.on-dark .qt{color:#E8C88E;text-shadow:0 1px 10px rgba(10,7,4,.6)}
+
 /* ---------- chrome ---------- */
 #bar{position:absolute;left:0;bottom:0;height:3px;background:var(--accent);width:0;
   transition:width .5s cubic-bezier(.22,.61,.36,1);z-index:40}
@@ -288,6 +295,7 @@ body.work #wbadge{display:block}
     <div class="lede" data-a="rise" style="max-width:25em">Elder Clark G. Gilbert asked us to help people<br>find their way home. Here's how we do that.</div>
     <div class="note" data-a="fade" style="max-width:26em">Elk Ridge 7th Ward &middot; Elders Quorum</div>
   </div>
+  <div class="qr on-dark" style="left:78px;bottom:70px" data-a="fade"><img src="assets/qr-deck.png" alt="QR code linking to the slides"><div class="qt">Scan to follow<br>along on your phone</div></div>
 </div>
 
 <!-- 2 THE QUOTE, COLD -->
@@ -323,6 +331,7 @@ body.work #wbadge{display:block}
       <li data-a="left"><strong>The ward mission plan</strong> &mdash; and leading with the Spirit <span class="mins">Jeff</span></li>
     </ul>
   </div>
+  <div class="qr" style="right:88px;bottom:74px" data-a="fade"><img src="assets/qr-deck.png" alt="QR code linking to the slides"><div class="qt">Scan to follow<br>along on your phone</div></div>
 </div>
 
 <!-- 5 SECTION 1 -->
