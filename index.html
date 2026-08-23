@@ -13,6 +13,7 @@
     --ai: #0E7490;   --ai-bg: #D2E9F0;
     --fel: #C2410C;  --fel-bg: #FAE3D3;
     --temple: #0369A1; --temple-bg: #D9EBF7;
+    --rs: #BE185D;   --rs-bg: #FBE0EC;
     --warn: #A6121F;
     --shadow: 0 6px 24px rgba(35,32,27,0.18);
   }
@@ -32,6 +33,7 @@
       --ai: #74C4DB;   --ai-bg: #10333D;
       --fel: #F0A374;  --fel-bg: #3D2113;
       --temple: #82C0E5; --temple-bg: #122A3B;
+      --rs: #F1A8CC;   --rs-bg: #3E1528;
       --warn: #E58A92;
       --shadow: 0 6px 24px rgba(0,0,0,0.5);
     }
@@ -49,6 +51,7 @@
     --ai: #0E7490;   --ai-bg: #D2E9F0;
     --fel: #C2410C;  --fel-bg: #FAE3D3;
     --temple: #0369A1; --temple-bg: #D9EBF7;
+    --rs: #BE185D;   --rs-bg: #FBE0EC;
     --warn: #A6121F;
     --shadow: 0 6px 24px rgba(35,32,27,0.18);
   }
@@ -65,6 +68,7 @@
     --ai: #74C4DB;   --ai-bg: #10333D;
     --fel: #F0A374;  --fel-bg: #3D2113;
     --temple: #82C0E5; --temple-bg: #122A3B;
+    --rs: #F1A8CC;   --rs-bg: #3E1528;
     --warn: #E58A92;
     --shadow: 0 6px 24px rgba(0,0,0,0.5);
   }
@@ -202,6 +206,7 @@
   aside.agenda li.t-ai .when { color: var(--ai); }
   aside.agenda li.t-fel .when { color: var(--fel); }
   aside.agenda li.t-temple .when { color: var(--temple); }
+  aside.agenda li.t-rs .when { color: var(--rs); }
   aside.agenda li.open .when, aside.agenda li.open .what { color: var(--muted); font-weight: 500; }
   aside.agenda li .what strong { font-weight: 650; }
   aside.agenda .rhythm { margin-top: 0.9rem; padding-top: 0.6rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.76rem; }
@@ -251,6 +256,7 @@
   td.bg-byu { background: var(--byu-bg); }   td.bg-utah { background: var(--utah-bg); }
   td.bg-jazz { background: var(--jazz-bg); } td.bg-nfl { background: var(--nfl-bg); }
   td.bg-hol { background: var(--hol-bg); }   td.bg-church { background: var(--church-bg); }
+  td.bg-rs { background: var(--rs-bg); }
   td.both { background: linear-gradient(135deg, var(--byu-bg) 50%, var(--utah-bg) 50%); }
   td.pick { outline-offset: -2px; }
   td.pick .d::after { content: " ★"; font-size: 0.7em; }
@@ -425,8 +431,10 @@
         <li class="t-fel"><span class="when">Aug 11</span><span class="what"><strong>Pickleball Night</strong> (Tue — night before school starts)</span></li>
         <li class="open t-fh"><span class="when">TBD</span><span class="what"><strong>Family History Kickoff</strong> — root beer floats + pie, stories about your relatives. To be rescheduled</span></li>
         <li class="t-ai"><span class="when">Aug 27</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
+        <li class="t-rs"><span class="when">Aug 27</span><span class="what"><strong>RS: School Snack Kits</strong> (Thu — at the church, 7–8 pm)</span></li>
         <li class="t-fel"><span class="when">Sept 25</span><span class="what"><strong>Car Show</strong> — BYU bye week (Fri)</span></li>
         <li class="t-fh"><span class="when">Nov 9</span><span class="what"><strong>Gratitude Night</strong> (Mon) — a family home evening each family runs at home; we hand out the lesson. Veteran &amp; family stories, two days before Veterans Day</span></li>
+        <li class="t-rs"><span class="when">Nov 12</span><span class="what"><strong>RS: Family History Center Tour</strong> (Thu 5–6 pm)</span></li>
         <li class="t-ai"><span class="when">Nov 19</span><span class="what"><strong>AI Night</strong> (Thu)</span></li>
         <li class="open"><span class="when">Dec 11–12</span><span class="what">Open window — ward Christmas party month</span></li>
       </ul>
@@ -457,7 +465,7 @@
         <h2>Fine print before you ink these in</h2>
         <ul>
           <li><strong>Gratitude Night is now Mon Nov 9, and it isn't a ward event.</strong> It moved off Wed Nov 11 because the stake has the ER7 combined youth activity that night, 4–9 p.m. Monday is family home evening, so the answer was to stop holding it at the building: we hand every family a short lesson and they run it at their own kitchen table. Nothing to schedule, nothing to compete with, and it reaches the families who never come out to an activity. Still lands two days before Veterans Day, so the veteran-and-family-stories framing holds.</li>
-          <li><strong>Nebo District 2026–27 (official, tentative board approval):</strong> school begins Wed Aug 12 — the same day as Pickleball Night; fall break Oct 15–19; Thanksgiving Nov 25–27; Christmas break Dec 21–Jan 1; spring break Apr 5–9; last day Thu May 20, 2027 (half day) — the same day as AI Night. The 2027–28 calendar isn't published yet; fall 2027 school dates get added when it is.</li>
+          <li><strong>Nebo District 2026–27 (official, tentative board approval):</strong> school begins Wed Aug 12; fall break Oct 15–19; Thanksgiving Nov 25–27; Christmas break Dec 21–Jan 1; spring break Apr 5–9; last day Thu May 20, 2027 (half day) — the same day as AI Night. The 2027–28 calendar isn't published yet; fall 2027 school dates get added when it is.</li>
           <li><strong>Jazz schedule drops mid-August 2026</strong> (season starts Tue Oct 20). Games will be added when the NBA releases the slate — mostly weeknights, so expect Thursday checks on AI Nights.</li>
           <li><strong>Basketball is partially mapped.</strong> BYU's non-conference is official (incl. Ohio State Nov 2, Maui over Thanksgiving, Northwestern Dec 5). Utah's is reported but unofficial until mid-August (Towson Nov 5, Weber St Nov 10, E. Washington Nov 17, Charleston Classic Thanksgiving week). Big 12 conference slates (Jan–Mar) release in the fall — January and March picks get re-checked then.</li>
           <li><strong>2026 football kickoff times aren't announced yet.</strong> College Saturdays are blocked whole-day to be safe.</li>
@@ -501,6 +509,7 @@
     ai:     { label: "AI Night",       group: "Activities" },
     fel:    { label: "Fellowship",     group: "Activities" },
     temple: { label: "Temple",         group: "Activities" },
+    rs:     { label: "Relief Society",  group: "Activities" },
     byu:    { label: "BYU",            group: "Sports" },
     utah:   { label: "Utah",           group: "Sports" },
     jazz:   { label: "Jazz",           group: "Sports" },
@@ -670,7 +679,7 @@
         11: { star: ["fel","Pickleball Night"] },
         12: { ev: [["school","1st day of school"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
         22: { ev: [["stake","Ward baptism at the stake center, 7am–12pm","Baptism","ordinance"]] },
-        27: { star: ["ai","AI Night"], ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        27: { star: ["ai","AI Night"], ev: [["rs","RS: School Snack Kits, 7pm–8pm (at the church)","Snack Kits"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
       } },
     { name: "September 2026", y: 2026, mo: 8, days: 30, startDow: 2,
       pickNote: "★ Fri Sept 25 — Car Show (BYU bye week; Utah away Saturday)",
@@ -730,7 +739,7 @@
         8:  { ev: [["stake","Youth life & mission prep course, 3:30pm–5:30pm","Mission prep","youth"],["stake","Stake high council meeting, 7am–8am","High council","leadership"],["stake","Rebroadcast: worldwide YA devotional, 12am–1am","YA rebroadcast","churchwide"]] },
         9:  { star: ["fh","Gratitude Night — a family home evening every family runs at home, two days before Veterans Day","Gratitude FHE"], ev: [["stake","YSA activity, Gathering Place, 7pm–9pm","YSA","ysa"]] },
         11: { ev: [["hol","Veterans Day"],["church","ER7 combined youth activity, 4–9pm","Youth night"]] },
-        12: { ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
+        12: { ev: [["rs","RS: Tour the Family History Center, 5pm–6pm","FH Center tour"],["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
         14: { ev: [["stake","Stake baptisms, 7am–4pm","Stake baptisms","ordinance"]] },
         15: { ev: [["stake","Stake temple recommend interviews, 2pm–4pm","Recommends","ordinance"]] },
         19: { star: ["ai","AI Night"], ev: [["stake","8th Ward men's basketball, 9pm–10:30pm","8th W. ball","athletics"]] },
@@ -941,7 +950,7 @@
   loadSports(SPORTS);
 
   /* which event type wins the cell's background tint when a day has several */
-  const TINT_ORDER = ["hol", "school", "church", "byu", "utah", "jazz", "nfl"];
+  const TINT_ORDER = ["hol", "school", "church", "rs", "byu", "utah", "jazz", "nfl"];
 
   const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   const root = document.getElementById("calendar-root");
@@ -1065,14 +1074,14 @@
           : (types.includes("byu") && types.includes("utah")) ? "both"
           : first ? `bg-${first}` : "";
     }
-    const dotted = items.filter(i => !i.star && i.t !== "church");
+    const dotted = items.filter(i => !i.star && i.t !== "church" && i.t !== "rs");
     const dots = dotted.slice(0, 5)
       .map(i => `<span class="dt" style="background:var(--${i.t})"></span>`).join("");
     let labs = "";
     const s = items.find(i => i.star);
     if (s) labs += `<span class="lab star" style="color:var(--${s.t})">${s.d}</span>`;
-    labs += items.filter(i => !i.star && i.t === "church")
-      .map(i => `<span class="lab" style="color:var(--church)">${i.d}</span>`).join("");
+    labs += items.filter(i => !i.star && (i.t === "church" || i.t === "rs"))
+      .map(i => `<span class="lab" style="color:var(--${i.t})">${i.d}</span>`).join("");
     const aria = items.map(i => i.l).join("; ");
     return `<td class="${cls}" tabindex="0" ${base} aria-label="${m.name} ${day}: ${aria.replace(/"/g,"&quot;")}">${dayNum}${labs}${dots ? `<span class="dots">${dots}</span>` : ""}</td>`;
   }
